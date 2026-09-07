@@ -6,6 +6,8 @@ from typing import List, Dict, Any, Tuple
 from app.models import RecommendationRequest, CropRecommendation, RecommendationResponse
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA
 from app.database import get_all_crops
+from app.agri_tools import calculate_fertilizer_prescription, calculate_crop_financials
+
 
 
 def resolve_parameters(req: RecommendationRequest) -> Dict[str, Any]:
@@ -192,6 +194,20 @@ def recommend_crops(req: RecommendationRequest) -> RecommendationResponse:
         else:
             level = "Marginal / High Risk"
 
+        # Compute financial projections and fertilizer prescription
+        financials = calculate_crop_financials(crop, land_size_acres=params.get("land_size_acres", 1.0))
+        fertilizer_presc = calculate_fertilizer_prescription(
+            soil_n=params.get("nitrogen", 140.0),
+            soil_p=params.get("phosphorus", 30.0),
+            soil_k=params.get("potassium", 180.0),
+            soil_ph=params.get("ph", 7.0),
+            ideal_n=crop.get("ideal_n", 100.0),
+            ideal_p=crop.get("ideal_p", 50.0),
+            ideal_k=crop.get("ideal_k", 40.0),
+            land_size_acres=params.get("land_size_acres", 1.0)
+        )
+        growth_stages = crop.get("growth_stages", [])
+
         rec = CropRecommendation(
             crop_id=crop["id"],
             name=crop["name"],
@@ -211,7 +227,10 @@ def recommend_crops(req: RecommendationRequest) -> RecommendationResponse:
             sowing_tips=crop["sowing_tips"],
             fertilizer_advice=crop["fertilizer_advice"],
             soil_notes=crop["soil_notes"],
-            companion_crops=crop.get("companion_crops", [])
+            companion_crops=crop.get("companion_crops", []),
+            financials=financials,
+            fertilizer_prescription=fertilizer_presc,
+            growth_stages=growth_stages
         )
         evaluated.append(rec)
 

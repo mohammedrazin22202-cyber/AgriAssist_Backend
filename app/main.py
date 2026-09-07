@@ -9,11 +9,17 @@ from typing import List, Dict, Any
 from app.models import (
     RecommendationRequest,
     RecommendationResponse,
-    CropRecommendation
+    CropRecommendation,
+    RotationPlanRequest,
+    RotationPlanResponse,
+    StandaloneFertilizerRequest,
+    FertilizerPrescription
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
+from app.agri_tools import generate_crop_rotation_plans, calculate_fertilizer_prescription
+
 
 app = FastAPI(
     title="AgriAssist Decision Support API",
@@ -126,3 +132,57 @@ def get_crop_details(crop_id: str):
     if not crop:
         raise HTTPException(status_code=404, detail=f"Crop with ID '{crop_id}' not found.")
     return crop
+
+
+@app.post("/api/rotation-plan", response_model=RotationPlanResponse)
+def get_crop_rotation_plan(req: RotationPlanRequest):
+    """Generates ranked 1-Year Multi-Crop Rotation Plans (Kharif -> Rabi -> Zaid)."""
+    try:
+        plans = generate_crop_rotation_plans(
+            soil_type=req.soil_type,
+            water_availability=req.water_availability,
+            budget_preference=req.budget_preference or "Balanced",
+            land_size_acres=req.land_size_acres or 1.0
+        )
+        return RotationPlanResponse(
+            soil_type=req.soil_type,
+            water_availability=req.water_availability,
+            land_size_acres=req.land_size_acres or 1.0,
+            plans=plans
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Rotation planning error: {str(e)}")
+
+
+@app.post("/api/fertilizer-prescription", response_model=FertilizerPrescription)
+def get_fertilizer_prescription(req: StandaloneFertilizerRequest):
+    """Calculates exact Urea, DAP, MOP bags and soil amendments for given soil and crop."""
+    try:
+        ideal_n = req.ideal_n
+        ideal_p = req.ideal_p
+        ideal_k = req.ideal_k
+        if req.crop_id:
+            crop = get_crop_by_id(req.crop_id)
+            if crop:
+                ideal_n = ideal_n if ideal_n is not None else crop.get("ideal_n", 100.0)
+                ideal_p = ideal_p if ideal_p is not None else crop.get("ideal_p", 50.0)
+                ideal_k = ideal_k if ideal_k is not None else crop.get("ideal_k", 40.0)
+
+        ideal_n = ideal_n if ideal_n is not None else 100.0
+        ideal_p = ideal_p if ideal_p is not None else 50.0
+        ideal_k = ideal_k if ideal_k is not None else 40.0
+
+        presc = calculate_fertilizer_prescription(
+            soil_n=req.soil_n,
+            soil_p=req.soil_p,
+            soil_k=req.soil_k,
+            soil_ph=req.soil_ph or 7.0,
+            ideal_n=ideal_n,
+            ideal_p=ideal_p,
+            ideal_k=ideal_k,
+            land_size_acres=req.land_size_acres or 1.0
+        )
+        return presc
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fertilizer calculation error: {str(e)}")
+
