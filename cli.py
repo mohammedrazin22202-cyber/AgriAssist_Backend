@@ -105,6 +105,14 @@ def run_cli():
         print(f"   * Est. Yield/Acre  : {rec.estimated_yield_per_acre} | Profit: {rec.profit_potential}")
         print(f"   * Sowing Window    : {rec.sowing_window}")
         
+        if rec.financials:
+            print(f"   * Net Profit (Est.) : ₹{rec.financials.net_profit_inr:,.0f} (ROI: {rec.financials.roi_percentage}%) [MSP: ₹{rec.financials.msp_or_market_price_per_quintal:.0f}/Qtl]")
+        if rec.fertilizer_prescription:
+            fp = rec.fertilizer_prescription
+            print(f"   * Fertilizer Needs  : Urea: {fp.urea_bags_50kg} bags | DAP: {fp.dap_bags_50kg} bags | MOP: {fp.mop_bags_50kg} bags (50kg)")
+            if fp.lime_kg > 0 or fp.gypsum_kg > 0:
+                print(f"   * Soil Amendment    : {fp.amendment_type} ({fp.lime_kg or fp.gypsum_kg:.0f} kg for {land_size_val} acres)")
+
         if rec.reasons:
             print("   [+] Why Sow This:")
             for r in rec.reasons[:2]:
@@ -118,6 +126,25 @@ def run_cli():
         print(f"   [i] Agronomic Tip: {rec.sowing_tips}")
         print("-" * 65)
 
+    # Optional 1-Year Multi-Crop Rotation
+    from app.agri_tools import generate_crop_rotation_plans
+    view_rot = input("\nWould you like to view a 1-Year Multi-Crop Rotation Plan? (y/n): ").strip().lower()
+    if view_rot in ["y", "yes"]:
+        rotations = generate_crop_rotation_plans(soil_type, water_availability, "Balanced", land_size_val)
+        print("\n" + "=" * 65)
+        print("          1-YEAR SUSTAINABLE MULTI-CROP ROTATION PLANS          ")
+        print("=" * 65)
+        for idx, plan in enumerate(rotations[:2], 1):
+            print(f"\n[Plan #{idx}] {plan['title']} ({plan['badge']})")
+            print(f"  * Soil Health Score   : {plan['soil_health_index']}/100")
+            print(f"  * Total Annual Profit : ₹{plan['total_annual_net_profit_inr']:,.0f} (₹{plan['annual_net_profit_per_acre_inr']:,.0f}/acre)")
+            print(f"  * Soil Benefit        : {plan['nitrogen_fixation_benefit']}")
+            print("  * Crop Sequence:")
+            for c in plan["crops"]:
+                print(f"    - {c['season']}: {c['crop_name']} ({c['duration']}, {c['water']} water) -> Net: ₹{c['net_profit_per_acre'] * land_size_val:,.0f}")
+            print("-" * 65)
+
 
 if __name__ == "__main__":
     run_cli()
+

@@ -111,3 +111,47 @@ def test_api_recommend_post():
     paddy = next((c for c in data["recommendations"] if c["crop_id"] == "rice"), None)
     assert paddy is not None
     assert paddy["suitability_score"] >= 80.0
+    # Verify financial and fertilizer fields are populated
+    assert paddy["financials"] is not None
+    assert paddy["financials"]["gross_revenue_inr"] > 0
+    assert paddy["fertilizer_prescription"] is not None
+    assert paddy["fertilizer_prescription"]["urea_bags_50kg"] >= 0
+    assert len(paddy["growth_stages"]) == 4
+
+
+def test_fertilizer_prescription_acidic_soil():
+    """Acidic soil should prescribe Agricultural Lime."""
+    payload = {
+        "crop_id": "wheat",
+        "soil_n": 100.0,
+        "soil_p": 20.0,
+        "soil_k": 100.0,
+        "soil_ph": 5.2,
+        "land_size_acres": 2.0
+    }
+    response = client.post("/api/fertilizer-prescription", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "Agricultural Lime" in data["amendment_type"]
+    assert data["lime_kg"] > 0
+    assert data["urea_bags_50kg"] > 0
+    assert data["dap_bags_50kg"] > 0
+
+
+def test_crop_rotation_plan_endpoint():
+    """Rotation planner should generate multi-season plans with legume integration."""
+    payload = {
+        "soil_type": "Black Soil (Regur)",
+        "water_availability": "Moderate (Canal / Tube-well / Seasonal)",
+        "land_size_acres": 2.0
+    }
+    response = client.post("/api/rotation-plan", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["plans"]) >= 2
+    top_plan = data["plans"][0]
+    assert "crops" in top_plan
+    assert len(top_plan["crops"]) == 3
+    assert top_plan["total_annual_net_profit_inr"] > 0
+    assert top_plan["soil_health_index"] >= 80
+
