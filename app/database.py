@@ -829,14 +829,588 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
         "soil_notes": "Warm, sandy or sandy loam soils that heat up quickly; riverine diara land is traditional.",
         "risk_factors": ["Powdery and Downy Mildew", "Fruit fly", "Sudden rain during ripening bursts fruit"],
         "companion_crops": ["Muskmelon", "Bottle gourd"]
+    },
+    {
+        "id": "cowpea",
+        "name": "Cowpea (Lobia)",
+        "hindi_name": "लोबिया (Lobia)",
+        "scientific_name": "Vigna unguiculata",
+        "category": "Pulse",
+        "suitable_soils": ["Sandy Loam Soil", "Alluvial Soil", "Red Soil"],
+        "tolerated_soils": ["Laterite Soil", "Black Soil (Regur)"],
+        "min_ph": 5.5,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.2,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 850.0,
+        "water_requirement": "Low",
+        "seasons": ["Kharif", "Zaid", "All Season / Flexible"],
+        "sowing_window": "Feb - March (Zaid) or June - July (Kharif)",
+        "duration_days": "60 - 75 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 20.0,
+        "ideal_p": 40.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Fast-growing legume. Inoculate seeds with Rhizobium. Excellent catch crop and green manure.",
+        "fertilizer_advice": "Apply single superphosphate (SSP) at sowing. Highly modest nitrogen need due to root nodules.",
+        "soil_notes": "Tolerates light sandy and low-fertility soils; requires good drainage.",
+        "risk_factors": ["Pod borer", "Yellow mosaic virus"],
+        "companion_crops": ["Maize", "Pearl Millet", "Sorghum"]
+    },
+    {
+        "id": "garlic",
+        "name": "Garlic",
+        "hindi_name": "लहसुन (Lahsun)",
+        "scientific_name": "Allium sativum",
+        "category": "Spices",
+        "suitable_soils": ["Alluvial Soil", "Clay Loam Soil", "Black Soil (Regur)"],
+        "tolerated_soils": ["Sandy Loam Soil"],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.0,
+        "min_temp": 12.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Medium",
+        "seasons": ["Rabi"],
+        "sowing_window": "October - November",
+        "duration_days": "120 - 140 days",
+        "estimated_yield_per_acre": "35 - 50 Quintals",
+        "investment_level": "Moderate to High",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 50.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Plant bold outer cloves 5-7 cm apart in raised beds. Mulch with straw to suppress weeds.",
+        "fertilizer_advice": "Apply Sulfur @ 15-20 kg/acre to boost allicin and pungent bulb quality.",
+        "soil_notes": "Rich, friable loamy soil with abundant organic humus is optimal.",
+        "risk_factors": ["Thrips", "Purple blotch", "Waterlogging bulb rot"],
+        "companion_crops": ["Mustard", "Coriander"]
+    },
+    {
+        "id": "ginger",
+        "name": "Ginger",
+        "hindi_name": "अदरक (Adrak)",
+        "scientific_name": "Zingiber officinale",
+        "category": "Spices",
+        "suitable_soils": ["Red Soil", "Laterite Soil", "Sandy Loam Soil"],
+        "tolerated_soils": ["Alluvial Soil"],
+        "min_ph": 5.5,
+        "max_ph": 7.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 6.8,
+        "min_temp": 18.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1200.0,
+        "max_rainfall": 2200.0,
+        "water_requirement": "Medium to High",
+        "seasons": ["Kharif"],
+        "sowing_window": "April - May (Pre-monsoon)",
+        "duration_days": "210 - 240 days",
+        "estimated_yield_per_acre": "60 - 90 Quintals",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 75.0,
+        "ideal_p": 50.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Plant disease-free seed rhizomes in raised beds. Heavy green leaf mulching is essential.",
+        "fertilizer_advice": "Needs high organic manure (FYM @ 10 tons/acre) plus balanced NPK split in 3 doses.",
+        "soil_notes": "Loose, well-drained humic red or lateritic loam. Stagnant moisture causes soft rot.",
+        "risk_factors": ["Soft rot / Pythium rhizome rot", "Bacterial wilt", "Shoot borer"],
+        "companion_crops": ["Pigeon Pea (as border shade)", "Maize"]
+    },
+    {
+        "id": "coriander",
+        "name": "Coriander",
+        "hindi_name": "धनिया (Dhaniya)",
+        "scientific_name": "Coriandrum sativum",
+        "category": "Spices",
+        "suitable_soils": ["Black Soil (Regur)", "Alluvial Soil", "Sandy Loam Soil"],
+        "tolerated_soils": ["Red Soil"],
+        "min_ph": 6.0,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 200.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low to Medium",
+        "seasons": ["Rabi", "All Season / Flexible"],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "80 - 100 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals (Grain) or 40-60 Qtl (Green leaf)",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Split seeds gently before sowing to encourage faster germination. Shallow 2 cm depth.",
+        "fertilizer_advice": "Basal application of DAP and Potash. Light top dressing after first leaf cutting.",
+        "soil_notes": "Well-drained medium black or alluvial loam with good moisture holding capacity.",
+        "risk_factors": ["Powdery mildew during flowering", "Aphids during cloudy weather"],
+        "companion_crops": ["Chickpea", "Fenugreek", "Mustard"]
     }
 ]
 
+# Comprehensive Economics, MSP, and 4-Stage Growth Timeline Extensions
+CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
+    "rice": {
+        "msp_per_quintal": 2300.0,
+        "seed_rate_kg_acre": 15.0,
+        "seed_cost_per_kg": 75.0,
+        "cultivation_cost_per_acre": 16000.0,
+        "yield_quintal_min": 22.0,
+        "yield_quintal_max": 28.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Nursery & Transplanting", "activities": "Seed treatment with Carbendazim. Maintain 2cm standing water after transplanting.", "pest_warning": "Watch for root rot and leaf blast."},
+            {"day_range": "Day 25-50", "stage_name": "Tillering & Vegetative", "activities": "First top-dressing of Urea. Hand weeding or herbicide spray.", "pest_warning": "Yellow stem borer (dead hearts) monitoring."},
+            {"day_range": "Day 50-80", "stage_name": "Panicle Initiation & Flowering", "activities": "Maintain shallow water. Apply second dose of Urea and Potash.", "pest_warning": "Brown plant hopper (BPH) and neck blast."},
+            {"day_range": "Day 80-125+", "stage_name": "Grain Filling & Harvesting", "activities": "Drain standing water 10-12 days before harvest when 85% grains turn golden.", "pest_warning": "False smut and gundhi bug."}
+        ]
+    },
+    "wheat": {
+        "msp_per_quintal": 2400.0,
+        "seed_rate_kg_acre": 40.0,
+        "seed_cost_per_kg": 45.0,
+        "cultivation_cost_per_acre": 13500.0,
+        "yield_quintal_min": 18.0,
+        "yield_quintal_max": 24.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-21", "stage_name": "Crown Root Initiation (CRI)", "activities": "First vital irrigation at 21 days. Apply first split of Urea.", "pest_warning": "Termite attack in sandy soils."},
+            {"day_range": "Day 21-50", "stage_name": "Tillering & Jointing", "activities": "Second irrigation. Spray 2,4-D for broadleaf weed control.", "pest_warning": "Early aphid appearance."},
+            {"day_range": "Day 50-85", "stage_name": "Booting & Flowering", "activities": "Ensure soil moisture at flowering. Foliar spray of Potassium Nitrate (1%).", "pest_warning": "Yellow rust / Brown rust watch on leaves."},
+            {"day_range": "Day 85-120+", "stage_name": "Milking, Dough & Harvest", "activities": "Final light irrigation at milking. Harvest when moisture drops below 14%.", "pest_warning": "Terminal heat stress / loose smut."}
+        ]
+    },
+    "maize": {
+        "msp_per_quintal": 2225.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 250.0,
+        "cultivation_cost_per_acre": 14000.0,
+        "yield_quintal_min": 24.0,
+        "yield_quintal_max": 32.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Germination & Seedling", "activities": "Treat seeds with Thiamethoxam. Maintain uniform 20cm spacing.", "pest_warning": "Fall Armyworm (FAW) whorl feeding."},
+            {"day_range": "Day 20-45", "stage_name": "Knee-High Stage", "activities": "Earthing-up operation. Side-dress second dose of Nitrogen.", "pest_warning": "Stem borer and leaf blight."},
+            {"day_range": "Day 45-70", "stage_name": "Tasseling & Silking", "activities": "Most moisture-critical phase. Avoid water deficit at silking.", "pest_warning": "Cob borer and stalk rot."},
+            {"day_range": "Day 70-100+", "stage_name": "Grain Filling & Cob Maturity", "activities": "Harvest when cob husks turn papery pale yellow and silk dries black.", "pest_warning": "Birds and storage weevils."}
+        ]
+    },
+    "pearl_millet": {
+        "msp_per_quintal": 2625.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 180.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 12.0,
+        "yield_quintal_max": 18.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-18", "stage_name": "Seedling & Thinning", "activities": "Thin plants to 15cm spacing. Inter-cultivation for dust mulching.", "pest_warning": "Shoot fly in late sown crops."},
+            {"day_range": "Day 18-40", "stage_name": "Tillering Stage", "activities": "Top-dress remaining Nitrogen before light rain or irrigation.", "pest_warning": "Stem borer."},
+            {"day_range": "Day 40-60", "stage_name": "Booting & Panicle Emergence", "activities": "Protect from heavy stagnant water during flowering.", "pest_warning": "Downy mildew (green ear disease)."},
+            {"day_range": "Day 60-85+", "stage_name": "Grain Filling & Harvest", "activities": "Cut earheads when grains are hard (under 12% moisture).", "pest_warning": "Ergot and smut."}
+        ]
+    },
+    "sorghum": {
+        "msp_per_quintal": 3371.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 9000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 16.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Establishment", "activities": "Shallow sowing at 3cm depth. Early weeding.", "pest_warning": "Shoot fly damage."},
+            {"day_range": "Day 20-45", "stage_name": "Vegetative Growth", "activities": "Top-dress Nitrogen. Hoeing between rows.", "pest_warning": "Spotted stem borer."},
+            {"day_range": "Day 45-70", "stage_name": "Flowering & Milk Stage", "activities": "Critical irrigation if dry spell strikes.", "pest_warning": "Sorghum midge and earhead bug."},
+            {"day_range": "Day 70-105+", "stage_name": "Maturity & Harvesting", "activities": "Harvest earheads followed by stalks for prime cattle stover.", "pest_warning": "Grain mold."}
+        ]
+    },
+    "finger_millet": {
+        "msp_per_quintal": 4290.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 90.0,
+        "cultivation_cost_per_acre": 9500.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 15.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Nursery & Transplanting", "activities": "Transplant 21-day-old seedlings with 2-3 seedlings per hill.", "pest_warning": "Damping off in nursery."},
+            {"day_range": "Day 25-55", "stage_name": "Tillering & Culm Elongation", "activities": "Weeding and top dressing of Urea.", "pest_warning": "Leaf blast."},
+            {"day_range": "Day 55-80", "stage_name": "Fingers Emergence & Flowering", "activities": "Maintain light moisture.", "pest_warning": "Neck and finger blast."},
+            {"day_range": "Day 80-115+", "stage_name": "Earhead Ripening", "activities": "Harvest earheads when fingers turn brown. Sun dry on threshing floor.", "pest_warning": "Ear caterpillar."}
+        ]
+    },
+    "chickpea": {
+        "msp_per_quintal": 5600.0,
+        "seed_rate_kg_acre": 30.0,
+        "seed_cost_per_kg": 95.0,
+        "cultivation_cost_per_acre": 11000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Germination & Root Nodulation", "activities": "Deep sowing (7-10 cm). Rhizobium + PSB inoculation.", "pest_warning": "Collar rot in excess moisture."},
+            {"day_range": "Day 25-50", "stage_name": "Vegetative & Nipping (Topping)", "activities": "Nip terminal shoots at 35-40 days to induce bushy branching.", "pest_warning": "Cutworm."},
+            {"day_range": "Day 50-80", "stage_name": "Pod Formation", "activities": "Install pheromone traps (5/acre). Protective irrigation if needed.", "pest_warning": "Helicoverpa pod borer."},
+            {"day_range": "Day 80-115+", "stage_name": "Pod Maturity & Harvest", "activities": "Harvest when plants dry golden and seeds rattle in pods.", "pest_warning": "Fusarium wilt."}
+        ]
+    },
+    "pigeon_pea": {
+        "msp_per_quintal": 7550.0,
+        "seed_rate_kg_acre": 6.0,
+        "seed_cost_per_kg": 160.0,
+        "cultivation_cost_per_acre": 12000.0,
+        "yield_quintal_min": 7.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-30", "stage_name": "Slow Initial Vegetative", "activities": "Wide inter-row cultivation; intercropping with soybean/moong.", "pest_warning": "Fusarium wilt."},
+            {"day_range": "Day 30-90", "stage_name": "Branching & Biomass", "activities": "Weeding and soil earthing up.", "pest_warning": "Leaf roller and blister beetle."},
+            {"day_range": "Day 90-140", "stage_name": "Profuse Flowering", "activities": "Spray neem oil or bio-pesticide. Avoid chemical spray during active bee pollination.", "pest_warning": "Gram pod borer & pod fly."},
+            {"day_range": "Day 140-180+", "stage_name": "Pod Filling & Maturity", "activities": "Harvest when 80% pods turn brown. Sun cure threshed tur.", "pest_warning": "Pod fly and bruchid beetles."}
+        ]
+    },
+    "green_gram": {
+        "msp_per_quintal": 8682.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 130.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 5.0,
+        "yield_quintal_max": 8.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-15", "stage_name": "Fast Emergence", "activities": "Shallow sowing with Rhizobium inoculant. 30x10 cm spacing.", "pest_warning": "Yellow Mosaic Virus via whitefly."},
+            {"day_range": "Day 15-35", "stage_name": "Branching & N-Fixation", "activities": "One hand weeding at 20 days. Spray Imidacloprid if whitefly noticed.", "pest_warning": "Whitefly vectors."},
+            {"day_range": "Day 35-50", "stage_name": "Pod Formation", "activities": "One protective irrigation during pod development.", "pest_warning": "Spotted pod borer."},
+            {"day_range": "Day 50-70+", "stage_name": "Harvesting", "activities": "Pick mature black/brown pods in 1-2 pickings or whole-plant harvest.", "pest_warning": "Pre-harvest rain pod sprouting."}
+        ]
+    },
+    "black_gram": {
+        "msp_per_quintal": 7400.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 125.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 5.0,
+        "yield_quintal_max": 8.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Seedling Growth", "activities": "Rhizobium seed coating. Shallow placement.", "pest_warning": "Stem fly."},
+            {"day_range": "Day 20-45", "stage_name": "Vegetative & Flowering", "activities": "Weeding and foliar spray of 2% DAP at peak flowering.", "pest_warning": "Yellow Mosaic Virus & whitefly."},
+            {"day_range": "Day 45-65", "stage_name": "Pod Maturation", "activities": "Ensure moisture during pod fill.", "pest_warning": "Pod borer."},
+            {"day_range": "Day 65-85+", "stage_name": "Harvesting", "activities": "Harvest when pods turn dark brownish-black.", "pest_warning": "Post-harvest moisture molds."}
+        ]
+    },
+    "lentil": {
+        "msp_per_quintal": 6700.0,
+        "seed_rate_kg_acre": 15.0,
+        "seed_cost_per_kg": 110.0,
+        "cultivation_cost_per_acre": 9000.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Establishment", "activities": "Seed inoculation with Rhizobium leguminosarum.", "pest_warning": "Collar rot in waterlogging."},
+            {"day_range": "Day 25-55", "stage_name": "Branching & Canopies", "activities": "Light hoeing; extremely sensitive to flooding.", "pest_warning": "Aphids on tender shoots."},
+            {"day_range": "Day 55-85", "stage_name": "Flowering & Pod Fill", "activities": "Single light irrigation at pod fill if winter rain fails.", "pest_warning": "Rust and blight."},
+            {"day_range": "Day 85-115+", "stage_name": "Harvesting", "activities": "Cut plants close to ground when straw turns yellowish.", "pest_warning": "Pod shattering on over-drying."}
+        ]
+    },
+    "mustard": {
+        "msp_per_quintal": 5950.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 220.0,
+        "cultivation_cost_per_acre": 9500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Germination & Thinning", "activities": "Thin plants to maintain 10-15 cm within rows. Apply Sulfur.", "pest_warning": "Painted bug and sawfly."},
+            {"day_range": "Day 20-45", "stage_name": "Rosette & Branching", "activities": "First irrigation at 30 days. Top-dress Urea.", "pest_warning": "Flea beetle."},
+            {"day_range": "Day 45-75", "stage_name": "Flowering & Siliqua (Pod) Formation", "activities": "Second irrigation during pod formation. Critical phase.", "pest_warning": "Mustard aphid outbreak during cloudy/foggy weather."},
+            {"day_range": "Day 75-115+", "stage_name": "Pod Ripening & Harvest", "activities": "Harvest in early morning when siliquae turn golden-yellow to avoid shattering.", "pest_warning": "Alternaria blight and white rust."}
+        ]
+    },
+    "soybean": {
+        "msp_per_quintal": 4892.0,
+        "seed_rate_kg_acre": 25.0,
+        "seed_cost_per_kg": 95.0,
+        "cultivation_cost_per_acre": 12500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Emergence & Nodulation", "activities": "Treat with Bradyrhizobium japonicum. Sow at 3-4 cm depth.", "pest_warning": "Girdle beetle and stem fly."},
+            {"day_range": "Day 20-50", "stage_name": "Vegetative & Flowering", "activities": "Weed management (Imazethapyr spray or mechanical hoeing).", "pest_warning": "Spodoptera litura (tobacco caterpillar)."},
+            {"day_range": "Day 50-75", "stage_name": "Pod Development", "activities": "Avoid moisture stress during pod filling.", "pest_warning": "Semilooper and pod borer."},
+            {"day_range": "Day 75-100+", "stage_name": "Leaf Drop & Maturity", "activities": "Harvest when leaves yellow and fall, leaving bare dry pods.", "pest_warning": "Pod shattering in sun."}
+        ]
+    },
+    "groundnut": {
+        "msp_per_quintal": 6783.0,
+        "seed_rate_kg_acre": 40.0,
+        "seed_cost_per_kg": 115.0,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 15.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Emergence & Branching", "activities": "Sow bold kernels with Trichoderma. Ensure light friable soil.", "pest_warning": "Collar rot."},
+            {"day_range": "Day 25-50", "stage_name": "Flowering & Pegging", "activities": "Apply Gypsum @ 150 kg/acre at pegging. Avoid disturbing soil after pegs enter.", "pest_warning": "Leaf miner and thrips."},
+            {"day_range": "Day 50-85", "stage_name": "Pod Enlargement Underground", "activities": "Ensure moderate moisture for easy pod expansion.", "pest_warning": "Tikka disease (leaf spot)."},
+            {"day_range": "Day 85-115+", "stage_name": "Pod Maturity & Digging", "activities": "Harvest when inner shell turns dark brown/blackish.", "pest_warning": "White grub and rodents."}
+        ]
+    },
+    "sunflower": {
+        "msp_per_quintal": 7280.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 350.0,
+        "cultivation_cost_per_acre": 11500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Seedling", "activities": "Dibble seeds at 45x30 cm. Thinning at 10-15 days.", "pest_warning": "Cutworms and birds."},
+            {"day_range": "Day 20-50", "stage_name": "Bud Initiation", "activities": "Earthing up to prevent lodging. Top-dress Nitrogen.", "pest_warning": "Hairy caterpillar."},
+            {"day_range": "Day 50-75", "stage_name": "Anthesis / Flowering", "activities": "Keep beehives near field or hand rub heads with cloth for full pollination.", "pest_warning": "Helicoverpa head borer."},
+            {"day_range": "Day 75-100+", "stage_name": "Seed Hardening & Harvest", "activities": "Harvest when the back of head turns lemon yellow.", "pest_warning": "Bird depredation on ripe heads."}
+        ]
+    },
+    "cotton": {
+        "msp_per_quintal": 7121.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 950.0,
+        "cultivation_cost_per_acre": 22000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 16.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-30", "stage_name": "Germination & Square Formation", "activities": "Maintain 90x60 cm spacing. Trap crops (marigold/castor).", "pest_warning": "Jassids, thrips, and aphids."},
+            {"day_range": "Day 30-70", "stage_name": "Vegetative & Flowering", "activities": "Apply second split of Nitrogen and Boron foliar spray.", "pest_warning": "Pink bollworm and whitefly."},
+            {"day_range": "Day 70-120", "stage_name": "Boll Development", "activities": "Avoid excessive vegetative flush. Apply MOP for boll size.", "pest_warning": "American bollworm & spotted bollworm."},
+            {"day_range": "Day 120-170+", "stage_name": "Boll Bursting & Picking", "activities": "Pick clean, dry, opened cotton in 3-4 pickings during bright sunshine.", "pest_warning": "Cotton stainer and leaf curl virus."}
+        ]
+    },
+    "sugarcane": {
+        "msp_per_quintal": 340.0,
+        "seed_rate_kg_acre": 30.0,
+        "seed_cost_per_kg": 35.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 350.0,
+        "yield_quintal_max": 500.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-45", "stage_name": "Germination & Sprouting", "activities": "Setts treatment with Carbendazim. Furrow planting at 90cm spacing.", "pest_warning": "Early shoot borer and termites."},
+            {"day_range": "Day 45-120", "stage_name": "Formative & Tillering", "activities": "Inter-row cultivation, heavy earthing up, and Nitrogen split.", "pest_warning": "Internode borer."},
+            {"day_range": "Day 120-270", "stage_name": "Grand Growth & Cane Elongation", "activities": "Propping/wrapping of canes to prevent lodging during monsoons.", "pest_warning": "Top borer, Pyrilla, and red rot."},
+            {"day_range": "Day 270-360+", "stage_name": "Sucrose Ripening & Harvest", "activities": "Stop irrigation 15 days before harvest to concentrate juice brix.", "pest_warning": "Scale insects and wild boars."}
+        ]
+    },
+    "jute": {
+        "msp_per_quintal": 5335.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 140.0,
+        "cultivation_cost_per_acre": 13000.0,
+        "yield_quintal_min": 12.0,
+        "yield_quintal_max": 16.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Sowing & Thinning", "activities": "Broadcast or drill at 30x7 cm. Thinning at 15 and 25 days.", "pest_warning": "Yellow mite and hairy caterpillar."},
+            {"day_range": "Day 25-70", "stage_name": "Vegetative Stalk Growth", "activities": "Top-dress Nitrogen. Stagnant flood water is tolerated.", "pest_warning": "Stem rot (Macrophomina)."},
+            {"day_range": "Day 70-110", "stage_name": "Small Pod Stage (Harvest)", "activities": "Cut stalks at base during 50% flowering for optimum fiber quality.", "pest_warning": "Semilooper."},
+            {"day_range": "Day 110-130+", "stage_name": "Retting & Fiber Extraction", "activities": "Submerge tied bundles in slow-flowing water for 15-20 days for retting.", "pest_warning": "Over-retting weakens fiber."}
+        ]
+    },
+    "tomato": {
+        "msp_per_quintal": 1600.0,
+        "seed_rate_kg_acre": 0.15,
+        "seed_cost_per_kg": 6000.0,
+        "cultivation_cost_per_acre": 26000.0,
+        "yield_quintal_min": 160.0,
+        "yield_quintal_max": 240.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Nursery & Transplanting", "activities": "Transplant on raised beds with silver-black mulch.", "pest_warning": "Damping off and root-knot nematode."},
+            {"day_range": "Day 25-50", "stage_name": "Staking & Trellising", "activities": "Tie plants with twine. Prune suckers to 2 main stems.", "pest_warning": "Leaf curl virus via whitefly."},
+            {"day_range": "Day 50-80", "stage_name": "Fruit Set & Sizing", "activities": "Drip fertigation with Calcium Nitrate & Boron to avoid Blossom End Rot.", "pest_warning": "Tomato pinworm (Tuta absoluta) and fruit borer."},
+            {"day_range": "Day 80-120+", "stage_name": "Multiple Harvest Pickings", "activities": "Pick at 'breaker' stage for distant markets or red ripe for local mandis.", "pest_warning": "Early and late blight."}
+        ]
+    },
+    "potato": {
+        "msp_per_quintal": 1300.0,
+        "seed_rate_kg_acre": 12.0,
+        "seed_cost_per_kg": 40.0,
+        "cultivation_cost_per_acre": 28000.0,
+        "yield_quintal_min": 120.0,
+        "yield_quintal_max": 180.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Sprouting & Emergence", "activities": "Plant pre-sprouted seed tubers in ridges. 60x20 cm spacing.", "pest_warning": "Black scurf and cutworm."},
+            {"day_range": "Day 25-50", "stage_name": "Vegetative & Earthing Up", "activities": "Critical earthing up to prevent greening of developing tubers from sun.", "pest_warning": "Aphids (vector for viruses)."},
+            {"day_range": "Day 50-75", "stage_name": "Tuber Bulking", "activities": "Supply ample Potash. Maintain uniform soil moisture.", "pest_warning": "Late blight during foggy, wet nights."},
+            {"day_range": "Day 75-100+", "stage_name": "Haulm Cutting & Curing", "activities": "Cut haulms (stems) 10 days before digging to harden tuber skin.", "pest_warning": "Tuber moth in storage."}
+        ]
+    },
+    "onion": {
+        "msp_per_quintal": 1800.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 1200.0,
+        "cultivation_cost_per_acre": 24000.0,
+        "yield_quintal_min": 100.0,
+        "yield_quintal_max": 160.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-35", "stage_name": "Nursery Seedlings", "activities": "Transplant 6-7 week old seedlings at 15x10 cm spacing.", "pest_warning": "Damping off in nursery."},
+            {"day_range": "Day 35-70", "stage_name": "Vegetative Foliage", "activities": "Two hand weedings. Shallow root system requires light frequent irrigation.", "pest_warning": "Onion thrips (silvery leaves)."},
+            {"day_range": "Day 70-105", "stage_name": "Bulb Initiation & Sizing", "activities": "Stop Nitrogen; apply Sulfate of Potash for firm neck and bulb size.", "pest_warning": "Purple blotch."},
+            {"day_range": "Day 105-135+", "stage_name": "Neck Fall & Curing", "activities": "Withhold irrigation when 50% tops fall. Field cure bulbs under foliage shade.", "pest_warning": "Neck rot and bulb decay."}
+        ]
+    },
+    "chilli": {
+        "msp_per_quintal": 14000.0,
+        "seed_rate_kg_acre": 0.5,
+        "seed_cost_per_kg": 5000.0,
+        "cultivation_cost_per_acre": 28000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 18.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-30", "stage_name": "Transplanting", "activities": "Raised beds with drip & fertigation. 60x45 cm spacing.", "pest_warning": "Damping off and root grubs."},
+            {"day_range": "Day 30-65", "stage_name": "Branching & First Flowers", "activities": "Inter-cultivation and micronutrient spray (Zinc + Boron).", "pest_warning": "Thrips and yellow mites (leaf curl complex)."},
+            {"day_range": "Day 65-110", "stage_name": "Fruit Development", "activities": "Regular fertigation. Support plants with bamboo stakes.", "pest_warning": "Anthracnose / fruit rot."},
+            {"day_range": "Day 110-170+", "stage_name": "Multiple Pickings", "activities": "Pick green chillies or allow red ripening for dry spice trade.", "pest_warning": "Powdery mildew."}
+        ]
+    },
+    "turmeric": {
+        "msp_per_quintal": 11500.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 60.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 20.0,
+        "yield_quintal_max": 30.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-45", "stage_name": "Sprouting & Initial Mulch", "activities": "Plant mother/finger rhizomes in ridges. Heavy green leaf mulching.", "pest_warning": "Rhizome scale and shoot borer."},
+            {"day_range": "Day 45-120", "stage_name": "Tillering & Foliage", "activities": "Second mulching and earthing up. Side-dress NPK.", "pest_warning": "Leaf blotch (Taphrina)."},
+            {"day_range": "Day 120-210", "stage_name": "Rhizome Bulking", "activities": "Maintain moist soil without waterlogging. Potash foliar feed.", "pest_warning": "Rhizome rot."},
+            {"day_range": "Day 210-270+", "stage_name": "Leaf Drying & Harvest", "activities": "Harvest when leaves turn yellow and completely dry out.", "pest_warning": "Post-harvest curing spoilage."}
+        ]
+    },
+    "watermelon": {
+        "msp_per_quintal": 900.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 1800.0,
+        "cultivation_cost_per_acre": 18000.0,
+        "yield_quintal_min": 120.0,
+        "yield_quintal_max": 200.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-15", "stage_name": "Sowing in Pits", "activities": "Sow in channel pits with FYM and DAP. Mulch with silver-black film.", "pest_warning": "Red pumpkin beetle."},
+            {"day_range": "Day 15-40", "stage_name": "Vine Running", "activities": "Direct vines uniformly across field. Hand weeding.", "pest_warning": "Aphids and downy mildew."},
+            {"day_range": "Day 40-65", "stage_name": "Flowering & Fruit Setting", "activities": "Encourage bee activity. Apply Sulfate of Potash for sweetness.", "pest_warning": "Fruit fly (sting marks)."},
+            {"day_range": "Day 65-90+", "stage_name": "Fruit Ripening & Harvest", "activities": "Reduce water 7 days before picking. Harvest when ground spot turns yellow and tendril withers.", "pest_warning": "Fruit bursting due to sudden irrigation."}
+        ]
+    },
+    "cowpea": {
+        "msp_per_quintal": 7500.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": True,
+        "growth_stages": [
+            {"day_range": "Day 0-15", "stage_name": "Rapid Germination", "activities": "Inoculate seeds with Rhizobium. Quick canopy coverage.", "pest_warning": "Collar rot."},
+            {"day_range": "Day 15-35", "stage_name": "Vegetative Vigor", "activities": "One light hoeing. Effective weed smothering.", "pest_warning": "Aphids on stems."},
+            {"day_range": "Day 35-55", "stage_name": "Pod Formation", "activities": "Protective spray of Neem oil.", "pest_warning": "Pod borer."},
+            {"day_range": "Day 55-75+", "stage_name": "Pod Maturity & Harvest", "activities": "Harvest tender green pods for vegetable or dry pods for pulse.", "pest_warning": "Post-harvest bruchids."}
+        ]
+    },
+    "garlic": {
+        "msp_per_quintal": 8500.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 350.0,
+        "cultivation_cost_per_acre": 26000.0,
+        "yield_quintal_min": 35.0,
+        "yield_quintal_max": 50.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-25", "stage_name": "Sprouting & Rooting", "activities": "Plant healthy cloves root down 5cm deep. Keep seedbed moist.", "pest_warning": "Root rot and nematodes."},
+            {"day_range": "Day 25-60", "stage_name": "Vegetative Growth", "activities": "Frequent light irrigations and hand weeding. Top dress Urea.", "pest_warning": "Thrips."},
+            {"day_range": "Day 60-100", "stage_name": "Bulb Initiation & Expansion", "activities": "Apply Potassium & Sulfur to enhance bulb diameter and pungency.", "pest_warning": "Purple blotch and stem rot."},
+            {"day_range": "Day 100-135+", "stage_name": "Maturity & Curing", "activities": "Cease watering when top leaves dry. Sun cure bulbs for 7 days.", "pest_warning": "Bulb decay in high storage humidity."}
+        ]
+    },
+    "ginger": {
+        "msp_per_quintal": 7500.0,
+        "seed_rate_kg_acre": 6.0,
+        "seed_cost_per_kg": 180.0,
+        "cultivation_cost_per_acre": 38000.0,
+        "yield_quintal_min": 60.0,
+        "yield_quintal_max": 90.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-45", "stage_name": "Sprouting & Initial Mulch", "activities": "Plant cut rhizomes on raised beds with Trichoderma. Mulch with green leaves.", "pest_warning": "Soft rot (Pythium)."},
+            {"day_range": "Day 45-120", "stage_name": "Tillering & Shoot Emergence", "activities": "Repeat mulching twice. Earthing up around growing clumps.", "pest_warning": "Shoot borer."},
+            {"day_range": "Day 120-190", "stage_name": "Rhizome Bulking", "activities": "Ensure moist friable bed without standing water. Top-dress Potash.", "pest_warning": "Bacterial wilt."},
+            {"day_range": "Day 190-240+", "stage_name": "Maturity & Harvest", "activities": "Harvest when yellow leaves wither. Wash and air-cure rhizomes.", "pest_warning": "Scale insects."}
+        ]
+    },
+    "coriander": {
+        "msp_per_quintal": 6500.0,
+        "seed_rate_kg_acre": 6.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 9500.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+            {"day_range": "Day 0-20", "stage_name": "Emergence", "activities": "Rub seed halves before sowing. Shallow 2cm drill.", "pest_warning": "Damping off in wet soil."},
+            {"day_range": "Day 20-50", "stage_name": "Vegetative & Leaf Flush", "activities": "Can harvest early tender leaves or leave for seed crop.", "pest_warning": "Aphids on young branches."},
+            {"day_range": "Day 50-75", "stage_name": "Umbels & Flowering", "activities": "One light irrigation at flowering. Spray Sulfur for mildew.", "pest_warning": "Powdery mildew."},
+            {"day_range": "Day 75-95+", "stage_name": "Grain Hardening & Harvest", "activities": "Harvest when umbels turn brownish yellow. Shade dry to preserve aroma.", "pest_warning": "Stem gall."}
+        ]
+    }
+}
+
+
 def get_all_crops() -> List[Dict[str, Any]]:
-    return CROPS_DATABASE
+    """Returns all crops enriched with economics benchmarks and growth stages."""
+    enriched: List[Dict[str, Any]] = []
+    for crop in CROPS_DATABASE:
+        c = dict(crop)
+        ext = CROP_METADATA_EXTENSIONS.get(c["id"], {})
+        c.update(ext)
+        enriched.append(c)
+    return enriched
+
 
 def get_crop_by_id(crop_id: str) -> Dict[str, Any]:
+    """Retrieves single crop profile enriched with economics and growth stages."""
     for crop in CROPS_DATABASE:
         if crop["id"].lower() == crop_id.lower():
-            return crop
+            c = dict(crop)
+            ext = CROP_METADATA_EXTENSIONS.get(c["id"], {})
+            c.update(ext)
+            return c
     return None
+
