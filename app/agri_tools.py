@@ -249,3 +249,83 @@ def generate_crop_rotation_plans(
     # Sort primarily by annual net profit
     plans.sort(key=lambda p: p["total_annual_net_profit_inr"], reverse=True)
     return plans
+
+
+# ==============================================================================
+# 4. PLANT DOCTOR & PEST DIAGNOSTIC ENGINE
+# ==============================================================================
+def diagnose_plant_issue(
+    crop_id: str = None,
+    plant_part: str = None,
+    symptoms: List[str] = None,
+    search_term: str = None
+) -> List[Dict[str, Any]]:
+    """Filters and ranks pest and disease diagnoses based on crop, affected plant part, and symptoms."""
+    from app.database import get_all_pests_diseases, get_crop_by_id
+
+    db = get_all_pests_diseases()
+    matches: List[Dict[str, Any]] = []
+
+    search_clean = (search_term or "").strip().lower()
+
+    for item in db:
+        # 1. Filter by crop if specified
+        if crop_id and crop_id.lower() != "all" and item["crop_id"].lower() != crop_id.lower():
+            continue
+
+        # 2. Filter by affected part if specified
+        if plant_part and plant_part.lower() != "all" and "whole plant" not in [p.lower() for p in item["affected_parts"]]:
+            if plant_part.lower() not in [p.lower() for p in item["affected_parts"]]:
+                continue
+
+        # 3. Search query keyword match
+        if search_clean:
+            haystack = f"{item['name']} {item.get('hindi_name', '')} {item['crop_name']} {' '.join(item['symptoms'])} {' '.join(item['biological_control'])} {' '.join(item['chemical_control'])}".lower()
+            if search_clean not in haystack:
+                continue
+
+        # 4. Symptom checklist match
+        if symptoms and len(symptoms) > 0:
+            item_symptoms_str = " ".join(item["symptoms"]).lower()
+            if not any(sym.lower() in item_symptoms_str for sym in symptoms):
+                continue
+
+        matches.append(item)
+
+    # Sort by severity (Critical -> High -> Moderate -> Low)
+    severity_rank = {"Critical": 4, "High": 3, "Moderate": 2, "Low": 1}
+    matches.sort(key=lambda x: severity_rank.get(x.get("severity", "Moderate"), 2), reverse=True)
+    return matches
+
+
+# ==============================================================================
+# 5. MANDI PRICE EXPLORER & VOLATILITY ANALYTICS
+# ==============================================================================
+def get_mandi_prices_filtered(
+    crop_id: str = None,
+    state: str = None,
+    district: str = None
+) -> List[Dict[str, Any]]:
+    """Retrieves APMC mandi prices with 30-day historical trends and MSP differentials."""
+    from app.database import get_mandi_prices_data
+
+    records = get_mandi_prices_data()
+    results = []
+
+    for r in records:
+        if crop_id and crop_id.lower() != "all" and r["crop_id"].lower() != crop_id.lower():
+            continue
+        if state and state.lower() != "all" and r["state"].lower() != state.lower():
+            continue
+        if district and district.lower() != "all" and r["district"].lower() != district.lower():
+            continue
+
+        item = dict(r)
+        item["price_vs_msp_diff"] = round(item["modal_price_per_quintal"] - item["msp_price"], 0)
+        results.append(item)
+
+    # Sort with highest premium over MSP first
+    results.sort(key=lambda x: x["price_vs_msp_diff"], reverse=True)
+    return results
+
+
