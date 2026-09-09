@@ -1414,3 +1414,787 @@ def get_crop_by_id(crop_id: str) -> Dict[str, Any]:
             return c
     return None
 
+
+# ==============================================================================
+# 1. PEST & DISEASE DATABASE (Integrated Pest Management / Plant Doctor)
+# ==============================================================================
+PEST_DISEASE_DATABASE: List[Dict[str, Any]] = [
+    # --- RICE ---
+    {
+        "id": "rice_blast",
+        "crop_id": "rice",
+        "crop_name": "Rice (Paddy)",
+        "name": "Rice Blast (Pyricularia oryzae)",
+        "hindi_name": "धान का झुलसा रोग (ब्लास्ट)",
+        "type": "Fungal",
+        "affected_parts": ["Leaf", "Stem", "Fruit/Grain"],
+        "symptoms": ["Spindle-shaped lesions with grayish centers and brown borders", "Neck rot breaking panicles", "Whitish-gray nodes turning black"],
+        "severity": "High",
+        "biological_control": ["Seed treatment with Pseudomonas fluorescens @ 10g/kg seed", "Spray Trichoderma viride @ 5g/L water", "Avoid excessive chemical nitrogen"],
+        "chemical_control": ["Tricyclazole 75% WP @ 0.6g/L water", "Isoprothiolane 40% EC @ 1.5ml/L", "Azoxystrobin 23% SC @ 1ml/L"],
+        "chemical_dosage": "Tricyclazole 75% WP @ 120g in 200L water per acre",
+        "pre_harvest_interval_days": 21,
+        "prevention_tips": ["Burn diseased stubbles", "Maintain field drainage", "Use blast-resistant varieties like IR64"]
+    },
+    {
+        "id": "rice_stem_borer",
+        "crop_id": "rice",
+        "crop_name": "Rice (Paddy)",
+        "name": "Yellow Stem Borer (Scirpophaga incertulas)",
+        "hindi_name": "धान का तना छेदक कीट",
+        "type": "Pest",
+        "affected_parts": ["Stem", "Fruit/Grain"],
+        "symptoms": ["Dead hearts in vegetative tillers that pull out easily", "White ears (empty white panicles) at maturity", "Holes near stem base with frass"],
+        "severity": "Critical",
+        "biological_control": ["Install Pheromone traps @ 8-10 traps/acre", "Release Trichogramma japonicum egg parasitoids @ 40,000/acre", "Clip seedling tips before transplanting"],
+        "chemical_control": ["Chlorantraniliprole 0.4% G (Ferterra) @ 4 kg/acre", "Cartap hydrochloride 4% G @ 7.5 kg/acre", "Flubendiamide 39.35% SC @ 25 ml/acre"],
+        "chemical_dosage": "Cartap Hydrochloride 50% SP @ 400g/acre in 200L water",
+        "pre_harvest_interval_days": 19,
+        "prevention_tips": ["Avoid deep standing water early on", "Avoid excessive urea", "Harvest stubbles near ground level"]
+    },
+    # --- WHEAT ---
+    {
+        "id": "wheat_yellow_rust",
+        "crop_id": "wheat",
+        "crop_name": "Wheat",
+        "name": "Yellow / Stripe Rust (Puccinia striiformis)",
+        "hindi_name": "गेहूं का पीला रतुआ",
+        "type": "Fungal",
+        "affected_parts": ["Leaf"],
+        "symptoms": ["Bright yellow, powdery pustules arranged in linear stripes on leaves", "Leaves dry up and turn yellow-brown", "Severe yield loss up to 40% if untreated"],
+        "severity": "Critical",
+        "biological_control": ["Sow early in November to avoid late cool humid spikes", "Spray garlic clove extract (2%) as preventive", "Erect barrier crops"],
+        "chemical_control": ["Propiconazole 25% EC (Tilt) @ 1 ml/L", "Tebuconazole 25.9% EC @ 1 ml/L", "Azoxystrobin + Difenoconazole @ 1 ml/L"],
+        "chemical_dosage": "Propiconazole 25% EC @ 200 ml in 200L water per acre",
+        "pre_harvest_interval_days": 30,
+        "prevention_tips": ["Cultivate rust-resistant varieties (HD-3086, DBW-187, DBW-222)", "Scout fields regularly in Jan-Feb", "Avoid late sowing"]
+    },
+    {
+        "id": "wheat_aphid",
+        "crop_id": "wheat",
+        "crop_name": "Wheat",
+        "name": "Wheat Aphids (Rhopalosiphum padi)",
+        "hindi_name": "गेहूं का माहू / चेपा कीट",
+        "type": "Pest",
+        "affected_parts": ["Leaf", "Fruit/Grain"],
+        "symptoms": ["Colonies of green/brown insects clustering on earheads", "Honeydew secretion leading to black sooty mold", "Shrinkage of developing grains"],
+        "severity": "Moderate",
+        "biological_control": ["Conserve natural ladybird beetles and hoverfly larvae", "Spray 5% Neem Seed Kernel Extract (NSKE)", "Install yellow sticky traps @ 6-8/acre"],
+        "chemical_control": ["Thiamethoxam 25% WG @ 0.2g/L", "Imidacloprid 17.8% SL @ 0.3ml/L", "Dimethoate 30% EC @ 1.5ml/L"],
+        "chemical_dosage": "Thiamethoxam 25% WG @ 40g in 150L water per acre",
+        "pre_harvest_interval_days": 21,
+        "prevention_tips": ["Avoid late irrigation during warming February winds", "Maintain recommended seed density for good airflow"]
+    },
+    # --- COTTON ---
+    {
+        "id": "cotton_pink_bollworm",
+        "crop_id": "cotton",
+        "crop_name": "Cotton",
+        "name": "Pink Bollworm (Pectinophora gossypiella)",
+        "hindi_name": "कपास की गुलाबी सूंडी",
+        "type": "Pest",
+        "affected_parts": ["Fruit/Grain"],
+        "symptoms": ["Rosetted flowers that fail to open normally", "Small exit holes on developing bolls", "Interlocked fiber seeds and stained poor quality lint"],
+        "severity": "Critical",
+        "biological_control": ["Pheromone traps (Gossyplure) @ 8/acre for monitoring, 20/acre for mass mating disruption", "Trichogramma bactrae @ 60,000/acre releases", "Destroy gin trash and non-Bt refugia management"],
+        "chemical_control": ["Emamectin benzoate 5% SG @ 0.5g/L", "Spinetoram 11.7% SC @ 1ml/L", "Chlorantraniliprole 18.5% SC @ 0.3ml/L"],
+        "chemical_dosage": "Emamectin Benzoate 5% SG @ 100g in 200L water per acre",
+        "pre_harvest_interval_days": 15,
+        "prevention_tips": ["Avoid extending cotton crop past 150-160 days", "Prompt destruction of stalks after last picking", "Never ratoon cotton"]
+    },
+    {
+        "id": "cotton_whitefly",
+        "crop_id": "cotton",
+        "crop_name": "Cotton",
+        "name": "Whitefly & Leaf Curl Virus (Bemisia tabaci)",
+        "hindi_name": "कपास की सफेद मक्खी एवं मरोड़िया रोग",
+        "type": "Pest",
+        "affected_parts": ["Leaf"],
+        "symptoms": ["Tiny white flying insects under leaves", "Upward curling and thickening of leaf veins (CLCuV transmission)", "Sticky leaf surface with black sooty mold"],
+        "severity": "High",
+        "biological_control": ["Yellow sticky traps @ 12-15 traps/acre", "Spray Neem oil 1500 ppm @ 3-5 ml/L", "Conserve Chrysoperla carnea predators"],
+        "chemical_control": ["Diafenthiuron 50% WP @ 1.2g/L", "Pyriproxyfen 10% EC @ 2ml/L", "Afidopyropen 50 g/L @ 2ml/L"],
+        "chemical_dosage": "Diafenthiuron 50% WP @ 250g in 200L water per acre",
+        "pre_harvest_interval_days": 20,
+        "prevention_tips": ["Do not plant alternate weed hosts (Congress grass)", "Avoid excessive synthetic pyrethroids which cause resurgence"]
+    },
+    # --- MAIZE ---
+    {
+        "id": "maize_fall_armyworm",
+        "crop_id": "maize",
+        "crop_name": "Maize (Corn)",
+        "name": "Fall Armyworm (Spodoptera frugiperda)",
+        "hindi_name": "मक्के का फाल आर्मीवर्म कीट",
+        "type": "Pest",
+        "affected_parts": ["Leaf", "Stem", "Fruit/Grain"],
+        "symptoms": ["Elongated papery feeding windows on leaf whorls", "Heavy sawdust-like fecal matter inside central whorl", "Severely shredded skeletonized leaves"],
+        "severity": "Critical",
+        "biological_control": ["Release Trichogramma pretiosum @ 50,000/acre", "Spray Bacillus thuringiensis (Bt) kurstaki @ 2g/L", "Soil/ash dusting into the whorl @ 3-4 g/plant"],
+        "chemical_control": ["Chlorantraniliprole 18.5% SC @ 0.4ml/L", "Spinetoram 11.7% SC @ 0.5ml/L", "Emamectin benzoate 5% SG @ 0.4g/L directed into whorl"],
+        "chemical_dosage": "Chlorantraniliprole 18.5% SC @ 80 ml in 200L water per acre directed into whorl",
+        "pre_harvest_interval_days": 14,
+        "prevention_tips": ["Intercrop with Desmodium or cowpea (push-pull strategy)", "Deep summer plowing to expose pupae to birds"]
+    },
+    # --- CHICKPEA ---
+    {
+        "id": "chickpea_pod_borer",
+        "crop_id": "chickpea",
+        "crop_name": "Chickpea (Gram / Chana)",
+        "name": "Gram Pod Borer (Helicoverpa armigera)",
+        "hindi_name": "चने की इल्ली / फली छेदक",
+        "type": "Pest",
+        "affected_parts": ["Leaf", "Fruit/Grain"],
+        "symptoms": ["Circular bore-holes in chickpea green pods with seeds half eaten", "Larva with body protruding out of pod while feeding", "Skeletonized foliage early in stage"],
+        "severity": "High",
+        "biological_control": ["Erect bird perches (T-shaped bamboo sticks) @ 15-20/acre", "Spray HaNPV (Helicoverpa Nuclear Polyhedrosis Virus) @ 250 LE/acre", "Install Pheromone traps @ 5-8/acre"],
+        "chemical_control": ["Emamectin benzoate 5% SG @ 0.5g/L", "Chlorantraniliprole 18.5% SC @ 0.3ml/L", "Indoxacarb 14.5% SC @ 1ml/L"],
+        "chemical_dosage": "Emamectin Benzoate 5% SG @ 90g in 180L water per acre",
+        "pre_harvest_interval_days": 14,
+        "prevention_tips": ["Intercrop with mustard or coriander (acts as trap/repellent)", "Apply spray during early larval instars (evening hours)"]
+    },
+    {
+        "id": "chickpea_fusarium_wilt",
+        "crop_id": "chickpea",
+        "crop_name": "Chickpea (Gram / Chana)",
+        "name": "Chickpea Fusarium Wilt (Fusarium oxysporum f. sp. ciceris)",
+        "hindi_name": "चने का उकठा रोग (विल्ट)",
+        "type": "Fungal",
+        "affected_parts": ["Root", "Stem", "Whole Plant"],
+        "symptoms": ["Sudden drooping of petioles and leaves without yellowing initially", "Dark brown to black internal vascular discoloration when root is split open", "Patchy drying of plants across the field"],
+        "severity": "Critical",
+        "biological_control": ["Seed treatment with Trichoderma viride @ 5-10g/kg seed", "Incorporate farmyard manure enriched with Trichoderma @ 250 kg/acre basal", "Follow 3-year crop rotation without chickpea"],
+        "chemical_control": ["Carbendazim 50% WP @ 2g/kg seed treatment", "Carboxin 37.5% + Thiram 37.5% DS @ 2.5g/kg seed treatment", "Soil drenching around patches with Carbendazim @ 1g/L"],
+        "chemical_dosage": "Preventive seed treatment: Carbendazim 50% WP @ 2.5g per kg seed",
+        "pre_harvest_interval_days": 35,
+        "prevention_tips": ["Deep summer plowing to desiccate fungal spores", "Avoid sowing when soil temperature is very high (>25°C in late October)", "Use wilt-resistant cultivars (JG-11, JAKI 9218)"]
+    },
+    # --- MUSTARD ---
+    {
+        "id": "mustard_aphids",
+        "crop_id": "mustard",
+        "crop_name": "Mustard / Rapeseed",
+        "name": "Mustard Aphid (Lipaphis erysimi)",
+        "hindi_name": "सरसों का चेपा / माहू कीट",
+        "type": "Pest",
+        "affected_parts": ["Stem", "Leaf", "Fruit/Grain"],
+        "symptoms": ["Dense greenish-yellow insects sucking sap from inflorescence and pods", "Curled sickly leaves and stunted pod formation", "Abundant sticky honeydew attracting molds"],
+        "severity": "High",
+        "biological_control": ["Conserve Coccinella septempunctata (Ladybird beetle) predators", "Spray Neem seed kernel extract (NSKE) 5% early in morning", "Sow early (before Oct 15) to escape aphid peak"],
+        "chemical_control": ["Dimethoate 30% EC @ 1.5ml/L", "Oxydemeton-methyl 25% EC @ 1ml/L", "Thiamethoxam 25% WG @ 0.2g/L"],
+        "chemical_dosage": "Dimethoate 30% EC @ 250 ml in 200L water per acre",
+        "pre_harvest_interval_days": 15,
+        "prevention_tips": ["Early sowing by October 10 escapes 80% aphid infestation", "Spray immediately when 10% twigs show aphid colonies"]
+    },
+    # --- SOYBEAN ---
+    {
+        "id": "soybean_girdle_beetle",
+        "crop_id": "soybean",
+        "crop_name": "Soybean",
+        "name": "Soybean Girdle Beetle (Obereopsis brevis)",
+        "hindi_name": "सोयाबीन का चक्र भृंग (गर्डल बीटल)",
+        "type": "Pest",
+        "affected_parts": ["Stem", "Leaf"],
+        "symptoms": ["Two parallel circular cuts/rings on petiole or stem", "Sudden drooping and drying of leaves above the girdle", "Stem hollowed out by larva boring downward"],
+        "severity": "High",
+        "biological_control": ["Remove and bury girdled stems before larvae reach root level", "Spray Beauveria bassiana @ 5g/L", "Maintain optimum plant spacing for light penetration"],
+        "chemical_control": ["Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC @ 0.4ml/L", "Chlorantraniliprole 18.5% SC @ 0.3ml/L", "Quinalphos 25% EC @ 2ml/L"],
+        "chemical_dosage": "Thiamethoxam + Lambda-cyhalothrin @ 80 ml in 150L water per acre",
+        "pre_harvest_interval_days": 21,
+        "prevention_tips": ["Do not delay spraying once 10% plants show girdling cuts", "Deep tillage destroys overwintering pupae in stubble"]
+    },
+    # --- TOMATO ---
+    {
+        "id": "tomato_early_blight",
+        "crop_id": "tomato",
+        "crop_name": "Tomato",
+        "name": "Tomato Early Blight (Alternaria solani)",
+        "hindi_name": "टमाटर का अगेती झुलसा",
+        "type": "Fungal",
+        "affected_parts": ["Leaf", "Stem", "Fruit/Grain"],
+        "symptoms": ["Concentric target-board rings on older leaves with chlorotic halo", "Sunken dark cankers on stems near soil line", "Fruit drop with dark leathery lesions at stem end"],
+        "severity": "Moderate to High",
+        "biological_control": ["Spray Trichoderma harzianum @ 5g/L", "Apply copper soap bio-fungicide", "Use plastic or straw mulch to stop soil splashing"],
+        "chemical_control": ["Mancozeb 75% WP @ 2.5g/L", "Chlorothalonil 75% WP @ 2g/L", "Difenoconazole 25% EC @ 1ml/L"],
+        "chemical_dosage": "Mancozeb 75% WP @ 500g in 200L water per acre",
+        "pre_harvest_interval_days": 7,
+        "prevention_tips": ["Prune lower foliage touching wet soil", "Use drip irrigation instead of overhead sprinklers"]
+    },
+    # --- POTATO ---
+    {
+        "id": "potato_late_blight",
+        "crop_id": "potato",
+        "crop_name": "Potato",
+        "name": "Late Blight of Potato (Phytophthora infestans)",
+        "hindi_name": "आलू का पछेती झुलसा",
+        "type": "Fungal",
+        "affected_parts": ["Leaf", "Stem", "Fruit/Grain"],
+        "symptoms": ["Water-soaked dark lesions spreading rapidly on leaf margins during cool fog", "White powdery fungal growth under leaves early in morning", "Tubers show dry brown rot beneath skin"],
+        "severity": "Critical",
+        "biological_control": ["Certified disease-free seed tubers only", "Spray Bacillus subtilis bio-fungicide @ 3g/L", "Earthing up soil to at least 15cm thickness to protect tubers"],
+        "chemical_control": ["Cymoxanil 8% + Mancozeb 64% WP @ 2.5g/L", "Dimethomorph 50% WP @ 1g/L", "Metalaxyl 8% + Mancozeb 64% WP @ 2.5g/L"],
+        "chemical_dosage": "Cymoxanil + Mancozeb @ 600g in 250L water per acre",
+        "pre_harvest_interval_days": 10,
+        "prevention_tips": ["Monitor weather: continuous cool fog (<20°C) with RH >90% triggers explosive epidemics", "Destroy volunteer potato tubers and cull piles"]
+    },
+    # --- ONION ---
+    {
+        "id": "onion_purple_blotch",
+        "crop_id": "onion",
+        "crop_name": "Onion",
+        "name": "Purple Blotch (Alternaria porri)",
+        "hindi_name": "प्याज़ का बैंगनी धब्बा रोग",
+        "type": "Fungal",
+        "affected_parts": ["Leaf", "Stem"],
+        "symptoms": ["Small water-soaked sunken lesions with reddish-purple centers", "Leaves turn yellow and collapse prematurely", "Severe reduction in bulb diameter and storage rotting"],
+        "severity": "High",
+        "biological_control": ["Seed treatment with Trichoderma viride @ 5g/kg", "Spray fermented buttermilk (Chhachh) @ 50ml/L", "Avoid excessive dense planting"],
+        "chemical_control": ["Mancozeb 75% WP @ 2.5g/L", "Tebuconazole 25.9% EC @ 1ml/L", "Azoxystrobin 18.2% + Difenoconazole 11.4% SC @ 1ml/L"],
+        "chemical_dosage": "Mancozeb @ 500g in 200L water per acre with agricultural sticker/spreader",
+        "pre_harvest_interval_days": 15,
+        "prevention_tips": ["Always mix sticker (surfactant) because onion leaves are waxy", "Avoid overhead irrigation during bulb formation"]
+    },
+    # --- CHILLI ---
+    {
+        "id": "chilli_anthracnose",
+        "crop_id": "chilli",
+        "crop_name": "Chilli / Red Pepper",
+        "name": "Chilli Anthracnose & Fruit Rot (Colletotrichum capsici)",
+        "hindi_name": "मिर्च का फल सड़न एवं एन्थ्रेक्नोज़",
+        "type": "Fungal",
+        "affected_parts": ["Fruit/Grain", "Leaf", "Stem"],
+        "symptoms": ["Sunken circular water-soaked lesions on ripe fruits with black concentric rings", "Die-back of twigs from tip downward", "Fruits dry prematurely and turn straw colored"],
+        "severity": "High",
+        "biological_control": ["Seed treatment with Trichoderma harzianum @ 10g/kg", "Spray Pseudomonas fluorescens @ 5g/L", "Collect and burn infected fruits"],
+        "chemical_control": ["Copper Oxychloride 50% WP @ 3g/L", "Azoxystrobin 23% SC @ 1ml/L", "Carbendazim 12% + Mancozeb 63% WP (Saaf) @ 2g/L"],
+        "chemical_dosage": "Saaf (Carbendazim + Mancozeb) @ 400g in 200L water per acre",
+        "pre_harvest_interval_days": 10,
+        "prevention_tips": ["Transplant on raised beds with silver-black mulch", "Spray before fruit ripening stage under rainy spells"]
+    }
+]
+
+
+# ==============================================================================
+# 2. MANDI (APMC) REAL-TIME & HISTORICAL TREND BENCHMARKS
+# ==============================================================================
+MANDI_PRICE_DATABASE: List[Dict[str, Any]] = [
+    {
+        "crop_id": "wheat",
+        "crop_name": "Wheat",
+        "commodity": "Wheat (Sharbati / Lokwan / Dara)",
+        "state": "Punjab",
+        "district": "Ludhiana",
+        "market_apmc": "Khanna Mandi (Asia's Largest)",
+        "modal_price_per_quintal": 2480.0,
+        "min_price": 2400.0,
+        "max_price": 2560.0,
+        "msp_price": 2400.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Favorable Time to Sell: Modal price is ₹80 above MSP due to export flour mill procurement demand.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 2390.0},
+            {"date": "Day -25", "modal_price": 2400.0},
+            {"date": "Day -20", "modal_price": 2415.0},
+            {"date": "Day -15", "modal_price": 2440.0},
+            {"date": "Day -10", "modal_price": 2465.0},
+            {"date": "Day -5", "modal_price": 2475.0},
+            {"date": "Today", "modal_price": 2480.0}
+        ]
+    },
+    {
+        "crop_id": "wheat",
+        "crop_name": "Wheat",
+        "commodity": "Wheat (Mill Quality)",
+        "state": "Madhya Pradesh",
+        "district": "Indore",
+        "market_apmc": "Indore APMC Mandi",
+        "modal_price_per_quintal": 2620.0,
+        "min_price": 2450.0,
+        "max_price": 2780.0,
+        "msp_price": 2400.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Strong Market Premium: Sharbati grain quality commanding ₹220 premium over official MSP.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 2510.0},
+            {"date": "Day -25", "modal_price": 2535.0},
+            {"date": "Day -20", "modal_price": 2560.0},
+            {"date": "Day -15", "modal_price": 2580.0},
+            {"date": "Day -10", "modal_price": 2600.0},
+            {"date": "Day -5", "modal_price": 2610.0},
+            {"date": "Today", "modal_price": 2620.0}
+        ]
+    },
+    {
+        "crop_id": "rice",
+        "crop_name": "Rice (Paddy)",
+        "commodity": "Paddy (Basmati 1121 / Pusa)",
+        "state": "Haryana",
+        "district": "Karnal",
+        "market_apmc": "Karnal Grain Market",
+        "modal_price_per_quintal": 3650.0,
+        "min_price": 3400.0,
+        "max_price": 3850.0,
+        "msp_price": 2300.0,
+        "trend": "Stable",
+        "selling_advice": "High Value Window: Basmati arrivals are steady. Premium grade fetching above ₹3,600/qtl.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 3580.0},
+            {"date": "Day -25", "modal_price": 3600.0},
+            {"date": "Day -20", "modal_price": 3640.0},
+            {"date": "Day -15", "modal_price": 3660.0},
+            {"date": "Day -10", "modal_price": 3650.0},
+            {"date": "Day -5", "modal_price": 3645.0},
+            {"date": "Today", "modal_price": 3650.0}
+        ]
+    },
+    {
+        "crop_id": "cotton",
+        "crop_name": "Cotton",
+        "commodity": "Medium-Staple Raw Cotton (Kapas)",
+        "state": "Gujarat",
+        "district": "Rajkot",
+        "market_apmc": "Rajkot Yard APMC",
+        "modal_price_per_quintal": 7450.0,
+        "min_price": 7100.0,
+        "max_price": 7800.0,
+        "msp_price": 7121.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Favorable Selling Opportunity: Ginning mill buying is aggressive. Good time to offload dry stocks.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 7150.0},
+            {"date": "Day -25", "modal_price": 7220.0},
+            {"date": "Day -20", "modal_price": 7280.0},
+            {"date": "Day -15", "modal_price": 7350.0},
+            {"date": "Day -10", "modal_price": 7400.0},
+            {"date": "Day -5", "modal_price": 7430.0},
+            {"date": "Today", "modal_price": 7450.0}
+        ]
+    },
+    {
+        "crop_id": "soybean",
+        "crop_name": "Soybean",
+        "commodity": "Yellow Soybean (Meal Grade)",
+        "state": "Maharashtra",
+        "district": "Latur",
+        "market_apmc": "Latur APMC Mandi",
+        "modal_price_per_quintal": 4920.0,
+        "min_price": 4650.0,
+        "max_price": 5050.0,
+        "msp_price": 4892.0,
+        "trend": "Stable",
+        "selling_advice": "Hold or Stagger Sales: Prices hover right at MSP. International crushing margins are tight.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 4850.0},
+            {"date": "Day -25", "modal_price": 4870.0},
+            {"date": "Day -20", "modal_price": 4880.0},
+            {"date": "Day -15", "modal_price": 4900.0},
+            {"date": "Day -10", "modal_price": 4915.0},
+            {"date": "Day -5", "modal_price": 4925.0},
+            {"date": "Today", "modal_price": 4920.0}
+        ]
+    },
+    {
+        "crop_id": "mustard",
+        "crop_name": "Mustard / Rapeseed",
+        "commodity": "Mustard Seed (42% Oil Content)",
+        "state": "Rajasthan",
+        "district": "Alwar",
+        "market_apmc": "Alwar Krishi Upaj Mandi",
+        "modal_price_per_quintal": 6120.0,
+        "min_price": 5850.0,
+        "max_price": 6300.0,
+        "msp_price": 5950.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Strong Market: Local oil expellers offering attractive premium for clean seed with >40% oil.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 5880.0},
+            {"date": "Day -25", "modal_price": 5920.0},
+            {"date": "Day -20", "modal_price": 5970.0},
+            {"date": "Day -15", "modal_price": 6020.0},
+            {"date": "Day -10", "modal_price": 6070.0},
+            {"date": "Day -5", "modal_price": 6100.0},
+            {"date": "Today", "modal_price": 6120.0}
+        ]
+    },
+    {
+        "crop_id": "chickpea",
+        "crop_name": "Chickpea (Gram / Chana)",
+        "name": "Desi Chana",
+        "commodity": "Desi Chana / Gram",
+        "state": "Madhya Pradesh",
+        "district": "Vidisha",
+        "market_apmc": "Vidisha Krishi Mandi",
+        "modal_price_per_quintal": 6250.0,
+        "min_price": 5900.0,
+        "max_price": 6450.0,
+        "msp_price": 5600.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Excellent Selling Rate: Trading ₹650 above MSP due to festive season pulse demand.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 5750.0},
+            {"date": "Day -25", "modal_price": 5850.0},
+            {"date": "Day -20", "modal_price": 5980.0},
+            {"date": "Day -15", "modal_price": 6100.0},
+            {"date": "Day -10", "modal_price": 6180.0},
+            {"date": "Day -5", "modal_price": 6220.0},
+            {"date": "Today", "modal_price": 6250.0}
+        ]
+    },
+    {
+        "crop_id": "onion",
+        "crop_name": "Onion",
+        "commodity": "Nashik Red Onion (Pol / Garva)",
+        "state": "Maharashtra",
+        "district": "Nashik",
+        "market_apmc": "Lasalgaon APMC (Asia's Largest Onion Market)",
+        "modal_price_per_quintal": 2450.0,
+        "min_price": 1800.0,
+        "max_price": 3100.0,
+        "msp_price": 1800.0,
+        "trend": "Volatile / Rising",
+        "selling_advice": "Sell Graded Produce: High spread between small and bold bulbs. Grade properly to secure ₹2,800+ rates.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 1750.0},
+            {"date": "Day -25", "modal_price": 1880.0},
+            {"date": "Day -20", "modal_price": 2050.0},
+            {"date": "Day -15", "modal_price": 2200.0},
+            {"date": "Day -10", "modal_price": 2350.0},
+            {"date": "Day -5", "modal_price": 2420.0},
+            {"date": "Today", "modal_price": 2450.0}
+        ]
+    },
+    {
+        "crop_id": "tomato",
+        "crop_name": "Tomato",
+        "commodity": "Hybrid Table Tomato",
+        "state": "Karnataka",
+        "district": "Kolar",
+        "market_apmc": "Kolar APMC Mandi",
+        "modal_price_per_quintal": 1850.0,
+        "min_price": 1400.0,
+        "max_price": 2200.0,
+        "msp_price": 1600.0,
+        "trend": "Stable",
+        "selling_advice": "Steady Inter-State Dispatches: Good arrivals to Chennai and Bengaluru markets.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 1600.0},
+            {"date": "Day -25", "modal_price": 1680.0},
+            {"date": "Day -20", "modal_price": 1740.0},
+            {"date": "Day -15", "modal_price": 1800.0},
+            {"date": "Day -10", "modal_price": 1840.0},
+            {"date": "Day -5", "modal_price": 1860.0},
+            {"date": "Today", "modal_price": 1850.0}
+        ]
+    },
+    {
+        "crop_id": "potato",
+        "crop_name": "Potato",
+        "commodity": "Kufri Bahar / Pukhraj",
+        "state": "Uttar Pradesh",
+        "district": "Agra",
+        "market_apmc": "Fatehabad Road Mandi, Agra",
+        "modal_price_per_quintal": 1420.0,
+        "min_price": 1200.0,
+        "max_price": 1650.0,
+        "msp_price": 1300.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Gradual Cold Storage Offloading: Cold storage releases are fetching sound prices as open market supply tapers.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 1280.0},
+            {"date": "Day -25", "modal_price": 1310.0},
+            {"date": "Day -20", "modal_price": 1340.0},
+            {"date": "Day -15", "modal_price": 1370.0},
+            {"date": "Day -10", "modal_price": 1400.0},
+            {"date": "Day -5", "modal_price": 1410.0},
+            {"date": "Today", "modal_price": 1420.0}
+        ]
+    },
+    {
+        "crop_id": "chilli",
+        "crop_name": "Chilli / Red Pepper",
+        "commodity": "Dry Red Chilli (Teja / 334 / Guntur Sannam)",
+        "state": "Andhra Pradesh",
+        "district": "Guntur",
+        "market_apmc": "Guntur Mirchi Yard (Asia's Largest Chilli Mandi)",
+        "modal_price_per_quintal": 16800.0,
+        "min_price": 14500.0,
+        "max_price": 19200.0,
+        "msp_price": 14000.0,
+        "trend": "Rising / Bullish",
+        "selling_advice": "Strong Export Demand: Southeast Asia and oleoresin processors bidding actively for high-color dry chillies.",
+        "historical_30d": [
+            {"date": "Day -30", "modal_price": 15400.0},
+            {"date": "Day -25", "modal_price": 15800.0},
+            {"date": "Day -20", "modal_price": 16100.0},
+            {"date": "Day -15", "modal_price": 16400.0},
+            {"date": "Day -10", "modal_price": 16650.0},
+            {"date": "Day -5", "modal_price": 16750.0},
+            {"date": "Today", "modal_price": 16800.0}
+        ]
+    }
+]
+
+
+# ==============================================================================
+# 3. ORGANIC & NATURAL FARMING (ZBNF / JAIVIK KHETI) DATABASE
+# ==============================================================================
+ORGANIC_RECIPES_DATABASE: List[Dict[str, Any]] = [
+    {
+        "id": "jeevamrutha",
+        "name": "Jeevamrutha (Liquid Microbial Bio-Culture)",
+        "hindi_name": "जीवामृत (तरल जैविक खाद)",
+        "purpose": "Promotes explosive multiplication of beneficial aerobic and anaerobic soil microbes, transforming inert nutrients into plant-available ionic forms.",
+        "ingredients": [
+            "10 kg Fresh Indigenous (Desi) Cow Dung",
+            "5 - 10 Litres Desi Cow Urine",
+            "1 - 2 kg Organic Jaggery (Gur)",
+            "1 - 2 kg Pulse Flour (Besan e.g., gram/pigeon pea)",
+            "A handful of living undisturbed topsoil (from farm bund or forest under a banyan tree)",
+            "200 Litres Clean Water"
+        ],
+        "preparation_steps": [
+            "In a 200-litre plastic barrel placed under shade, mix 10 kg cow dung and 10 L cow urine thoroughly with a wooden stick.",
+            "Add crushed jaggery and pulse flour. Add the handful of virgin forest/bund soil which carries native micro-flora.",
+            "Fill with water up to 200 L and stir clockwise for 5 minutes.",
+            "Cover with a breathable jute gunny bag. Keep away from direct sunlight.",
+            "Stir with a stick twice daily (morning & evening) for 1-2 minutes.",
+            "Culture is fully ready for application in 48 to 72 hours in summer (5-7 days in winter). Use within 7 days of fermentation."
+        ],
+        "application_method": "Apply 200 Litres per acre via drip fertigation or along irrigation channel (1:10 dilution with water).",
+        "application_timing": "Apply twice a month: 1st during basal vegetative stage, 2nd during pre-flowering.",
+        "dosage_per_acre": "200 Litres per acre per application"
+    },
+    {
+        "id": "beejamrit",
+        "name": "Beejamrit (Biological Seed Treatment)",
+        "hindi_name": "बीजामृत (जैविक बीज संस्कार)",
+        "purpose": "Protects seeds and seedling roots from soil-borne and seed-borne fungal and bacterial pathogens; accelerates germination speed and root vigor.",
+        "ingredients": [
+            "5 kg Fresh Desi Cow Dung (tied in a cloth pouch)",
+            "5 Litres Desi Cow Urine",
+            "50 grams Edible Slaked Lime (Chuna)",
+            "A handful of living virgin bund soil",
+            "20 Litres Clean Water"
+        ],
+        "preparation_steps": [
+            "Suspend the 5 kg cow dung cloth pouch into a bucket containing 20 L water for 12 hours.",
+            "Squeeze the pouch continuously so all microbial extract dissolves into the liquid.",
+            "Dissolve 50g lime in 1 liter of water separately overnight, then stir it in.",
+            "Add 5 L cow urine and the handful of living soil; mix thoroughly.",
+            "Dip seeds or coat seed tubers gently with your hands. Spread on a clean cloth in shade for 30 minutes to dry before sowing."
+        ],
+        "application_method": "Seed coating / root dipping for transplants before sowing in soil.",
+        "application_timing": "Immediately 1-2 hours prior to sowing/planting.",
+        "dosage_per_acre": "Sufficient to treat 20-50 kg seeds for 1 to 2 acres"
+    },
+    {
+        "id": "ghanjeevamrit",
+        "name": "Ghanjeevamrit (Solid Micro-Nutrient Cake)",
+        "hindi_name": "घनजीवामृत (ठोस जैविक खाद)",
+        "purpose": "Ideal basal solid organic manure for slow release of nutrients throughout crop life, conditioning soil humus.",
+        "ingredients": [
+            "100 kg Dry Desi Cow Dung",
+            "2 kg Jaggery (Gur)",
+            "2 kg Pulse Flour (Besan)",
+            "1 kg Living Soil",
+            "5 Litres Cow Urine"
+        ],
+        "preparation_steps": [
+            "Spread dry cow dung evenly on a shaded clean floor.",
+            "Mix jaggery, besan, and soil into the cow urine.",
+            "Sprinkle this liquid mixture uniformly over the dry cow dung.",
+            "Turn the heap thoroughly with a shovel so moisture is evenly distributed.",
+            "Cover with a moist gunny bag and allow it to ferment for 48 hours.",
+            "Sun dry and store in dry bags. It remains biologically active for up to 6 months."
+        ],
+        "application_method": "Broadcast over plowed field prior to final harrowing or in seed furrows.",
+        "application_timing": "At final land preparation (Basal dose).",
+        "dosage_per_acre": "100 - 150 kg per acre at sowing"
+    },
+    {
+        "id": "neemastra",
+        "name": "Neemastra (Organic Botanical Pest Repellent)",
+        "hindi_name": "नीमास्त्र (जैविक कीटनाशक)",
+        "purpose": "Potent broad-spectrum repellent and anti-feedant against sucking pests (aphids, jassids, thrips, whiteflies) and small young larvae.",
+        "ingredients": [
+            "5 kg Crushed Fresh Neem Leaves",
+            "5 kg Crushed Neem Seed Kernels (or pulp)",
+            "5 Litres Desi Cow Urine",
+            "2 kg Fresh Cow Dung",
+            "100 Litres Clean Water"
+        ],
+        "preparation_steps": [
+            "In a drum, mix 100 L water, 5 L cow urine, and 2 kg cow dung.",
+            "Add finely crushed neem leaves and pounded neem kernels.",
+            "Stir clockwise with a wooden pole.",
+            "Cover with gunny bag and let ferment in shade for 48 hours, stirring twice daily.",
+            "Filter the solution through a thin muslin cloth into your knapsack sprayer."
+        ],
+        "application_method": "Foliar spray with knapsack sprayer covering undersides of leaves.",
+        "application_timing": "Early morning or late afternoon at first sighting of insect pests.",
+        "dosage_per_acre": "100 Litres unfiltered decoction diluted in 100 L water (1:1 ratio) per acre"
+    }
+]
+
+
+# ==============================================================================
+# 4. GOVERNMENT SCHEMES, SUBSIDIES & KCC SCALES OF FINANCE
+# ==============================================================================
+GOVERNMENT_SCHEMES_DATABASE: Dict[str, Any] = {
+    "pm_kisan": {
+        "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+        "category": "Direct Income Support",
+        "annual_benefit_inr": 6000.0,
+        "installments": "3 equal tranches of ₹2,000 every 4 months via Direct Benefit Transfer (DBT)",
+        "eligibility": "All landholding farmer families with cultivable landholding in their names (subject to exclusion criteria).",
+        "link": "https://pmkisan.gov.in"
+    },
+    "pmfby_premium_rates": {
+        "Kharif": 0.02,     # 2% of Sum Insured for foodgrains & oilseeds
+        "Rabi": 0.015,      # 1.5% of Sum Insured for foodgrains & oilseeds
+        "Zaid": 0.02,       # 2% of Sum Insured
+        "Commercial": 0.05  # 5% for annual commercial / horticultural crops
+    },
+    "kcc_scale_of_finance_per_acre": {
+        "wheat": 32000.0,
+        "rice": 38000.0,
+        "cotton": 45000.0,
+        "maize": 28000.0,
+        "mustard": 24000.0,
+        "chickpea": 26000.0,
+        "soybean": 29000.0,
+        "groundnut": 32000.0,
+        "potato": 55000.0,
+        "tomato": 65000.0,
+        "onion": 50000.0,
+        "sugarcane": 75000.0,
+        "default": 30000.0
+    },
+    "micro_irrigation_subsidies": {
+        "small_marginal": {"drip_pct": 55.0, "sprinkler_pct": 55.0, "notes": "Under PMKSY (Per Drop More Crop), small & marginal farmers (<5 acres) receive 55% capital subsidy on installed micro-irrigation."},
+        "general": {"drip_pct": 45.0, "sprinkler_pct": 45.0, "notes": "Large/general farmers receive 45% capital subsidy on approved drip/sprinkler installations."}
+    },
+    "schemes_list": [
+        {
+            "scheme_id": "pm_kisan",
+            "name": "PM-KISAN Income Support",
+            "category": "Direct Cash Benefit",
+            "eligibility": "Small, marginal, and medium landholding farmers.",
+            "benefits": "₹6,000 per year transferred directly to Aadhaar-linked bank account in three ₹2,000 installments.",
+            "action_link": "https://pmkisan.gov.in"
+        },
+        {
+            "scheme_id": "pmfby",
+            "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+            "category": "Crop Insurance",
+            "eligibility": "All farmers growing notified crops in notified areas (loanee and non-loanee).",
+            "benefits": "Comprehensive risk insurance from pre-sowing to post-harvest against unseasonal rains, drought, hail, pests. Farmer pays only 1.5% to 2% premium.",
+            "action_link": "https://pmfby.gov.in"
+        },
+        {
+            "scheme_id": "kcc",
+            "name": "Kisan Credit Card (KCC) Scheme",
+            "category": "Subsidized Institutional Credit",
+            "eligibility": "Owner cultivators, tenant farmers, and oral lessees.",
+            "benefits": "Subsidized crop production loans at 7% interest, reduced to effective 4% with timely repayment (3% Prompt Repayment Incentive).",
+            "action_link": "https://sbi.co.in/web/agri-rural/agriculture-banking/crop-loan/kisan-credit-card"
+        },
+        {
+            "scheme_id": "pmksy_drip",
+            "name": "PMKSY (Per Drop More Crop) Drip Subsidy",
+            "category": "Irrigation Infrastructure",
+            "eligibility": "Farmers with assured water source installing certified drip or sprinkler systems.",
+            "benefits": "Up to 55% financial subsidy on total system cost, saving 40-50% water while increasing yield by 20-30%.",
+            "action_link": "https://pmksy.gov.in"
+        },
+        {
+            "scheme_id": "smam",
+            "name": "Sub-Mission on Agricultural Mechanization (SMAM)",
+            "category": "Farm Machinery Subsidy",
+            "eligibility": "Individual farmers and Custom Hiring Centers (CHCs).",
+            "benefits": "40% to 50% subsidy on procurement of rotavators, laser land levelers, happy seeders, tractors, and drone sprayers.",
+            "action_link": "https://agrimachinery.nic.in"
+        }
+    ]
+}
+
+
+# ==============================================================================
+# 5. STATE & DISTRICT AGRO-CLIMATIC PRESETS
+# ==============================================================================
+STATE_DISTRICT_REGISTRY: Dict[str, List[Dict[str, Any]]] = {
+    "Punjab": [
+        {"district": "Ludhiana", "state": "Punjab", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 680, "avg_temp_c": 24.5, "priority_crops": ["wheat", "rice", "potato", "maize"]},
+        {"district": "Bathinda", "state": "Punjab", "soil_type": "Sandy Loam Soil", "annual_rainfall_mm": 410, "avg_temp_c": 25.0, "priority_crops": ["cotton", "wheat", "mustard", "pearl_millet"]},
+        {"district": "Amritsar", "state": "Punjab", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 720, "avg_temp_c": 23.8, "priority_crops": ["rice", "wheat", "pea", "potato"]}
+    ],
+    "Haryana": [
+        {"district": "Karnal", "state": "Haryana", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 750, "avg_temp_c": 24.0, "priority_crops": ["rice", "wheat", "sugarcane", "mustard"]},
+        {"district": "Hisar", "state": "Haryana", "soil_type": "Sandy Loam Soil", "annual_rainfall_mm": 450, "avg_temp_c": 25.5, "priority_crops": ["cotton", "wheat", "mustard", "chickpea"]},
+        {"district": "Sirsa", "state": "Haryana", "soil_type": "Sandy Loam Soil", "annual_rainfall_mm": 380, "avg_temp_c": 25.2, "priority_crops": ["cotton", "wheat", "mustard", "guar"]}
+    ],
+    "Uttar Pradesh": [
+        {"district": "Agra", "state": "Uttar Pradesh", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 650, "avg_temp_c": 26.0, "priority_crops": ["potato", "wheat", "mustard", "pearl_millet"]},
+        {"district": "Varanasi", "state": "Uttar Pradesh", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 1050, "avg_temp_c": 26.2, "priority_crops": ["rice", "wheat", "chickpea", "tomato"]},
+        {"district": "Meerut", "state": "Uttar Pradesh", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 840, "avg_temp_c": 24.8, "priority_crops": ["sugarcane", "wheat", "potato", "mustard"]}
+    ],
+    "Maharashtra": [
+        {"district": "Nashik", "state": "Maharashtra", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 810, "avg_temp_c": 25.0, "priority_crops": ["onion", "tomato", "soybean", "wheat"]},
+        {"district": "Latur", "state": "Maharashtra", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 790, "avg_temp_c": 26.5, "priority_crops": ["soybean", "pigeon_pea", "chickpea", "sorghum"]},
+        {"district": "Nagpur", "state": "Maharashtra", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 1100, "avg_temp_c": 27.0, "priority_crops": ["cotton", "soybean", "pigeon_pea", "wheat"]}
+    ],
+    "Madhya Pradesh": [
+        {"district": "Indore", "state": "Madhya Pradesh", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 950, "avg_temp_c": 25.2, "priority_crops": ["soybean", "wheat", "chickpea", "potato"]},
+        {"district": "Ujjain", "state": "Madhya Pradesh", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 910, "avg_temp_c": 25.4, "priority_crops": ["soybean", "wheat", "garlic", "chickpea"]},
+        {"district": "Vidisha", "state": "Madhya Pradesh", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 1050, "avg_temp_c": 25.8, "priority_crops": ["chickpea", "wheat", "soybean", "lentil"]}
+    ],
+    "Rajasthan": [
+        {"district": "Alwar", "state": "Rajasthan", "soil_type": "Alluvial Soil", "annual_rainfall_mm": 620, "avg_temp_c": 26.0, "priority_crops": ["mustard", "pearl_millet", "wheat", "onion"]},
+        {"district": "Kota", "state": "Rajasthan", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 880, "avg_temp_c": 26.5, "priority_crops": ["soybean", "wheat", "mustard", "coriander"]},
+        {"district": "Bikaner", "state": "Rajasthan", "soil_type": "Sandy Loam Soil", "annual_rainfall_mm": 260, "avg_temp_c": 27.2, "priority_crops": ["pearl_millet", "moth_bean", "chickpea", "groundnut"]}
+    ],
+    "Gujarat": [
+        {"district": "Rajkot", "state": "Gujarat", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 590, "avg_temp_c": 26.8, "priority_crops": ["cotton", "groundnut", "wheat", "sesame"]},
+        {"district": "Surat", "state": "Gujarat", "soil_type": "Clay Loam Soil", "annual_rainfall_mm": 1200, "avg_temp_c": 27.4, "priority_crops": ["sugarcane", "rice", "banana", "cotton"]},
+        {"district": "Banaskantha", "state": "Gujarat", "soil_type": "Sandy Loam Soil", "annual_rainfall_mm": 520, "avg_temp_c": 26.9, "priority_crops": ["potato", "mustard", "castor", "pearl_millet"]}
+    ],
+    "Karnataka": [
+        {"district": "Kolar", "state": "Karnataka", "soil_type": "Red Soil", "annual_rainfall_mm": 740, "avg_temp_c": 24.2, "priority_crops": ["tomato", "finger_millet", "groundnut", "potato"]},
+        {"district": "Belagavi", "state": "Karnataka", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 850, "avg_temp_c": 24.8, "priority_crops": ["sugarcane", "soybean", "maize", "cotton"]},
+        {"district": "Dharwad", "state": "Karnataka", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 780, "avg_temp_c": 25.1, "priority_crops": ["chilli", "cotton", "soybean", "chickpea"]}
+    ],
+    "Andhra Pradesh": [
+        {"district": "Guntur", "state": "Andhra Pradesh", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 890, "avg_temp_c": 28.5, "priority_crops": ["chilli", "cotton", "rice", "tobacco"]},
+        {"district": "Kurnool", "state": "Andhra Pradesh", "soil_type": "Red Soil", "annual_rainfall_mm": 670, "avg_temp_c": 28.8, "priority_crops": ["groundnut", "cotton", "sorghum", "sunflower"]}
+    ],
+    "Telangana": [
+        {"district": "Warangal", "state": "Telangana", "soil_type": "Red Soil", "annual_rainfall_mm": 990, "avg_temp_c": 27.6, "priority_crops": ["cotton", "rice", "chilli", "maize"]},
+        {"district": "Nizamabad", "state": "Telangana", "soil_type": "Black Soil (Regur)", "annual_rainfall_mm": 1020, "avg_temp_c": 27.2, "priority_crops": ["turmeric", "rice", "soybean", "maize"]}
+    ]
+}
+
+
+def get_all_pests_diseases() -> List[Dict[str, Any]]:
+    """Returns directory of plant pests and disease profiles with IPM recommendations."""
+    return PEST_DISEASE_DATABASE
+
+
+def get_mandi_prices_data() -> List[Dict[str, Any]]:
+    """Returns latest mandi prices and 30-day historical trend data."""
+    return MANDI_PRICE_DATABASE
+
+
+def get_organic_recipes_data() -> List[Dict[str, Any]]:
+    """Returns biological preparation guides for ZBNF and organic farming."""
+    return ORGANIC_RECIPES_DATABASE
+
+
+def get_government_schemes_data() -> Dict[str, Any]:
+    """Returns government schemes and agricultural finance metadata."""
+    return GOVERNMENT_SCHEMES_DATABASE
+
+
+def get_state_district_data() -> Dict[str, List[Dict[str, Any]]]:
+    """Returns state and district agro-climatic registry."""
+    return STATE_DISTRICT_REGISTRY
+
+
