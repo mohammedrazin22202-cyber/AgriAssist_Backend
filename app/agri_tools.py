@@ -329,3 +329,259 @@ def get_mandi_prices_filtered(
     return results
 
 
+# ==============================================================================
+# 6. SMART IRRIGATION & WATER BUDGETING SCHEDULER
+# ==============================================================================
+def calculate_smart_irrigation(
+    crop_id: str,
+    growth_stage: str,
+    soil_type: str = "Alluvial Soil",
+    land_size_acres: float = 1.0,
+    pump_hp: float = 5.0,
+    forecast_rain_mm: float = 0.0
+) -> Dict[str, Any]:
+    """Calculates water depth, volume (liters), pumping hours, and weather adjustments."""
+    from app.database import get_crop_by_id
+
+    crop = get_crop_by_id(crop_id)
+    crop_name = crop.get("name", crop_id.title()) if crop else crop_id.title()
+    water_req = crop.get("water_requirement", "Medium") if crop else "Medium"
+
+    # Base water depth per irrigation in mm by crop type & stage sensitivity
+    stage_lower = growth_stage.lower()
+    base_depth_mm = 50.0
+
+    if "germination" in stage_lower or "seedling" in stage_lower or "sowing" in stage_lower:
+        base_depth_mm = 35.0
+    elif "cri" in stage_lower or "tillering" in stage_lower or "branching" in stage_lower:
+        base_depth_mm = 55.0
+    elif "flowering" in stage_lower or "panicle" in stage_lower or "tasseling" in stage_lower or "boll" in stage_lower:
+        base_depth_mm = 65.0  # Peak moisture sensitive
+    elif "grain" in stage_lower or "milking" in stage_lower or "pod filling" in stage_lower or "tuber" in stage_lower:
+        base_depth_mm = 50.0
+    elif "maturity" in stage_lower or "harvest" in stage_lower:
+        base_depth_mm = 25.0
+
+    # Crop type baseline modifier
+    if water_req == "High":
+        base_depth_mm *= 1.25
+    elif water_req == "Low":
+        base_depth_mm *= 0.75
+
+    # Soil texture adjustments:
+    # Sandy soils hold less water -> lower depth per event, shorter interval
+    # Clay / Black soils hold more water -> higher depth per event, longer interval
+    soil_factor = 1.0
+    interval_days = 10
+    if "Sandy" in soil_type:
+        soil_factor = 0.80
+        interval_days = 6
+    elif "Black" in soil_type or "Clay" in soil_type:
+        soil_factor = 1.15
+        interval_days = 14
+    elif "Red" in soil_type or "Laterite" in soil_type:
+        soil_factor = 0.90
+        interval_days = 8
+
+    final_depth_mm = round(base_depth_mm * soil_factor, 1)
+
+    # 1 mm depth over 1 acre = 4,046.86 Liters
+    acres = max(0.1, land_size_acres)
+    water_volume_liters = round(final_depth_mm * 4046.86 * acres, 0)
+    water_volume_acre_inches = round(final_depth_mm / 25.4 * acres, 2)
+
+    # Pump runtime: 5 HP motor ~ 32,500 L/hr discharge
+    pump_hp_safe = max(1.0, pump_hp)
+    pump_lph = pump_hp_safe * 6500.0
+    pump_runtime_hours = round(water_volume_liters / pump_lph, 1)
+
+    # Total seasonal irrigations estimated
+    total_irrigations = 5
+    if water_req == "High":
+        total_irrigations = 10 if "rice" in crop_id.lower() else 7
+    elif water_req == "Low":
+        total_irrigations = 2
+
+    # Weather rain alert
+    rain_warning = False
+    advisory_notes = f"Provide standard irrigation of {final_depth_mm} mm ({pump_runtime_hours} hrs of 5 HP pump) every {interval_days} days."
+
+    if forecast_rain_mm and forecast_rain_mm >= 15.0:
+        rain_warning = True
+        advisory_notes = (
+            f"⚠️ WEATHER ALERT: Open-Meteo predicts {forecast_rain_mm:.1f} mm rainfall in the next 48-72h. "
+            f"POSTPONE irrigation immediately! Natural precipitation will satisfy current root zone requirements "
+            f"and prevent root rot or nitrogen leaching."
+        )
+    elif "flowering" in stage_lower or "cri" in stage_lower:
+        advisory_notes += " ⚠️ CRITICAL STAGE: Do not allow soil to undergo water stress during this phase to prevent flower drop or aborted grain filling."
+
+    critical_stages = [
+        "CRI / Early Vegetative Stage (Root architecture establishment)",
+        "Flowering / Panicle Emergence (Pollen viability & fertilization)",
+        "Grain / Fruit / Pod Filling (Biomass trans-location)"
+    ]
+
+    return {
+        "crop_name": crop_name,
+        "growth_stage": growth_stage,
+        "soil_type": soil_type,
+        "land_size_acres": acres,
+        "water_depth_mm": final_depth_mm,
+        "water_volume_liters": water_volume_liters,
+        "water_volume_acre_inches": water_volume_acre_inches,
+        "pump_runtime_hours": pump_runtime_hours,
+        "irrigation_interval_days": interval_days,
+        "total_irrigations_needed": total_irrigations,
+        "rain_warning": rain_warning,
+        "advisory_notes": advisory_notes,
+        "critical_stages": critical_stages
+    }
+
+
+# ==============================================================================
+# 7. ORGANIC & NATURAL FARMING (JAIVIK KHETI) PRESCRIPTIONS
+# ==============================================================================
+def calculate_organic_prescription(crop_id: str, land_size_acres: float = 1.0) -> Dict[str, Any]:
+    """Calculates biological preparations, microbial inoculants, and organic recipes."""
+    from app.database import get_crop_by_id, get_organic_recipes_data
+
+    crop = get_crop_by_id(crop_id)
+    crop_name = crop.get("name", crop_id.title()) if crop else crop_id.title()
+    acres = max(0.1, land_size_acres)
+
+    # Calculate biological quantities for specified acreage
+    jeevamrutha_liters = round(200.0 * acres * 2.0, 0)  # 2 applications of 200L/acre
+    beejamrit_kg = round(10.0 * acres, 1)               # Seed treatment volume
+    ghanjeevamrit_kg = round(150.0 * acres, 0)          # Basal dry cake
+    vermicompost_tons = round(1.5 * acres, 1)           # Organic compost
+    neemastra_liters = round(100.0 * acres, 0)          # Natural pest spray
+
+    # Tailored biofertilizers
+    category = crop.get("category", "Cereal") if crop else "Cereal"
+    if category == "Pulse":
+        bioferts = [
+            "Rhizobium biofertilizer @ 250g per 10 kg seed (Symbiotic Nitrogen fixation)",
+            "Phosphate Solubilizing Bacteria (PSB) @ 500g/acre (Releases locked soil phosphorus)",
+            "Trichoderma viride @ 5g/kg seed (Biological wilt & root-rot protection)"
+        ]
+    else:
+        bioferts = [
+            "Azotobacter / Azospirillum @ 500g/acre (Free-living Nitrogen fixation)",
+            "Phosphate Solubilizing Bacteria (PSB) @ 500g/acre (Releases soil phosphorus)",
+            "Mycorrhiza (VAM) @ 4 kg/acre (Expands root surface area by 300%)"
+        ]
+
+    recipes = get_organic_recipes_data()
+
+    return {
+        "crop_id": crop_id,
+        "crop_name": crop_name,
+        "land_size_acres": acres,
+        "total_jeevamrutha_liters": jeevamrutha_liters,
+        "beejamrit_kg": beejamrit_kg,
+        "ghanjeevamrit_kg": ghanjeevamrit_kg,
+        "vermicompost_tons": vermicompost_tons,
+        "neemastra_liters": neemastra_liters,
+        "biofertilizers": bioferts,
+        "recipes": recipes
+    }
+
+
+# ==============================================================================
+# 8. GOVERNMENT SCHEMES, SUBSIDIES & KCC CALCULATOR
+# ==============================================================================
+def calculate_government_schemes_and_kcc(
+    crop_id: str = "wheat",
+    land_size_acres: float = 1.0,
+    farmer_category: str = "Small / Marginal (< 2 Ha)",
+    state: str = "All-India"
+) -> Dict[str, Any]:
+    """Calculates PMFBY crop insurance premiums, KCC loan limits, and PMKSY drip subsidies."""
+    from app.database import get_crop_by_id, get_government_schemes_data
+
+    crop = get_crop_by_id(crop_id)
+    crop_name = crop.get("name", crop_id.title()) if crop else crop_id.title()
+    category = crop.get("category", "Cereal") if crop else "Cereal"
+    seasons = crop.get("seasons", ["Rabi"]) if crop else ["Rabi"]
+    acres = max(0.1, land_size_acres)
+
+    db = get_government_schemes_data()
+
+    # 1. Scale of Finance for KCC Crop Loan
+    scale_dict = db.get("kcc_scale_of_finance_per_acre", {})
+    scale_per_acre = scale_dict.get(crop_id.lower(), scale_dict.get("default", 30000.0))
+    kcc_loan_limit = round(scale_per_acre * acres * 1.10, 0)  # 10% post-harvest maintenance buffer
+
+    # 2. PMFBY Crop Insurance Premium Calculation
+    sum_insured = round(scale_per_acre * acres, 0)
+    is_commercial = category in ["Cash Crop", "Vegetable", "Spices", "Fiber"]
+
+    if is_commercial:
+        farmer_rate = 0.05
+    elif "Rabi" in seasons:
+        farmer_rate = 0.015
+    else:
+        farmer_rate = 0.02
+
+    actuarial_rate = 0.12  # Realistic commercial market insurance rate ~12%
+    total_commercial_premium = sum_insured * actuarial_rate
+    farmer_pmfby_premium = round(sum_insured * farmer_rate, 0)
+    govt_pmfby_subsidy = round(total_commercial_premium - farmer_pmfby_premium, 0)
+
+    # 3. Micro-Irrigation Drip Subsidy (PMKSY)
+    is_small_marginal = "Small" in farmer_category or "Marginal" in farmer_category or acres <= 5.0
+    sub_info = db["micro_irrigation_subsidies"]["small_marginal" if is_small_marginal else "general"]
+    drip_pct = sub_info["drip_pct"]
+    base_drip_cost_per_acre = 48000.0
+    total_drip_cost = base_drip_cost_per_acre * acres
+    drip_subsidy_amount = round(total_drip_cost * (drip_pct / 100.0), 0)
+
+    # 4. PM-KISAN Annual Benefit
+    pm_kisan_annual = 6000.0
+
+    # 5. Populate specific scheme details
+    schemes_list = []
+    for s in db.get("schemes_list", []):
+        detail = dict(s)
+        if s["scheme_id"] == "pm_kisan":
+            detail["calculated_benefit_inr"] = pm_kisan_annual
+        elif s["scheme_id"] == "pmfby":
+            detail["calculated_benefit_inr"] = govt_pmfby_subsidy
+        elif s["scheme_id"] == "kcc":
+            detail["calculated_benefit_inr"] = kcc_loan_limit
+        elif s["scheme_id"] == "pmksy_drip":
+            detail["calculated_benefit_inr"] = drip_subsidy_amount
+        else:
+            detail["calculated_benefit_inr"] = 25000.0
+        schemes_list.append(detail)
+
+    return {
+        "farmer_category": farmer_category,
+        "land_size_acres": acres,
+        "crop_name": crop_name,
+        "sum_insured_inr": sum_insured,
+        "farmer_pmfby_premium_inr": farmer_pmfby_premium,
+        "govt_pmfby_subsidy_inr": govt_pmfby_subsidy,
+        "kcc_crop_loan_limit_inr": kcc_loan_limit,
+        "drip_subsidy_pct": drip_pct,
+        "drip_subsidy_amount_inr": drip_subsidy_amount,
+        "pm_kisan_annual_inr": pm_kisan_annual,
+        "schemes": schemes_list
+    }
+
+
+# ==============================================================================
+# 9. STATE & DISTRICT AGRO-CLIMATIC PRESETS
+# ==============================================================================
+def get_district_presets(state: str = None) -> Dict[str, Any]:
+    """Retrieves districts and agro-climatic profiles by state."""
+    from app.database import get_state_district_data
+
+    reg = get_state_district_data()
+    if state and state.lower() != "all" and state in reg:
+        return {state: reg[state]}
+    return reg
+
+
+
