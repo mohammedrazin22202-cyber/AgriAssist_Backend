@@ -156,3 +156,167 @@ class StandaloneFertilizerRequest(BaseModel):
     soil_k: float = 180.0
     soil_ph: Optional[float] = 7.0
     land_size_acres: Optional[float] = 1.0
+
+
+# ---------------- Plant Doctor Models ----------------
+class PestDiseaseItem(BaseModel):
+    id: str
+    crop_id: str
+    crop_name: str
+    name: str
+    hindi_name: Optional[str] = None
+    type: str  # Pest, Fungal, Bacterial, Viral, Nutrient Deficiency
+    affected_parts: List[str]  # Leaf, Stem, Root, Fruit/Grain, Whole Plant
+    symptoms: List[str]
+    severity: str  # Low, Moderate, High, Critical
+    biological_control: List[str]
+    chemical_control: List[str]
+    chemical_dosage: str
+    pre_harvest_interval_days: int
+    prevention_tips: List[str]
+
+
+class PlantDoctorRequest(BaseModel):
+    crop_id: Optional[str] = None
+    plant_part: Optional[str] = None
+    symptoms: Optional[List[str]] = None
+    search_term: Optional[str] = None
+
+
+class PlantDoctorResponse(BaseModel):
+    total_matches: int
+    issues: List[PestDiseaseItem]
+
+
+# ---------------- Mandi Price Models ----------------
+class MandiPriceTrendPoint(BaseModel):
+    date: str
+    modal_price: float
+
+
+class MandiPriceItem(BaseModel):
+    crop_id: str
+    crop_name: str
+    commodity: str
+    state: str
+    district: str
+    market_apmc: str
+    modal_price_per_quintal: float
+    min_price: float
+    max_price: float
+    msp_price: float
+    price_vs_msp_diff: float
+    trend: str  # Bullish / Rising, Bearish / Dropping, Stable
+    selling_advice: str
+    historical_30d: List[MandiPriceTrendPoint]
+
+
+class MandiPriceResponse(BaseModel):
+    total_mandis: int
+    state: Optional[str] = None
+    district: Optional[str] = None
+    prices: List[MandiPriceItem]
+
+
+# ---------------- Smart Irrigation Models ----------------
+class IrrigationRequest(BaseModel):
+    crop_id: str
+    growth_stage: str
+    soil_type: str = "Alluvial Soil"
+    land_size_acres: float = 1.0
+    pump_hp: float = 5.0
+    forecast_rain_mm: Optional[float] = 0.0
+
+
+class IrrigationScheduleResponse(BaseModel):
+    crop_name: str
+    growth_stage: str
+    soil_type: str
+    land_size_acres: float
+    water_depth_mm: float
+    water_volume_liters: float
+    water_volume_acre_inches: float
+    pump_runtime_hours: float
+    irrigation_interval_days: int
+    total_irrigations_needed: int
+    rain_warning: bool
+    advisory_notes: str
+    critical_stages: List[str]
+
+
+# ---------------- Organic & Natural Farming Models ----------------
+class OrganicRecipe(BaseModel):
+    id: str
+    name: str
+    hindi_name: str
+    purpose: str
+    ingredients: List[str]
+    preparation_steps: List[str]
+    application_method: str
+    application_timing: str
+    dosage_per_acre: str
+
+
+class OrganicPrescriptionRequest(BaseModel):
+    crop_id: str
+    land_size_acres: float = 1.0
+
+
+class OrganicPrescriptionResponse(BaseModel):
+    crop_id: str
+    crop_name: str
+    land_size_acres: float
+    total_jeevamrutha_liters: float
+    beejamrit_kg: float
+    ghanjeevamrit_kg: float
+    vermicompost_tons: float
+    neemastra_liters: float
+    biofertilizers: List[str]
+    recipes: List[OrganicRecipe]
+
+
+# ---------------- Government Schemes & Subsidies Models ----------------
+class SchemeDetail(BaseModel):
+    scheme_id: str
+    name: str
+    category: str
+    eligibility: str
+    benefits: str
+    calculated_benefit_inr: float
+    action_link: str
+
+
+class GovtSchemesRequest(BaseModel):
+    crop_id: str = "wheat"
+    land_size_acres: float = 1.0
+    farmer_category: str = "Small / Marginal (< 2 Ha)"
+    state: Optional[str] = "All-India"
+
+
+class GovtSchemesResponse(BaseModel):
+    farmer_category: str
+    land_size_acres: float
+    crop_name: str
+    sum_insured_inr: float
+    farmer_pmfby_premium_inr: float
+    govt_pmfby_subsidy_inr: float
+    kcc_crop_loan_limit_inr: float
+    drip_subsidy_pct: float
+    drip_subsidy_amount_inr: float
+    pm_kisan_annual_inr: float
+    schemes: List[SchemeDetail]
+
+
+# ---------------- State & District Presets Models ----------------
+class DistrictPreset(BaseModel):
+    district: str
+    state: str
+    soil_type: str
+    annual_rainfall_mm: float
+    avg_temp_c: float
+    priority_crops: List[str]
+
+
+class StateDistrictResponse(BaseModel):
+    states: Dict[str, List[DistrictPreset]]
+
