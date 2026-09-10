@@ -584,4 +584,212 @@ def get_district_presets(state: str = None) -> Dict[str, Any]:
     return reg
 
 
+# ==============================================================================
+# 10. PRECISION SEED RATE & PLANTING GEOMETRY CALCULATOR
+# ==============================================================================
+CROP_SEED_GEOMETRY_CATALOG: Dict[str, Dict[str, Any]] = {
+    "wheat": {
+        "crop_name": "Wheat (गेहूं)",
+        "base_seed_rate_kg_acre": 40.0,
+        "standard_row_spacing_cm": 22.5,
+        "standard_plant_spacing_cm": 5.0,
+        "sowing_depth_cm": "4.0 - 5.0 cm",
+        "sowing_method": "Zero-till Seed Drill / Line Sowing",
+        "seed_treatment_protocol": "Carbendazim @ 2g/kg seed followed by Azotobacter and PSB bio-inoculants.",
+        "certified_seed_rate_per_kg_inr": 42.0,
+        "advisory": "Ensure sowing depth does not exceed 5 cm to promote rapid crown root initiation. Use certified seed with >85% germination."
+    },
+    "rice": {
+        "crop_name": "Paddy / Rice (धान)",
+        "base_seed_rate_kg_acre": 12.0,
+        "standard_row_spacing_cm": 20.0,
+        "standard_plant_spacing_cm": 15.0,
+        "sowing_depth_cm": "2.0 - 3.0 cm",
+        "sowing_method": "Transplanting / DSR (Direct Seeded Rice)",
+        "seed_treatment_protocol": "Soak in 10% brine solution; treat viable seeds with Carbendazim 2g/kg + Pseudomonas fluorescens 10g/kg.",
+        "certified_seed_rate_per_kg_inr": 55.0,
+        "advisory": "Transplant 21-25 day old seedlings (2-3 seedlings per hill) for optimal tillering and panicle development."
+    },
+    "cotton": {
+        "crop_name": "Cotton (कपास)",
+        "base_seed_rate_kg_acre": 1.8,
+        "standard_row_spacing_cm": 90.0,
+        "standard_plant_spacing_cm": 60.0,
+        "sowing_depth_cm": "3.0 - 4.0 cm",
+        "sowing_method": "Dibbling on Ridges & Furrows",
+        "seed_treatment_protocol": "Imidacloprid 70 WS @ 5g/kg for sucking pest protection + Trichoderma viride @ 4g/kg against root rot.",
+        "certified_seed_rate_per_kg_inr": 850.0,
+        "advisory": "Maintain proper square geometry (90x60 cm) to ensure aeration, reduce boll rot, and facilitate intercultural operations."
+    },
+    "soybean": {
+        "crop_name": "Soybean (सोयाबीन)",
+        "base_seed_rate_kg_acre": 28.0,
+        "standard_row_spacing_cm": 45.0,
+        "standard_plant_spacing_cm": 5.0,
+        "sowing_depth_cm": "3.0 - 4.0 cm",
+        "sowing_method": "Broad-Bed Furrow (BBF) / Line Sowing",
+        "seed_treatment_protocol": "Bradyrhizobium japonicum @ 10g/kg + Trichoderma viride @ 5g/kg. Sowing within 48 hours of treatment.",
+        "certified_seed_rate_per_kg_inr": 85.0,
+        "advisory": "Do not sow deeper than 4 cm. Soybean hypocotyl is fragile and cannot emerge through crusted soil."
+    },
+    "chickpea": {
+        "crop_name": "Chickpea / Gram (चना)",
+        "base_seed_rate_kg_acre": 30.0,
+        "standard_row_spacing_cm": 30.0,
+        "standard_plant_spacing_cm": 10.0,
+        "sowing_depth_cm": "5.0 - 7.0 cm",
+        "sowing_method": "Line Sowing with Pora/Seed Drill",
+        "seed_treatment_protocol": "Trichoderma harzianum @ 4g/kg + Mesorhizobium ciceri & PSB cultures.",
+        "certified_seed_rate_per_kg_inr": 92.0,
+        "advisory": "Deep sowing (6-7 cm) places seeds into residual moisture and protects seedlings against wilt and collar rot."
+    },
+    "mustard": {
+        "crop_name": "Mustard / Rapeseed (सरसों)",
+        "base_seed_rate_kg_acre": 2.0,
+        "standard_row_spacing_cm": 30.0,
+        "standard_plant_spacing_cm": 10.0,
+        "sowing_depth_cm": "2.0 - 3.0 cm",
+        "sowing_method": "Line Sowing with Ridge Seeder",
+        "seed_treatment_protocol": "Apron 35 SD @ 6g/kg or Trichoderma viride @ 6g/kg seed.",
+        "certified_seed_rate_per_kg_inr": 120.0,
+        "advisory": "Thinning at 15-20 days after sowing is mandatory to leave single healthy plants spaced 10 cm apart."
+    },
+    "maize": {
+        "crop_name": "Maize / Corn (मक्का)",
+        "base_seed_rate_kg_acre": 8.0,
+        "standard_row_spacing_cm": 60.0,
+        "standard_plant_spacing_cm": 20.0,
+        "sowing_depth_cm": "4.0 - 5.0 cm",
+        "sowing_method": "Ridge Sowing / Bed Planting",
+        "seed_treatment_protocol": "Cyantraniliprole 19.8% + Thiamethoxam 19.8% @ 6ml/kg against Fall Armyworm + Azospirillum culture.",
+        "certified_seed_rate_per_kg_inr": 190.0,
+        "advisory": "Maintain 60x20 cm spacing (~33,000 plants/acre) to maximize cob size, grain filling, and prevent barren stalks."
+    },
+    "potato": {
+        "crop_name": "Potato (आलू)",
+        "base_seed_rate_kg_acre": 850.0,
+        "standard_row_spacing_cm": 60.0,
+        "standard_plant_spacing_cm": 20.0,
+        "sowing_depth_cm": "5.0 - 8.0 cm",
+        "sowing_method": "Ridge and Furrow planting (well-sprouted tubers)",
+        "seed_treatment_protocol": "Dip whole seed tubers in Mancozeb (0.25%) or Trichoderma for 10 minutes; shade dry before planting.",
+        "certified_seed_rate_per_kg_inr": 28.0,
+        "advisory": "Use certified disease-free medium-sized seed tubers (35-45 mm diameter, 40-50g weight with 2-3 sprouted eyes)."
+    },
+    "sugarcane": {
+        "crop_name": "Sugarcane (गन्ना)",
+        "base_seed_rate_kg_acre": 2500.0,
+        "standard_row_spacing_cm": 90.0,
+        "standard_plant_spacing_cm": 30.0,
+        "sowing_depth_cm": "7.0 - 10.0 cm",
+        "sowing_method": "Trench / Furrow Planting (3-budded setts)",
+        "seed_treatment_protocol": "Dip setts in Carbendazim (0.1%) solution for 15 min + Acetobacter diazotrophicus slurry.",
+        "certified_seed_rate_per_kg_inr": 4.5,
+        "advisory": "Select disease-free setts from 8-10 month old crop. Maintain paired row or wide trench planting (120 cm) for sunlight."
+    },
+    "groundnut": {
+        "crop_name": "Groundnut / Peanut (मूंगफली)",
+        "base_seed_rate_kg_acre": 45.0,
+        "standard_row_spacing_cm": 30.0,
+        "standard_plant_spacing_cm": 10.0,
+        "sowing_depth_cm": "4.0 - 5.0 cm",
+        "sowing_method": "Line Sowing using Seed-cum-Fertilizer Drill",
+        "seed_treatment_protocol": "Trichoderma viride @ 4g/kg + Rhizobium and Phosphobacteria biofertilizers.",
+        "certified_seed_rate_per_kg_inr": 115.0,
+        "advisory": "Shell pods only 1-2 days before sowing to retain seed viability. Sowing into moist soil is critical for peg entry."
+    }
+}
+
+
+def calculate_seed_rate_and_population(
+    crop_id: str,
+    land_size_acres: float = 1.0,
+    row_spacing_cm: float = None,
+    plant_spacing_cm: float = None,
+    germination_rate_pct: float = 85.0,
+    sowing_method: str = "Line Sowing"
+) -> Dict[str, Any]:
+    """Calculates precision seed quantity, planting geometry, and estimated plant population."""
+    from app.database import get_crop_by_id
+
+    acres = max(0.1, float(land_size_acres or 1.0))
+    germ_pct = max(50.0, min(100.0, float(germination_rate_pct or 85.0)))
+
+    # Fetch profile from catalog or fallback
+    profile = CROP_SEED_GEOMETRY_CATALOG.get(crop_id)
+    if not profile:
+        crop_db = get_crop_by_id(crop_id)
+        crop_name = crop_db["name"] if crop_db else crop_id.title()
+        profile = {
+            "crop_name": crop_name,
+            "base_seed_rate_kg_acre": 15.0,
+            "standard_row_spacing_cm": 30.0,
+            "standard_plant_spacing_cm": 15.0,
+            "sowing_depth_cm": "3.0 - 4.0 cm",
+            "sowing_method": sowing_method or "Line Sowing",
+            "seed_treatment_protocol": "General seed treatment with Trichoderma viride @ 5g/kg seed.",
+            "certified_seed_rate_per_kg_inr": 60.0,
+            "advisory": f"Adhere to recommended seed rate and proper plant spacing for {crop_name}."
+        }
+
+    std_row = profile["standard_row_spacing_cm"]
+    std_plant = profile["standard_plant_spacing_cm"]
+
+    eff_row = max(5.0, float(row_spacing_cm)) if row_spacing_cm and row_spacing_cm > 0 else std_row
+    eff_plant = max(2.0, float(plant_spacing_cm)) if plant_spacing_cm and plant_spacing_cm > 0 else std_plant
+
+    # Plant population formula: 1 acre = 4,046.86 sq meters = 40,468,600 sq cm
+    area_sq_cm_per_acre = 40468600.0
+    plant_area_sq_cm = eff_row * eff_plant
+    population_per_acre = int(area_sq_cm_per_acre / plant_area_sq_cm)
+    total_population = int(population_per_acre * acres)
+
+    # Seed rate adjustment based on germination rate and acreage
+    # If germination is lower than benchmark 85%, seed quantity must be increased
+    germ_factor = 85.0 / germ_pct
+    base_rate = profile["base_seed_rate_kg_acre"]
+    adjusted_rate_per_acre = round(base_rate * germ_factor, 2)
+    total_seed_kg = round(adjusted_rate_per_acre * acres, 2)
+
+    seed_rate_inr = profile["certified_seed_rate_per_kg_inr"]
+    estimated_cost = round(total_seed_kg * seed_rate_inr, 2)
+
+    return {
+        "crop_id": crop_id,
+        "crop_name": profile["crop_name"],
+        "land_size_acres": acres,
+        "recommended_seed_rate_kg_per_acre": adjusted_rate_per_acre,
+        "total_seed_required_kg": total_seed_kg,
+        "standard_row_spacing_cm": std_row,
+        "standard_plant_spacing_cm": std_plant,
+        "effective_row_spacing_cm": eff_row,
+        "effective_plant_spacing_cm": eff_plant,
+        "estimated_plant_population": total_population,
+        "population_per_acre": population_per_acre,
+        "sowing_depth_cm": profile["sowing_depth_cm"],
+        "sowing_method": sowing_method or profile["sowing_method"],
+        "seed_treatment_protocol": profile["seed_treatment_protocol"],
+        "certified_seed_rate_per_kg_inr": seed_rate_inr,
+        "estimated_seed_cost_inr": estimated_cost,
+        "agronomic_advisory": profile["advisory"]
+    }
+
+
+def get_all_seed_crop_guidelines() -> List[Dict[str, Any]]:
+    """Returns catalog of all seed rates, spacing and treatment guidelines."""
+    res = []
+    for k, v in CROP_SEED_GEOMETRY_CATALOG.items():
+        res.append({
+            "crop_id": k,
+            "crop_name": v["crop_name"],
+            "seed_rate_kg_acre": v["base_seed_rate_kg_acre"],
+            "row_spacing_cm": v["standard_row_spacing_cm"],
+            "plant_spacing_cm": v["standard_plant_spacing_cm"],
+            "sowing_depth_cm": v["sowing_depth_cm"],
+            "seed_treatment": v["seed_treatment_protocol"]
+        })
+    return res
+
+
+
 

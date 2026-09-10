@@ -320,3 +320,34 @@ class DistrictPreset(BaseModel):
 class StateDistrictResponse(BaseModel):
     states: Dict[str, List[DistrictPreset]]
 
+
+# ---------------- Seed Rate & Planting Geometry Models ----------------
+class SeedRateRequest(BaseModel):
+    crop_id: str
+    land_size_acres: float = 1.0
+    row_spacing_cm: Optional[float] = None
+    plant_spacing_cm: Optional[float] = None
+    germination_rate_pct: Optional[float] = 85.0
+    sowing_method: Optional[str] = "Line Sowing"
+
+
+class SeedRateResponse(BaseModel):
+    crop_id: str
+    crop_name: str
+    land_size_acres: float
+    recommended_seed_rate_kg_per_acre: float
+    total_seed_required_kg: float
+    standard_row_spacing_cm: float
+    standard_plant_spacing_cm: float
+    effective_row_spacing_cm: float
+    effective_plant_spacing_cm: float
+    estimated_plant_population: int
+    population_per_acre: int
+    sowing_depth_cm: str
+    sowing_method: str
+    seed_treatment_protocol: str
+    certified_seed_rate_per_kg_inr: float
+    estimated_seed_cost_inr: float
+    agronomic_advisory: str
+
+

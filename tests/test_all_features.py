@@ -122,3 +122,48 @@ def test_government_schemes_calculator():
     assert data["drip_subsidy_pct"] == 55.0
     assert data["pm_kisan_annual_inr"] == 6000.0
     assert len(data["schemes"]) >= 4
+
+
+def test_seed_calculator_endpoint():
+    """Verify precision seed rate, planting geometry and estimated plant population."""
+    # Test Wheat seed calculation for 2.5 acres
+    payload = {
+        "crop_id": "wheat",
+        "land_size_acres": 2.5,
+        "germination_rate_pct": 85.0
+    }
+    response = client.post("/api/seed-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["crop_id"] == "wheat"
+    assert data["recommended_seed_rate_kg_per_acre"] == 40.0
+    assert data["total_seed_required_kg"] == 100.0  # 40 kg/acre * 2.5 acres
+    assert data["standard_row_spacing_cm"] == 22.5
+    assert data["standard_plant_spacing_cm"] == 5.0
+    assert data["population_per_acre"] > 300000
+    assert data["estimated_plant_population"] > 750000
+    assert data["estimated_seed_cost_inr"] > 0
+    assert "Azotobacter" in data["seed_treatment_protocol"]
+
+    # Test seed rate adjustment when germination rate is lower (e.g. 70%)
+    payload_low_germ = {
+        "crop_id": "cotton",
+        "land_size_acres": 1.0,
+        "germination_rate_pct": 70.0
+    }
+    response_low = client.post("/api/seed-calculator", json=payload_low_germ)
+    assert response_low.status_code == 200
+    data_low = response_low.json()
+    assert data_low["recommended_seed_rate_kg_per_acre"] > 1.8  # compensated for lower germination
+
+
+def test_seed_guidelines_catalog_endpoint():
+    """Verify reference seed rates and spacing catalog."""
+    response = client.get("/api/seed-calculator/guidelines")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) >= 8
+    wheat_item = next((c for c in data if c["crop_id"] == "wheat"), None)
+    assert wheat_item is not None
+    assert wheat_item["seed_rate_kg_acre"] == 40.0
+

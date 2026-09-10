@@ -23,7 +23,9 @@ from app.models import (
     OrganicPrescriptionResponse,
     GovtSchemesRequest,
     GovtSchemesResponse,
-    StateDistrictResponse
+    StateDistrictResponse,
+    SeedRateRequest,
+    SeedRateResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -36,7 +38,9 @@ from app.agri_tools import (
     calculate_smart_irrigation,
     calculate_organic_prescription,
     calculate_government_schemes_and_kcc,
-    get_district_presets
+    get_district_presets,
+    calculate_seed_rate_and_population,
+    get_all_seed_crop_guidelines
 )
 
 
@@ -328,5 +332,32 @@ def get_state_districts(state: str = None):
         return StateDistrictResponse(states=reg)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"District presets error: {str(e)}")
+
+
+# ---------------- Seed Rate & Planting Geometry Calculator ----------------
+@app.post("/api/seed-calculator", response_model=SeedRateResponse)
+def calculate_seed_rate(req: SeedRateRequest):
+    """Calculates precision seed quantity (kg), planting spacing geometry, and plant population."""
+    try:
+        return calculate_seed_rate_and_population(
+            crop_id=req.crop_id,
+            land_size_acres=req.land_size_acres,
+            row_spacing_cm=req.row_spacing_cm,
+            plant_spacing_cm=req.plant_spacing_cm,
+            germination_rate_pct=req.germination_rate_pct or 85.0,
+            sowing_method=req.sowing_method or "Line Sowing"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Seed calculator error: {str(e)}")
+
+
+@app.get("/api/seed-calculator/guidelines")
+def get_seed_guidelines():
+    """Returns reference catalog of standard seed rates and planting geometry."""
+    try:
+        return get_all_seed_crop_guidelines()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Seed guidelines error: {str(e)}")
+
 
 
