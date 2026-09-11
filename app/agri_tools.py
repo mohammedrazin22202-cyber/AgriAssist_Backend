@@ -159,6 +159,7 @@ def generate_crop_rotation_plans(
     """Generates ranked 1-Year Multi-Crop Rotation Plans (Kharif -> Rabi -> Zaid).
     Balances profitability, soil health (nitrogen-fixing legumes), and water security.
     """
+    acres = max(0.1, float(land_size_acres or 1.0))
     is_rainfed = "Low" in water_availability
     is_moderate = "Moderate" in water_availability
     is_high_water = "High" in water_availability
@@ -185,7 +186,7 @@ def generate_crop_rotation_plans(
         desc = "Balanced Maize-Mustard-Moong Trilogy: Exceptional economic return with low pumping cost and biological pest interruption."
         soil_score = 95
 
-    annual_profit_1 = (c1["net_profit_per_acre"] + c2["net_profit_per_acre"] + c3["net_profit_per_acre"]) * land_size_acres
+    annual_profit_1 = (c1["net_profit_per_acre"] + c2["net_profit_per_acre"] + c3["net_profit_per_acre"]) * acres
     plans.append({
         "plan_id": "plan_balanced_soil_health",
         "title": "Soil-Restorative Cereal & Legume Rotation",
@@ -196,7 +197,7 @@ def generate_crop_rotation_plans(
         "pest_break_benefit": "Alternating grass cereals with broadleaf legumes disrupts monophagous insect pupation in soil.",
         "crops": [c1, c2, c3],
         "total_annual_net_profit_inr": round(annual_profit_1, 0),
-        "annual_net_profit_per_acre_inr": round(annual_profit_1 / land_size_acres, 0)
+        "annual_net_profit_per_acre_inr": round(annual_profit_1 / acres, 0)
     })
 
     # System 2: High-Value Commercial Cash Crop Rotation
@@ -213,7 +214,7 @@ def generate_crop_rotation_plans(
         desc_b = "Groundnut-Potato-Moong Commercial Triplet: High return per acre with balanced tuber and legume dynamics."
         soil_score_b = 85
 
-    annual_profit_2 = (c1_b["net_profit_per_acre"] + c2_b["net_profit_per_acre"] + c3_b["net_profit_per_acre"]) * land_size_acres
+    annual_profit_2 = (c1_b["net_profit_per_acre"] + c2_b["net_profit_per_acre"] + c3_b["net_profit_per_acre"]) * acres
     plans.append({
         "plan_id": "plan_commercial_maximizer",
         "title": "Commercial High-Revenue Market Rotation",
@@ -224,7 +225,7 @@ def generate_crop_rotation_plans(
         "pest_break_benefit": "Deep root crop followed by shallow vegetable disrupts soil compaction and nematode infestation.",
         "crops": [c1_b, c2_b, c3_b],
         "total_annual_net_profit_inr": round(annual_profit_2, 0),
-        "annual_net_profit_per_acre_inr": round(annual_profit_2 / land_size_acres, 0)
+        "annual_net_profit_per_acre_inr": round(annual_profit_2 / acres, 0)
     })
 
     # System 3: Oilseed & Pulse Resilient Rotation (Low Water & Stable Return)
@@ -232,7 +233,7 @@ def generate_crop_rotation_plans(
     c2_c = {"season": "Rabi", "crop_id": "mustard", "crop_name": "Mustard / Rapeseed", "role": "Low input cost, high oil return", "duration": "110 days", "water": "Low to Medium", "net_profit_per_acre": 36000}
     c3_c = {"season": "Zaid", "crop_id": "green_gram", "crop_name": "Summer Moong", "role": "Protects topsoil from summer scorching & fixes nitrogen", "duration": "60 days", "water": "Low", "net_profit_per_acre": 18000}
     
-    annual_profit_3 = (c1_c["net_profit_per_acre"] + c2_c["net_profit_per_acre"] + c3_c["net_profit_per_acre"]) * land_size_acres
+    annual_profit_3 = (c1_c["net_profit_per_acre"] + c2_c["net_profit_per_acre"] + c3_c["net_profit_per_acre"]) * acres
     plans.append({
         "plan_id": "plan_oilseed_resilience",
         "title": "Dual-Legume & Oilseed Climate-Resilient Cycle",
@@ -243,7 +244,7 @@ def generate_crop_rotation_plans(
         "pest_break_benefit": "Zero shared fungal or viral pathogens between mustard and soybean.",
         "crops": [c1_c, c2_c, c3_c],
         "total_annual_net_profit_inr": round(annual_profit_3, 0),
-        "annual_net_profit_per_acre_inr": round(annual_profit_3 / land_size_acres, 0)
+        "annual_net_profit_per_acre_inr": round(annual_profit_3 / acres, 0)
     })
 
     # Sort primarily by annual net profit
@@ -404,10 +405,15 @@ def calculate_smart_irrigation(
 
     # Weather rain alert
     rain_warning = False
+    postpone_alert = None
     advisory_notes = f"Provide standard irrigation of {final_depth_mm} mm ({pump_runtime_hours} hrs of 5 HP pump) every {interval_days} days."
 
     if forecast_rain_mm and forecast_rain_mm >= 15.0:
         rain_warning = True
+        postpone_alert = (
+            f"Open-Meteo predicts {forecast_rain_mm:.1f} mm rainfall in next 48-72h. "
+            f"Postpone scheduled irrigation turn to conserve water and prevent root rot."
+        )
         advisory_notes = (
             f"⚠️ WEATHER ALERT: Open-Meteo predicts {forecast_rain_mm:.1f} mm rainfall in the next 48-72h. "
             f"POSTPONE irrigation immediately! Natural precipitation will satisfy current root zone requirements "
@@ -422,6 +428,13 @@ def calculate_smart_irrigation(
         "Grain / Fruit / Pod Filling (Biomass trans-location)"
     ]
 
+    water_saving_tips = [
+        "Use drip or sprinkler irrigation to save 40-50% water over conventional flood furrow irrigation.",
+        "Apply organic paddy straw or plastic mulch to reduce surface evaporation by up to 35%.",
+        "Irrigate strictly during early morning (6-9 AM) or late evening to minimize convective heat losses.",
+        "Maintain proper bunding and laser-level the field to guarantee uniform moisture infiltration."
+    ]
+
     return {
         "crop_name": crop_name,
         "growth_stage": growth_stage,
@@ -429,13 +442,19 @@ def calculate_smart_irrigation(
         "land_size_acres": acres,
         "water_depth_mm": final_depth_mm,
         "water_volume_liters": water_volume_liters,
+        "total_water_volume_liters": water_volume_liters,
         "water_volume_acre_inches": water_volume_acre_inches,
         "pump_runtime_hours": pump_runtime_hours,
+        "pump_run_hours": pump_runtime_hours,
         "irrigation_interval_days": interval_days,
+        "interval_days": f"Every {interval_days} Days",
         "total_irrigations_needed": total_irrigations,
         "rain_warning": rain_warning,
+        "postpone_irrigation_alert": postpone_alert,
         "advisory_notes": advisory_notes,
-        "critical_stages": critical_stages
+        "critical_stages": critical_stages,
+        "water_saving_tips": water_saving_tips,
+        "weather_rain_forecast_mm": forecast_rain_mm
     }
 
 
@@ -448,7 +467,7 @@ def calculate_organic_prescription(crop_id: str, land_size_acres: float = 1.0) -
 
     crop = get_crop_by_id(crop_id)
     crop_name = crop.get("name", crop_id.title()) if crop else crop_id.title()
-    acres = max(0.1, land_size_acres)
+    acres = max(0.1, float(land_size_acres or 1.0))
 
     # Calculate biological quantities for specified acreage
     jeevamrutha_liters = round(200.0 * acres * 2.0, 0)  # 2 applications of 200L/acre
@@ -479,7 +498,9 @@ def calculate_organic_prescription(crop_id: str, land_size_acres: float = 1.0) -
         "crop_name": crop_name,
         "land_size_acres": acres,
         "total_jeevamrutha_liters": jeevamrutha_liters,
+        "jeevamrutha_liters": jeevamrutha_liters,
         "beejamrit_kg": beejamrit_kg,
+        "beejamrit_liters": beejamrit_kg,
         "ghanjeevamrit_kg": ghanjeevamrit_kg,
         "vermicompost_tons": vermicompost_tons,
         "neemastra_liters": neemastra_liters,
@@ -504,7 +525,8 @@ def calculate_government_schemes_and_kcc(
     crop_name = crop.get("name", crop_id.title()) if crop else crop_id.title()
     category = crop.get("category", "Cereal") if crop else "Cereal"
     seasons = crop.get("seasons", ["Rabi"]) if crop else ["Rabi"]
-    acres = max(0.1, land_size_acres)
+    acres = max(0.1, float(land_size_acres or 1.0))
+    farmer_cat_safe = str(farmer_category or "Small / Marginal (< 2 Ha)")
 
     db = get_government_schemes_data()
 
@@ -516,13 +538,17 @@ def calculate_government_schemes_and_kcc(
     # 2. PMFBY Crop Insurance Premium Calculation
     sum_insured = round(scale_per_acre * acres, 0)
     is_commercial = category in ["Cash Crop", "Vegetable", "Spices", "Fiber"]
+    is_kharif = "Kharif" in seasons
 
     if is_commercial:
         farmer_rate = 0.05
+        season_cat_label = "Commercial / Horticultural"
     elif "Rabi" in seasons:
         farmer_rate = 0.015
+        season_cat_label = "Rabi"
     else:
         farmer_rate = 0.02
+        season_cat_label = "Kharif"
 
     actuarial_rate = 0.12  # Realistic commercial market insurance rate ~12%
     total_commercial_premium = sum_insured * actuarial_rate
@@ -530,7 +556,7 @@ def calculate_government_schemes_and_kcc(
     govt_pmfby_subsidy = round(total_commercial_premium - farmer_pmfby_premium, 0)
 
     # 3. Micro-Irrigation Drip Subsidy (PMKSY)
-    is_small_marginal = "Small" in farmer_category or "Marginal" in farmer_category or acres <= 5.0
+    is_small_marginal = "Small" in farmer_cat_safe or "Marginal" in farmer_cat_safe or acres <= 5.0
     sub_info = db["micro_irrigation_subsidies"]["small_marginal" if is_small_marginal else "general"]
     drip_pct = sub_info["drip_pct"]
     base_drip_cost_per_acre = 48000.0
@@ -556,8 +582,35 @@ def calculate_government_schemes_and_kcc(
             detail["calculated_benefit_inr"] = 25000.0
         schemes_list.append(detail)
 
+    # Structured sub-objects for rich frontend rendering
+    pmfby_structured = {
+        "season_category": season_cat_label,
+        "sum_insured_inr": sum_insured,
+        "farmer_premium_rate_percent": round(farmer_rate * 100, 1),
+        "farmer_share_premium_inr": farmer_pmfby_premium,
+        "govt_subsidy_share_inr": govt_pmfby_subsidy,
+        "official_portal": "https://pmfby.gov.in"
+    }
+
+    kcc_structured = {
+        "scale_of_finance_per_acre_inr": scale_per_acre,
+        "recommended_credit_limit_inr": kcc_loan_limit,
+        "interest_rate_percent": 7.0,
+        "prompt_repayment_incentive_percent": 3.0,
+        "effective_interest_rate_percent": 4.0,
+        "official_portal": "https://myscheme.gov.in"
+    }
+
+    pmksy_drip_structured = {
+        "farmer_category": farmer_cat_safe,
+        "subsidy_percentage": drip_pct,
+        "approx_equipment_cost_inr": total_drip_cost,
+        "eligible_subsidy_inr": drip_subsidy_amount,
+        "farmer_payable_inr": total_drip_cost - drip_subsidy_amount
+    }
+
     return {
-        "farmer_category": farmer_category,
+        "farmer_category": farmer_cat_safe,
         "land_size_acres": acres,
         "crop_name": crop_name,
         "sum_insured_inr": sum_insured,
@@ -567,6 +620,10 @@ def calculate_government_schemes_and_kcc(
         "drip_subsidy_pct": drip_pct,
         "drip_subsidy_amount_inr": drip_subsidy_amount,
         "pm_kisan_annual_inr": pm_kisan_annual,
+        "pm_kisan_annual_cash_inr": pm_kisan_annual,
+        "pmfby": pmfby_structured,
+        "kcc": kcc_structured,
+        "pmksy_drip": pmksy_drip_structured,
         "schemes": schemes_list
     }
 

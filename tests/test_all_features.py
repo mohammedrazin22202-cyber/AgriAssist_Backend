@@ -167,3 +167,99 @@ def test_seed_guidelines_catalog_endpoint():
     assert wheat_item is not None
     assert wheat_item["seed_rate_kg_acre"] == 40.0
 
+
+def test_rotation_zero_acres_edge_case():
+    """Verify rotation planner handles 0.0 or negative acres gracefully without ZeroDivisionError."""
+    payload = {
+        "soil_type": "Black Soil (Regur)",
+        "land_size_acres": 0.0,
+        "water_availability": "Moderate (Canal / Tube-well / Seasonal)"
+    }
+    response = client.post("/api/rotation-plan", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "plans" in data
+    assert len(data["plans"]) >= 1
+    plan = data["plans"][0]
+    assert plan["total_annual_net_profit_inr"] > 0
+    assert plan["soil_health_index"] >= 50
+
+
+def test_plant_doctor_field_aliases():
+    """Verify Plant Doctor accepts frontend aliases: affected_part and symptom_query."""
+    payload = {
+        "crop_id": "cotton",
+        "affected_part": "Fruit/Grain",
+        "symptom_query": "pink"
+    }
+    response = client.post("/api/plant-doctor/diagnose", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_matches"] >= 1
+    assert "Pink Bollworm" in data["issues"][0]["name"]
+
+
+def test_mandi_prices_markets_compatibility():
+    """Verify Mandi prices response includes 'markets' compatibility alias for frontend."""
+    response = client.get("/api/mandi-prices?crop_id=wheat")
+    assert response.status_code == 200
+    data = response.json()
+    assert "markets" in data
+    assert len(data["markets"]) > 0
+    assert data["markets"][0]["crop_id"] == "wheat"
+
+
+def test_irrigation_compatibility_fields():
+    """Verify Smart Irrigation accepts pump_capacity_hp and returns total_water_volume_liters, pump_run_hours, interval_days."""
+    payload = {
+        "crop_id": "wheat",
+        "growth_stage": "Crown Root Initiation (CRI at 21 days)",
+        "soil_type": "Alluvial Soil",
+        "land_size_acres": 2.0,
+        "pump_capacity_hp": 5.0,
+        "forecast_rain_mm": 20.0
+    }
+    response = client.post("/api/irrigation-schedule", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_water_volume_liters"] == data["water_volume_liters"]
+    assert data["pump_run_hours"] == data["pump_runtime_hours"]
+    assert "10" in data["interval_days"]
+    assert data["irrigation_interval_days"] == 10
+    assert data["postpone_irrigation_alert"] is not None
+
+
+def test_organic_prescription_liters_aliases():
+    """Verify Organic Doctor returns jeevamrutha_liters and beejamrit_liters."""
+    payload = {
+        "crop_id": "wheat",
+        "land_size_acres": 2.0
+    }
+    response = client.post("/api/organic-prescription", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["jeevamrutha_liters"] == data["total_jeevamrutha_liters"]
+    assert data["beejamrit_liters"] == data["beejamrit_kg"]
+
+
+def test_government_schemes_nested_structure():
+    """Verify Government Schemes response contains nested pmfby, kcc, pmksy_drip structures."""
+    payload = {
+        "crop_id": "rice",
+        "land_size_acres": 2.0,
+        "farmer_category": "Small / Marginal (< 2 Ha)"
+    }
+    response = client.post("/api/government-schemes/calculate", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    # Check nested structures for frontend renderYojanaResult
+    assert "pmfby" in data
+    assert data["pmfby"]["season_category"] in ["Kharif", "Rabi", "Commercial / Horticultural"]
+    assert data["pmfby"]["sum_insured_inr"] > 0
+    assert "kcc" in data
+    assert data["kcc"]["effective_interest_rate_percent"] == 4.0
+    assert "pmksy_drip" in data
+    assert data["pmksy_drip"]["subsidy_percentage"] == 55.0
+    assert data["pm_kisan_annual_cash_inr"] == 6000
+
+

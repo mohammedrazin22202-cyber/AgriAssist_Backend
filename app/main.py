@@ -159,6 +159,7 @@ def get_crop_details(crop_id: str):
 
 
 @app.post("/api/rotation-plan", response_model=RotationPlanResponse)
+@app.post("/api/rotation-planner", response_model=RotationPlanResponse)
 def get_crop_rotation_plan(req: RotationPlanRequest):
     """Generates ranked 1-Year Multi-Crop Rotation Plans (Kharif -> Rabi -> Zaid)."""
     try:
@@ -216,11 +217,13 @@ def get_fertilizer_prescription(req: StandaloneFertilizerRequest):
 def diagnose_crop_health(req: PlantDoctorRequest):
     """Diagnoses crop pests and diseases and returns IPM prescriptions."""
     try:
+        part = req.plant_part or req.affected_part
+        query = req.search_term or req.symptom_query
         issues = diagnose_plant_issue(
             crop_id=req.crop_id,
-            plant_part=req.plant_part,
+            plant_part=part,
             symptoms=req.symptoms,
-            search_term=req.search_term
+            search_term=query
         )
         return PlantDoctorResponse(
             total_matches=len(issues),
@@ -262,7 +265,8 @@ def get_mandi_prices(crop_id: str = None, state: str = None, district: str = Non
             total_mandis=len(prices),
             state=state,
             district=district,
-            prices=prices
+            prices=prices,
+            markets=prices
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Mandi price service error: {str(e)}")
@@ -273,12 +277,13 @@ def get_mandi_prices(crop_id: str = None, state: str = None, district: str = Non
 def get_irrigation_schedule(req: IrrigationRequest):
     """Computes stage-wise water volume (liters/acre), pump runtimes, and weather postponement."""
     try:
+        pump = req.pump_hp if req.pump_hp is not None else (req.pump_capacity_hp if req.pump_capacity_hp is not None else 5.0)
         schedule = calculate_smart_irrigation(
             crop_id=req.crop_id,
             growth_stage=req.growth_stage,
             soil_type=req.soil_type,
             land_size_acres=req.land_size_acres,
-            pump_hp=req.pump_hp,
+            pump_hp=pump,
             forecast_rain_mm=req.forecast_rain_mm or 0.0
         )
         return schedule

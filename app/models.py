@@ -179,8 +179,10 @@ class PestDiseaseItem(BaseModel):
 class PlantDoctorRequest(BaseModel):
     crop_id: Optional[str] = None
     plant_part: Optional[str] = None
+    affected_part: Optional[str] = None  # Frontend compatibility alias
     symptoms: Optional[List[str]] = None
     search_term: Optional[str] = None
+    symptom_query: Optional[str] = None  # Frontend compatibility alias
 
 
 class PlantDoctorResponse(BaseModel):
@@ -216,6 +218,7 @@ class MandiPriceResponse(BaseModel):
     state: Optional[str] = None
     district: Optional[str] = None
     prices: List[MandiPriceItem]
+    markets: Optional[List[MandiPriceItem]] = None  # Frontend compatibility alias
 
 
 # ---------------- Smart Irrigation Models ----------------
@@ -224,7 +227,8 @@ class IrrigationRequest(BaseModel):
     growth_stage: str
     soil_type: str = "Alluvial Soil"
     land_size_acres: float = 1.0
-    pump_hp: float = 5.0
+    pump_hp: Optional[float] = 5.0
+    pump_capacity_hp: Optional[float] = None  # Frontend compatibility alias
     forecast_rain_mm: Optional[float] = 0.0
 
 
@@ -235,13 +239,19 @@ class IrrigationScheduleResponse(BaseModel):
     land_size_acres: float
     water_depth_mm: float
     water_volume_liters: float
+    total_water_volume_liters: Optional[float] = None  # Frontend compatibility
     water_volume_acre_inches: float
     pump_runtime_hours: float
+    pump_run_hours: Optional[float] = None  # Frontend compatibility
     irrigation_interval_days: int
+    interval_days: Optional[str] = None  # Frontend compatibility
     total_irrigations_needed: int
     rain_warning: bool
+    postpone_irrigation_alert: Optional[str] = None  # Frontend compatibility
     advisory_notes: str
     critical_stages: List[str]
+    water_saving_tips: Optional[List[str]] = None  # Frontend compatibility
+    weather_rain_forecast_mm: Optional[float] = None
 
 
 # ---------------- Organic & Natural Farming Models ----------------
@@ -267,7 +277,9 @@ class OrganicPrescriptionResponse(BaseModel):
     crop_name: str
     land_size_acres: float
     total_jeevamrutha_liters: float
+    jeevamrutha_liters: Optional[float] = None  # Frontend compatibility
     beejamrit_kg: float
+    beejamrit_liters: Optional[float] = None  # Frontend compatibility
     ghanjeevamrit_kg: float
     vermicompost_tons: float
     neemastra_liters: float
@@ -284,6 +296,32 @@ class SchemeDetail(BaseModel):
     benefits: str
     calculated_benefit_inr: float
     action_link: str
+
+
+class PmfbyDetail(BaseModel):
+    season_category: str
+    sum_insured_inr: float
+    farmer_premium_rate_percent: float
+    farmer_share_premium_inr: float
+    govt_subsidy_share_inr: float
+    official_portal: str = "https://pmfby.gov.in"
+
+
+class KccDetail(BaseModel):
+    scale_of_finance_per_acre_inr: float
+    recommended_credit_limit_inr: float
+    interest_rate_percent: float = 7.0
+    prompt_repayment_incentive_percent: float = 3.0
+    effective_interest_rate_percent: float = 4.0
+    official_portal: str = "https://myscheme.gov.in"
+
+
+class PmksyDripDetail(BaseModel):
+    farmer_category: str
+    subsidy_percentage: float
+    approx_equipment_cost_inr: float
+    eligible_subsidy_inr: float
+    farmer_payable_inr: float
 
 
 class GovtSchemesRequest(BaseModel):
@@ -304,6 +342,10 @@ class GovtSchemesResponse(BaseModel):
     drip_subsidy_pct: float
     drip_subsidy_amount_inr: float
     pm_kisan_annual_inr: float
+    pm_kisan_annual_cash_inr: Optional[float] = 6000.0  # Frontend compatibility
+    pmfby: Optional[PmfbyDetail] = None  # Frontend structured support
+    kcc: Optional[KccDetail] = None  # Frontend structured support
+    pmksy_drip: Optional[PmksyDripDetail] = None  # Frontend structured support
     schemes: List[SchemeDetail]
 
 
