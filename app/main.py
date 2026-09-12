@@ -25,7 +25,16 @@ from app.models import (
     GovtSchemesResponse,
     StateDistrictResponse,
     SeedRateRequest,
-    SeedRateResponse
+    SeedRateResponse,
+    SprayerRequest,
+    SprayerResponse,
+    SolarPumpRequest,
+    SolarPumpResponse,
+    IntercropPair,
+    IntercropResponse,
+    StorageRiskCheckRequest,
+    StorageRiskCheckResponse,
+    GrainStorageAdvisory
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -40,7 +49,12 @@ from app.agri_tools import (
     calculate_government_schemes_and_kcc,
     get_district_presets,
     calculate_seed_rate_and_population,
-    get_all_seed_crop_guidelines
+    get_all_seed_crop_guidelines,
+    calculate_sprayer_dilution,
+    calculate_solar_pump_kusum,
+    get_intercropping_recommendations,
+    get_grain_storage_catalog_list,
+    evaluate_grain_storage_risk
 )
 
 
@@ -363,6 +377,76 @@ def get_seed_guidelines():
         return get_all_seed_crop_guidelines()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Seed guidelines error: {str(e)}")
+
+
+# ---------------- Knapsack Sprayer & Dilution Calculator ----------------
+@app.post("/api/sprayer-calculator", response_model=SprayerResponse)
+def calculate_sprayer(req: SprayerRequest):
+    """Calculates chemical dosage per tank, total tanks required, and safety instructions."""
+    try:
+        return calculate_sprayer_dilution(
+            tank_capacity_liters=req.tank_capacity_liters,
+            land_size_acres=req.land_size_acres,
+            dosage_mode=req.dosage_mode,
+            dosage_amount=req.dosage_amount,
+            chemical_form=req.chemical_form,
+            spray_volume_liters_per_acre=req.spray_volume_liters_per_acre
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Sprayer calculator error: {str(e)}")
+
+
+# ---------------- Solar Ag-Pump & PM-KUSUM Sizing Calculator ----------------
+@app.post("/api/solar-pump-calculator", response_model=SolarPumpResponse)
+def calculate_solar_pump(req: SolarPumpRequest):
+    """Computes recommended solar pump HP, solar PV array, PM-KUSUM subsidy, and diesel savings."""
+    try:
+        return calculate_solar_pump_kusum(
+            water_source=req.water_source,
+            water_depth_feet=req.water_depth_feet,
+            land_size_acres=req.land_size_acres,
+            irrigation_type=req.irrigation_type,
+            farmer_category=req.farmer_category,
+            state=req.state or "All-India"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Solar pump calculator error: {str(e)}")
+
+
+# ---------------- Intercropping & Companion Crop Matrix ----------------
+@app.get("/api/intercropping", response_model=IntercropResponse)
+def get_intercropping_pairs(crop_id: str = None):
+    """Returns synergistic intercropping combinations, row ratios, and LER advantages."""
+    try:
+        pairs = get_intercropping_recommendations(crop_id=crop_id)
+        return IntercropResponse(total_pairs=len(pairs), pairs=pairs)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Intercropping error: {str(e)}")
+
+
+# ---------------- Post-Harvest Grain Storage & Moisture Doctor ----------------
+@app.get("/api/grain-storage/advisory", response_model=List[GrainStorageAdvisory])
+def get_grain_storage_advisories():
+    """Returns safe moisture thresholds and non-chemical storage guidelines for major crops."""
+    try:
+        return get_grain_storage_catalog_list()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Grain storage catalog error: {str(e)}")
+
+
+@app.post("/api/grain-storage/check-risk", response_model=StorageRiskCheckResponse)
+def check_grain_storage_risk(req: StorageRiskCheckRequest):
+    """Evaluates grain moisture, assigns spoilage risk tier, and prescribes sun-drying hours."""
+    try:
+        return evaluate_grain_storage_risk(
+            crop_id=req.crop_id,
+            measured_moisture_pct=req.measured_moisture_pct,
+            storage_method=req.storage_method,
+            intended_duration_months=req.intended_duration_months
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Grain storage risk error: {str(e)}")
+
 
 
 

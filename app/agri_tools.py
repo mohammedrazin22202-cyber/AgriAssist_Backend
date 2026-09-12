@@ -5,7 +5,7 @@ Provides:
 3. 1-Year Multi-Crop Rotation & Sequencing Planner (Kharif -> Rabi -> Zaid).
 """
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import math
 
 
@@ -846,6 +846,477 @@ def get_all_seed_crop_guidelines() -> List[Dict[str, Any]]:
             "seed_treatment": v["seed_treatment_protocol"]
         })
     return res
+
+
+# ---------------- Knapsack Sprayer & Dilution Calculator ----------------
+def calculate_sprayer_dilution(
+    tank_capacity_liters: float = 16.0,
+    land_size_acres: float = 1.0,
+    dosage_mode: str = "per_liter",
+    dosage_amount: float = 2.0,
+    chemical_form: str = "Liquid (ml)",
+    spray_volume_liters_per_acre: float = 150.0
+) -> Dict[str, Any]:
+    """Calculates chemical dosage per tank, total tanks needed, and safety guidance."""
+    tank_cap = max(1.0, float(tank_capacity_liters or 16.0))
+    acres = max(0.05, float(land_size_acres or 1.0))
+    dose = max(0.01, float(dosage_amount or 2.0))
+    water_rate = max(50.0, float(spray_volume_liters_per_acre or 150.0))
+
+    total_water = round(acres * water_rate, 1)
+    tanks_needed = round(total_water / tank_cap, 1)
+
+    unit = "ml" if "liquid" in chemical_form.lower() or "ml" in chemical_form.lower() else "grams"
+
+    if dosage_mode == "per_acre":
+        total_chem = round(dose * acres, 1)
+        chem_per_tank = round(total_chem / (total_water / tank_cap), 1)
+    else:  # "per_liter"
+        chem_per_tank = round(dose * tank_cap, 1)
+        total_chem = round(dose * total_water, 1)
+
+    nozzle = (
+        "Hollow Cone Nozzle (ideal for insecticide & fungicide canopy coverage with fine mist)"
+        if "liquid" in chemical_form.lower() else
+        "Flat Fan Nozzle (uniform swath width, ideal for weedicide and systemic sprays)"
+    )
+
+    safety = [
+        "Wear rubber gloves, eye goggles, and a clean N95 or carbon-filter mask while measuring and pouring.",
+        "Always prepare a mother solution in a 2-liter bucket before adding to the full spray tank.",
+        "Never spray facing the wind; spray across or with the gentle breeze to avoid inhalation.",
+        "Spray during early morning (6:30 - 9:30 AM) or late afternoon (4:00 - 6:30 PM) to prevent thermal evaporation.",
+        "Keep children and livestock away from sprayed fields for at least 24 to 48 hours."
+    ]
+
+    tips = [
+        f"For your {acres} acre field, prepare {tanks_needed} tanks of {tank_cap}L capacity.",
+        f"Add exactly {chem_per_tank} {unit} into each {tank_cap}L tank.",
+        "Maintain a steady walking speed of approx 1 pace per second with the spray lance 45 cm above crop foliage.",
+        "Triple-rinse the empty pesticide container with water and pour rinse-water into the spray tank before container disposal."
+    ]
+
+    return {
+        "tank_capacity_liters": tank_cap,
+        "land_size_acres": acres,
+        "chemical_per_tank": chem_per_tank,
+        "chemical_unit": unit,
+        "tanks_needed_total": tanks_needed,
+        "total_water_liters": total_water,
+        "total_chemical_needed": total_chem,
+        "nozzle_recommendation": nozzle,
+        "safety_checklist": safety,
+        "application_tips": tips
+    }
+
+
+# ---------------- Solar Ag-Pump & PM-KUSUM Sizing Engine ----------------
+def calculate_solar_pump_kusum(
+    water_source: str = "Borewell",
+    water_depth_feet: float = 150.0,
+    land_size_acres: float = 2.0,
+    irrigation_type: str = "Drip / Sprinkler",
+    farmer_category: str = "Small / Marginal (< 2 Ha)",
+    state: str = "All-India"
+) -> Dict[str, Any]:
+    """Calculates solar agricultural pump HP, solar array kW, PM-KUSUM subsidy, and diesel savings."""
+    depth = max(10.0, float(water_depth_feet or 150.0))
+    acres = max(0.2, float(land_size_acres or 2.0))
+
+    # Hydraulic sizing rules
+    is_surface = "canal" in water_source.lower() or "surface" in water_source.lower() or (depth <= 25.0 and "open" in water_source.lower())
+    
+    if is_surface:
+        pump_type = "Surface Monoblock (DC / AC)"
+        if acres <= 2.5:
+            hp = 2.0
+            kw = 1.8
+            base_cost = 125000.0
+        elif acres <= 5.0:
+            hp = 3.0
+            kw = 3.0
+            base_cost = 175000.0
+        else:
+            hp = 5.0
+            kw = 4.8
+            base_cost = 250000.0
+    else:
+        pump_type = "Submersible DC Brushless"
+        if depth <= 120.0 and acres <= 2.0:
+            hp = 2.0
+            kw = 2.0
+            base_cost = 145000.0
+        elif depth <= 220.0 and acres <= 4.0:
+            hp = 3.0
+            kw = 3.0
+            base_cost = 195000.0
+        elif depth <= 350.0 or acres <= 8.0:
+            hp = 5.0
+            kw = 5.0
+            base_cost = 285000.0
+        else:
+            hp = 7.5
+            kw = 7.5
+            base_cost = 385000.0
+
+    # PM-KUSUM Component B Subsidies:
+    # 30% Central Subsidy + 30% to 50% State Subsidy
+    central_pct = 30.0
+    is_marginal = "small" in farmer_category.lower() or "marginal" in farmer_category.lower()
+    state_pct = 40.0 if is_marginal else 30.0
+    total_sub_pct = central_pct + state_pct
+    farmer_share_pct = 100.0 - total_sub_pct
+
+    central_sub_inr = round(base_cost * (central_pct / 100.0), 2)
+    state_sub_inr = round(base_cost * (state_pct / 100.0), 2)
+    farmer_share_inr = round(base_cost * (farmer_share_pct / 100.0), 2)
+
+    # Diesel replacement economics:
+    # A diesel pump uses ~1.3 L diesel/hour. Diesel = ~₹90/L. 450 irrigation hours/year.
+    annual_diesel_liters = round(hp * 120.0 * min(5.0, acres), 0)
+    annual_diesel_savings = round(annual_diesel_liters * 90.0, 2)
+    payback_years = round(farmer_share_inr / max(1000.0, annual_diesel_savings), 1)
+
+    advisory = (
+        f"A {hp} HP {pump_type} with a {kw} kWp solar panel array will reliably deliver approx "
+        f"{int(hp * 22000)} to {int(hp * 35000)} liters/day under standard 5.5 sun hours. "
+        f"Under PM-KUSUM Component-B, you receive a {int(total_sub_pct)}% combined government subsidy. "
+        f"Farmer share of ₹{farmer_share_inr:,.0f} is eligible for low-interest bank finance via KCC with 10% down payment."
+    )
+
+    return {
+        "water_source": water_source,
+        "water_depth_feet": depth,
+        "land_size_acres": acres,
+        "recommended_pump_hp": hp,
+        "recommended_solar_array_kw": kw,
+        "pump_type": pump_type,
+        "total_estimated_cost_inr": base_cost,
+        "central_subsidy_inr": central_sub_inr,
+        "state_subsidy_inr": state_sub_inr,
+        "farmer_share_inr": farmer_share_inr,
+        "subsidy_percentage_total": total_sub_pct,
+        "annual_diesel_savings_inr": annual_diesel_savings,
+        "payback_period_years": payback_years,
+        "advisory_notes": advisory,
+        "pm_kusum_portal": "https://pmkusum.mnre.gov.in"
+    }
+
+
+# ---------------- Intercropping & Companion Planting Catalog ----------------
+INTERCROPPING_PAIRS_CATALOG: List[Dict[str, Any]] = [
+    {
+        "id": "sugarcane_mustard",
+        "main_crop_id": "sugarcane",
+        "main_crop_name": "Sugarcane",
+        "companion_crop_id": "mustard",
+        "companion_crop_name": "Mustard",
+        "row_ratio": "1 : 2 (1 Cane trench : 2 Mustard rows)",
+        "synergy_type": "Canopy & Temporal Space Optimization",
+        "land_equivalent_ratio": 1.38,
+        "nitrogen_fixation_kg_acre": 0.0,
+        "weed_suppression_pct": 45.0,
+        "pest_repellent_benefit": "Mustard glucosinolates suppress soil nematodes and early shoot borer in young cane.",
+        "economic_advisory": "Mustard matures in 85-90 days before sugarcane forms canopy, giving early cash flow of ₹22,000 - ₹30,000/acre."
+    },
+    {
+        "id": "sugarcane_potato",
+        "main_crop_id": "sugarcane",
+        "main_crop_name": "Sugarcane",
+        "companion_crop_id": "potato",
+        "companion_crop_name": "Potato",
+        "row_ratio": "1 : 2 (Wide furrow planting)",
+        "synergy_type": "Winter Season Inter-space Utilization",
+        "land_equivalent_ratio": 1.42,
+        "nitrogen_fixation_kg_acre": 0.0,
+        "weed_suppression_pct": 60.0,
+        "pest_repellent_benefit": "Dense potato foliage smothers winter weeds in slow-germinating autumn sugarcane.",
+        "economic_advisory": "High net cash return of ₹45,000 - ₹65,000/acre from potato tubers within 90 days of planting."
+    },
+    {
+        "id": "cotton_green_gram",
+        "main_crop_id": "cotton",
+        "main_crop_name": "Cotton",
+        "companion_crop_id": "green_gram",
+        "companion_crop_name": "Green Gram (Moong)",
+        "row_ratio": "1 : 1 or 1 : 2 (Between cotton rows)",
+        "synergy_type": "Biological Nitrogen Fixation & Weed Cover",
+        "land_equivalent_ratio": 1.28,
+        "nitrogen_fixation_kg_acre": 30.0,
+        "weed_suppression_pct": 55.0,
+        "pest_repellent_benefit": "Moong acts as a refuge for ladybird beetles and spiders that prey on early cotton aphids and jassids.",
+        "economic_advisory": "Moong is harvested in 65 days yielding 2-3 quintals pulse, while contributing 30 kg soil Nitrogen for peak boll formation."
+    },
+    {
+        "id": "cotton_soybean",
+        "main_crop_id": "cotton",
+        "main_crop_name": "Cotton",
+        "companion_crop_id": "soybean",
+        "companion_crop_name": "Soybean",
+        "row_ratio": "1 : 1 or 1 : 2",
+        "synergy_type": "Dual Cash & Protein Hedge",
+        "land_equivalent_ratio": 1.22,
+        "nitrogen_fixation_kg_acre": 35.0,
+        "weed_suppression_pct": 50.0,
+        "pest_repellent_benefit": "Provides microclimate humidity and reduces whitefly build-up in early cotton vegetative stages.",
+        "economic_advisory": "Soybean harvests in September, providing interim working capital before first cotton picking."
+    },
+    {
+        "id": "maize_pigeon_pea",
+        "main_crop_id": "maize",
+        "main_crop_name": "Maize (Corn)",
+        "companion_crop_id": "pigeon_pea",
+        "companion_crop_name": "Pigeon Pea (Arhar / Tur)",
+        "row_ratio": "2 : 1 (2 Maize : 1 Arhar)",
+        "synergy_type": "Root Depth & Temporal Growth Complementarity",
+        "land_equivalent_ratio": 1.35,
+        "nitrogen_fixation_kg_acre": 40.0,
+        "weed_suppression_pct": 40.0,
+        "pest_repellent_benefit": "Maize shields young Pigeon pea plants from wind stress and early pod borer infestation.",
+        "economic_advisory": "Maize is harvested at 90 days; Pigeon pea deep taproots continue utilizing subsoil moisture through winter until 160 days."
+    },
+    {
+        "id": "maize_cowpea",
+        "main_crop_id": "maize",
+        "main_crop_name": "Maize (Corn)",
+        "companion_crop_id": "cowpea",
+        "companion_crop_name": "Cowpea (Lobia)",
+        "row_ratio": "2 : 2 (Alternate strips)",
+        "synergy_type": "Erosion Control & Green Fodder Synergy",
+        "land_equivalent_ratio": 1.25,
+        "nitrogen_fixation_kg_acre": 35.0,
+        "weed_suppression_pct": 70.0,
+        "pest_repellent_benefit": "Dense spreading cowpea vine acts as living mulch, keeping soil temperature 3°C cooler.",
+        "economic_advisory": "Provides continuous nutritious green fodder for farm cattle while boosting maize cob weight."
+    },
+    {
+        "id": "wheat_mustard",
+        "main_crop_id": "wheat",
+        "main_crop_name": "Wheat",
+        "companion_crop_id": "mustard",
+        "companion_crop_name": "Mustard",
+        "row_ratio": "9 : 1 (Every 10th row is Mustard)",
+        "synergy_type": "Pest Trap Crop & Climate Risk Buffer",
+        "land_equivalent_ratio": 1.18,
+        "nitrogen_fixation_kg_acre": 0.0,
+        "weed_suppression_pct": 30.0,
+        "pest_repellent_benefit": "Mustard plants trap wheat aphids and attract beneficial honeybee pollinators.",
+        "economic_advisory": "Traditional North Indian security system against winter frost or market price dip in wheat."
+    },
+    {
+        "id": "wheat_chickpea",
+        "main_crop_id": "wheat",
+        "main_crop_name": "Wheat",
+        "companion_crop_id": "chickpea",
+        "companion_crop_name": "Chickpea (Gram)",
+        "row_ratio": "4 : 2 (4 Wheat : 2 Gram)",
+        "synergy_type": "Nitrogen Synergy in Semi-Arid Soils",
+        "land_equivalent_ratio": 1.24,
+        "nitrogen_fixation_kg_acre": 25.0,
+        "weed_suppression_pct": 35.0,
+        "pest_repellent_benefit": "Gram rhizosphere organic acids mobilize insoluble soil phosphorus for adjacent wheat roots.",
+        "economic_advisory": "Cuts synthetic Urea requirement by 20% while producing high-protein pulse grains."
+    },
+    {
+        "id": "tomato_marigold",
+        "main_crop_id": "tomato",
+        "main_crop_name": "Tomato",
+        "companion_crop_id": "marigold",
+        "companion_crop_name": "African Marigold (Genda)",
+        "row_ratio": "16 : 1 or Border Trap rows",
+        "synergy_type": "Biological Nematode & Borer Trap Crop",
+        "land_equivalent_ratio": 1.20,
+        "nitrogen_fixation_kg_acre": 0.0,
+        "weed_suppression_pct": 25.0,
+        "pest_repellent_benefit": "Marigold roots produce alpha-terthienyl that annihilates Root-Knot Nematodes (Meloidogyne); flowers attract fruit borer moths away from tomatoes.",
+        "economic_advisory": "Marigold flowers yield 15-20 quintals/acre for festive flower markets, earning ₹30,000+ extra revenue."
+    }
+]
+
+
+def get_intercropping_recommendations(crop_id: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Returns curated companion and intercropping pairs filtered by crop if requested."""
+    if not crop_id or crop_id == "all":
+        return INTERCROPPING_PAIRS_CATALOG
+    cid = crop_id.lower()
+    return [
+        p for p in INTERCROPPING_PAIRS_CATALOG
+        if p["main_crop_id"] == cid or p["companion_crop_id"] == cid
+    ]
+
+
+# ---------------- Post-Harvest Grain Storage & Moisture Engine ----------------
+GRAIN_STORAGE_CATALOG: Dict[str, Dict[str, Any]] = {
+    "wheat": {
+        "crop_name": "Wheat (गेहूं)",
+        "safe_moisture_limit_pct": 12.0,
+        "max_shelf_life_months": 12,
+        "common_storage_pests": ["Khapra Beetle (Trogoderma granarium)", "Rice Weevil (Sitophilus oryzae)", "Lesser Grain Borer"],
+        "natural_protectants": [
+            "Mix 1.5 kg clean, shade-dried Neem leaves per 100 kg grain.",
+            "Apply a 2-cm dry inert wood ash layer at the top of grain bins.",
+            "Sun-dry grain on tarpaulins for 6 hours before packing."
+        ],
+        "stacking_and_storage_guidelines": "Stack bags on wooden pallets 15 cm above ground and 45 cm away from damp walls to prevent capillary moisture seepage."
+    },
+    "rice": {
+        "crop_name": "Paddy / Rice (धान / चावल)",
+        "safe_moisture_limit_pct": 13.0,
+        "max_shelf_life_months": 10,
+        "common_storage_pests": ["Angoumois Grain Moth (Sitotroga cerealella)", "Rice Weevil", "Rust Red Flour Beetle"],
+        "natural_protectants": [
+            "Mix dried mint (Pudina) or Nirgundi leaves at 2% weight in storage bags.",
+            "Store in hermetic multi-layer HDPE SuperGrain bags to suffocate insects organically."
+        ],
+        "stacking_and_storage_guidelines": "Maintain bag moisture strictly below 13.5% to avoid yellowing of kernels and yellow fungal mold."
+    },
+    "maize": {
+        "crop_name": "Maize / Corn (मक्का)",
+        "safe_moisture_limit_pct": 13.0,
+        "max_shelf_life_months": 8,
+        "common_storage_pests": ["Maize Weevil (Sitophilus zeamais)", "Larger Grain Borer", "Aspergillus flavus"],
+        "natural_protectants": [
+            "Sun dry shelled kernels in thin layers (3-4 cm) turning every 2 hours.",
+            "Mix coarse wood ash at 3% weight for seed maize storage."
+        ],
+        "stacking_and_storage_guidelines": "Maize is highly susceptible to Aflatoxin mold if moisture exceeds 14%. Must be dry and ventilated."
+    },
+    "pearl_millet": {
+        "crop_name": "Pearl Millet / Bajra (बाजरा)",
+        "safe_moisture_limit_pct": 11.0,
+        "max_shelf_life_months": 9,
+        "common_storage_pests": ["Tribolium castaneum (Flour beetle)", "Grain moth"],
+        "natural_protectants": [
+            "Store in traditional mud-silos (kothi) sealed with cow-dung and clay plaster.",
+            "Place dried camphor (Karpur) cubes in cloth pouches in storage bins."
+        ],
+        "stacking_and_storage_guidelines": "Bajra fat oxidizes quickly if moist, leading to bitterness and rancidity within 60 days."
+    },
+    "chickpea": {
+        "crop_name": "Chickpea / Chana (चना)",
+        "safe_moisture_limit_pct": 9.5,
+        "max_shelf_life_months": 12,
+        "common_storage_pests": ["Pulse Beetle / Dhora (Callosobruchus chinensis)"],
+        "natural_protectants": [
+            "Coat seeds with 250 ml Castor oil or Mustard oil per 100 kg pulse. The oil film asphyxiates beetle eggs without affecting germination.",
+            "Mix dry turmeric powder (Haldi) @ 200g/quintal as an organic disinfectant."
+        ],
+        "stacking_and_storage_guidelines": "Keep in airtight containers. Pulse beetle attacks start from the field and multiply rapidly in warm bins."
+    },
+    "pigeon_pea": {
+        "crop_name": "Pigeon Pea / Arhar (तुअर / अरहर)",
+        "safe_moisture_limit_pct": 10.0,
+        "max_shelf_life_months": 12,
+        "common_storage_pests": ["Pulse Beetle (Callosobruchus maculatus)"],
+        "natural_protectants": [
+            "Mix edible vegetable oil (Castor / Sesame) at 3 ml/kg seed.",
+            "Hermetic bag sealing creates high CO2 environment, killing all stages of Dhora beetles in 14 days."
+        ],
+        "stacking_and_storage_guidelines": "Dry pods thoroughly before threshing. Store split dal in clean metal bins with tight lids."
+    },
+    "mustard": {
+        "crop_name": "Mustard / Rapeseed (सरसों)",
+        "safe_moisture_limit_pct": 8.0,
+        "max_shelf_life_months": 10,
+        "common_storage_pests": ["Oryzaephilus surinamensis (Saw-toothed beetle)", "Mold"],
+        "natural_protectants": [
+            "Sun dry seeds for 3 consecutive days until moisture is below 8%.",
+            "Store in new or formalin-disinfected gunny bags."
+        ],
+        "stacking_and_storage_guidelines": "Oilseed moisture above 9% triggers enzyme lipolysis, turning seed oil dark and acidic."
+    },
+    "soybean": {
+        "crop_name": "Soybean (सोयाबीन)",
+        "safe_moisture_limit_pct": 10.0,
+        "max_shelf_life_months": 8,
+        "common_storage_pests": ["Bruchid beetles", "Fungal rot"],
+        "natural_protectants": [
+            "Handle gently to prevent mechanical damage to seed coat.",
+            "Do not stack more than 5-6 bags high to prevent crushing and pressure heating."
+        ],
+        "stacking_and_storage_guidelines": "Soybean seed viability drops rapidly in hot storage. Maintain cool (below 25°C) shaded storage."
+    }
+}
+
+
+def get_grain_storage_catalog_list() -> List[Dict[str, Any]]:
+    """Returns storage guidelines for all crops."""
+    res = []
+    for k, v in GRAIN_STORAGE_CATALOG.items():
+        res.append({
+            "crop_id": k,
+            "crop_name": v["crop_name"],
+            "safe_moisture_limit_pct": v["safe_moisture_limit_pct"],
+            "max_shelf_life_months": v["max_shelf_life_months"],
+            "common_storage_pests": v["common_storage_pests"],
+            "natural_protectants": v["natural_protectants"],
+            "stacking_and_storage_guidelines": v["stacking_and_storage_guidelines"]
+        })
+    return res
+
+
+def evaluate_grain_storage_risk(
+    crop_id: str = "wheat",
+    measured_moisture_pct: float = 12.0,
+    storage_method: str = "Jute Gunny Bags",
+    intended_duration_months: int = 6
+) -> Dict[str, Any]:
+    """Evaluates grain moisture, assigns risk tier, and prescribes sun-drying and preservation steps."""
+    cid = crop_id.lower()
+    profile = GRAIN_STORAGE_CATALOG.get(cid)
+    if not profile:
+        profile = {
+            "crop_name": crop_id.title(),
+            "safe_moisture_limit_pct": 11.0,
+            "max_shelf_life_months": 8,
+            "common_storage_pests": ["Storage weevils", "Grain moths"],
+            "natural_protectants": ["Sun-dry thoroughly", "Mix dry neem leaves @ 1.5 kg/quintal"],
+            "stacking_and_storage_guidelines": "Keep on wooden dunnage in dry ventilated area."
+        }
+
+    safe_limit = profile["safe_moisture_limit_pct"]
+    moisture = max(4.0, min(30.0, float(measured_moisture_pct or 12.0)))
+    diff = moisture - safe_limit
+
+    if diff <= 0:
+        risk_level = "Safe / Green (Surakshit)"
+        explanation = (
+            f"Your measured moisture of {moisture}% is at or below the safe ceiling ({safe_limit}%). "
+            f"Grain is in prime condition for long-term storage (up to {intended_duration_months} months) with negligible risk of fungus."
+        )
+        drying_hours = 0.0
+    elif diff <= 2.5:
+        risk_level = "Moderate Risk / Yellow (Madhyam Khatra)"
+        explanation = (
+            f"Moisture ({moisture}%) exceeds the safe threshold by {round(diff, 1)}%. "
+            "Storage weevils and latent fungal spores will become active within 30-45 days, causing grain heating and weight loss."
+        )
+        drying_hours = round(diff * 3.0, 1)
+    else:
+        risk_level = "Critical Spoilage / Red (Gambhir Khatra)"
+        explanation = (
+            f"DANGER: Moisture ({moisture}%) is dangerously high (+{round(diff, 1)}% above safe limit). "
+            "High risk of Aspergillus aflatoxins, bag caking, and complete germination failure. Immediate action required!"
+        )
+        drying_hours = round(diff * 4.0, 1)
+
+    enwr_benefit = (
+        "Deposit safe grain in WDRA-registered warehouses to get an electronic Negotiable Warehouse Receipt (e-NWR). "
+        "You can pledge the e-NWR with public banks for a 70% advance loan at subsidized 7% interest, avoiding post-harvest distress sales!"
+    )
+
+    return {
+        "crop_id": cid,
+        "crop_name": profile["crop_name"],
+        "measured_moisture_pct": moisture,
+        "safe_moisture_limit_pct": safe_limit,
+        "risk_level": risk_level,
+        "risk_explanation": explanation,
+        "sun_drying_hours_needed": drying_hours,
+        "traditional_preservation_tips": profile["natural_protectants"],
+        "enwr_warehouse_pledge_benefit": enwr_benefit
+    }
+
 
 
 
