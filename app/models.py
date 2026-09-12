@@ -393,3 +393,106 @@ class SeedRateResponse(BaseModel):
     agronomic_advisory: str
 
 
+# ---------------- Knapsack Sprayer & Dilution Models ----------------
+class SprayerRequest(BaseModel):
+    tank_capacity_liters: float = 16.0
+    land_size_acres: float = 1.0
+    dosage_mode: str = "per_liter"  # "per_liter" or "per_acre"
+    dosage_amount: float = 2.0  # ml or grams
+    chemical_form: str = "Liquid (ml)"  # "Liquid (ml)" or "Powder (g)"
+    spray_volume_liters_per_acre: float = 150.0
+
+
+class SprayerResponse(BaseModel):
+    tank_capacity_liters: float
+    land_size_acres: float
+    chemical_per_tank: float
+    chemical_unit: str
+    tanks_needed_total: float
+    total_water_liters: float
+    total_chemical_needed: float
+    nozzle_recommendation: str
+    safety_checklist: List[str]
+    application_tips: List[str]
+
+
+# ---------------- Solar Ag-Pump & PM-KUSUM Models ----------------
+class SolarPumpRequest(BaseModel):
+    water_source: str = "Borewell"  # "Borewell", "Open Well", "Canal / Surface"
+    water_depth_feet: float = 150.0
+    land_size_acres: float = 2.0
+    irrigation_type: str = "Drip / Sprinkler"  # "Flood", "Drip / Sprinkler"
+    farmer_category: str = "Small / Marginal (< 2 Ha)"
+    state: Optional[str] = "All-India"
+
+
+class SolarPumpResponse(BaseModel):
+    water_source: str
+    water_depth_feet: float
+    land_size_acres: float
+    recommended_pump_hp: float
+    recommended_solar_array_kw: float
+    pump_type: str
+    total_estimated_cost_inr: float
+    central_subsidy_inr: float
+    state_subsidy_inr: float
+    farmer_share_inr: float
+    subsidy_percentage_total: float
+    annual_diesel_savings_inr: float
+    payback_period_years: float
+    advisory_notes: str
+    pm_kusum_portal: str = "https://pmkusum.mnre.gov.in"
+
+
+# ---------------- Intercropping & Companion Models ----------------
+class IntercropPair(BaseModel):
+    id: str
+    main_crop_id: str
+    main_crop_name: str
+    companion_crop_id: str
+    companion_crop_name: str
+    row_ratio: str
+    synergy_type: str
+    land_equivalent_ratio: float
+    nitrogen_fixation_kg_acre: float
+    weed_suppression_pct: float
+    pest_repellent_benefit: str
+    economic_advisory: str
+
+
+class IntercropResponse(BaseModel):
+    total_pairs: int
+    pairs: List[IntercropPair]
+
+
+# ---------------- Post-Harvest Storage & Moisture Models ----------------
+class StorageRiskCheckRequest(BaseModel):
+    crop_id: str = "wheat"
+    measured_moisture_pct: float = 12.0
+    storage_method: str = "Jute Gunny Bags"  # "Jute Gunny Bags", "HDPE Bags", "Metal Bins", "Mud Kothi"
+    intended_duration_months: int = 6
+
+
+class StorageRiskCheckResponse(BaseModel):
+    crop_id: str
+    crop_name: str
+    measured_moisture_pct: float
+    safe_moisture_limit_pct: float
+    risk_level: str  # "Safe / Green", "Moderate Risk / Yellow", "Critical Spoilage / Red"
+    risk_explanation: str
+    sun_drying_hours_needed: float
+    traditional_preservation_tips: List[str]
+    enwr_warehouse_pledge_benefit: str
+
+
+class GrainStorageAdvisory(BaseModel):
+    crop_id: str
+    crop_name: str
+    safe_moisture_limit_pct: float
+    max_shelf_life_months: int
+    common_storage_pests: List[str]
+    natural_protectants: List[str]
+    stacking_and_storage_guidelines: str
+
+
+
