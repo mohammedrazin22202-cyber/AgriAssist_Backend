@@ -263,3 +263,114 @@ def test_government_schemes_nested_structure():
     assert data["pm_kisan_annual_cash_inr"] == 6000
 
 
+def test_sprayer_calculator_per_liter():
+    """Verify knapsack sprayer calculation with dosage per liter."""
+    payload = {
+        "tank_capacity_liters": 16.0,
+        "land_size_acres": 2.0,
+        "dosage_mode": "per_liter",
+        "dosage_amount": 2.5,
+        "chemical_form": "Liquid (ml)",
+        "spray_volume_liters_per_acre": 150.0
+    }
+    response = client.post("/api/sprayer-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["chemical_per_tank"] == 40.0  # 2.5 ml * 16 L
+    assert data["total_water_liters"] == 300.0  # 2 acres * 150 L
+    assert data["tanks_needed_total"] == 18.8  # 300 / 16
+    assert data["chemical_unit"] == "ml"
+    assert len(data["safety_checklist"]) >= 3
+
+
+def test_sprayer_calculator_per_acre():
+    """Verify knapsack sprayer calculation with dosage per acre."""
+    payload = {
+        "tank_capacity_liters": 15.0,
+        "land_size_acres": 1.0,
+        "dosage_mode": "per_acre",
+        "dosage_amount": 300.0,
+        "chemical_form": "Powder (g)",
+        "spray_volume_liters_per_acre": 150.0
+    }
+    response = client.post("/api/sprayer-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_chemical_needed"] == 300.0
+    assert data["chemical_per_tank"] == 30.0  # (300 / 10 tanks)
+    assert data["chemical_unit"] == "grams"
+
+
+def test_solar_pump_calculator():
+    """Verify solar pump sizing and PM-KUSUM 60-80% subsidy breakdown."""
+    payload = {
+        "water_source": "Borewell",
+        "water_depth_feet": 180.0,
+        "land_size_acres": 3.0,
+        "irrigation_type": "Drip / Sprinkler",
+        "farmer_category": "Small / Marginal (< 2 Ha)"
+    }
+    response = client.post("/api/solar-pump-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["recommended_pump_hp"] >= 3.0
+    assert data["recommended_solar_array_kw"] >= 3.0
+    assert data["central_subsidy_inr"] > 0
+    assert data["state_subsidy_inr"] > 0
+    assert data["farmer_share_inr"] < data["total_estimated_cost_inr"]
+    assert data["subsidy_percentage_total"] == 70.0  # 30% central + 40% state for marginal
+    assert data["annual_diesel_savings_inr"] > 20000.0
+    assert data["payback_period_years"] > 0.5
+
+
+def test_intercropping_endpoint():
+    """Verify synergistic companion crop combinations and LER."""
+    response = client.get("/api/intercropping")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_pairs"] >= 8
+    # Test specific crop filter
+    response_cane = client.get("/api/intercropping?crop_id=sugarcane")
+    assert response_cane.status_code == 200
+    cane_data = response_cane.json()
+    assert cane_data["total_pairs"] >= 2
+    assert any("Mustard" in p["companion_crop_name"] for p in cane_data["pairs"])
+
+
+def test_grain_storage_catalog_and_risk_check():
+    """Verify grain moisture safe thresholds and risk check evaluation."""
+    # 1. Catalog
+    response_cat = client.get("/api/grain-storage/advisory")
+    assert response_cat.status_code == 200
+    cat_data = response_cat.json()
+    assert len(cat_data) >= 5
+    wheat_advisory = next((c for c in cat_data if c["crop_id"] == "wheat"), None)
+    assert wheat_advisory is not None
+    assert wheat_advisory["safe_moisture_limit_pct"] == 12.0
+
+    # 2. Safe check
+    payload_safe = {
+        "crop_id": "wheat",
+        "measured_moisture_pct": 11.5,
+        "storage_method": "Jute Gunny Bags"
+    }
+    resp_safe = client.post("/api/grain-storage/check-risk", json=payload_safe)
+    assert resp_safe.status_code == 200
+    data_safe = resp_safe.json()
+    assert "Safe" in data_safe["risk_level"]
+    assert data_safe["sun_drying_hours_needed"] == 0.0
+
+    # 3. Critical spoilage check (> 14.5% for wheat)
+    payload_danger = {
+        "crop_id": "wheat",
+        "measured_moisture_pct": 16.0,
+        "storage_method": "Jute Gunny Bags"
+    }
+    resp_danger = client.post("/api/grain-storage/check-risk", json=payload_danger)
+    assert resp_danger.status_code == 200
+    data_danger = resp_danger.json()
+    assert "Critical" in data_danger["risk_level"]
+    assert data_danger["sun_drying_hours_needed"] > 10.0
+
+
+
