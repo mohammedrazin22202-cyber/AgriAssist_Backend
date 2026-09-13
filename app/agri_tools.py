@@ -902,11 +902,15 @@ def calculate_sprayer_dilution(
         "chemical_per_tank": chem_per_tank,
         "chemical_unit": unit,
         "tanks_needed_total": tanks_needed,
+        "total_spray_tanks": tanks_needed,
         "total_water_liters": total_water,
         "total_chemical_needed": total_chem,
+        "total_chemical_required": total_chem,
+        "total_chemical_unit": unit,
         "nozzle_recommendation": nozzle,
         "safety_checklist": safety,
-        "application_tips": tips
+        "application_tips": tips,
+        "recommendations": tips + safety[:2]
     }
 
 
@@ -976,6 +980,8 @@ def calculate_solar_pump_kusum(
     annual_diesel_liters = round(hp * 120.0 * min(5.0, acres), 0)
     annual_diesel_savings = round(annual_diesel_liters * 90.0, 2)
     payback_years = round(farmer_share_inr / max(1000.0, annual_diesel_savings), 1)
+    tdh_meters = round(depth * 0.3048 * 1.25)
+    co2_tons = round(annual_diesel_liters * 0.00268, 1)
 
     advisory = (
         f"A {hp} HP {pump_type} with a {kw} kWp solar panel array will reliably deliver approx "
@@ -990,13 +996,23 @@ def calculate_solar_pump_kusum(
         "land_size_acres": acres,
         "recommended_pump_hp": hp,
         "recommended_solar_array_kw": kw,
+        "solar_array_kwp": kw,
         "pump_type": pump_type,
+        "total_dynamic_head_meters": tdh_meters,
         "total_estimated_cost_inr": base_cost,
+        "estimated_total_cost": base_cost,
         "central_subsidy_inr": central_sub_inr,
+        "central_subsidy": central_sub_inr,
         "state_subsidy_inr": state_sub_inr,
+        "state_subsidy": state_sub_inr,
         "farmer_share_inr": farmer_share_inr,
+        "farmer_share": farmer_share_inr,
+        "bank_loan_available": round(base_cost * 0.30, 2),
         "subsidy_percentage_total": total_sub_pct,
         "annual_diesel_savings_inr": annual_diesel_savings,
+        "annual_diesel_cost_savings_rs": annual_diesel_savings,
+        "annual_diesel_saved_liters": annual_diesel_liters,
+        "co2_reduction_tons_per_year": co2_tons,
         "payback_period_years": payback_years,
         "advisory_notes": advisory,
         "pm_kusum_portal": "https://pmkusum.mnre.gov.in"
@@ -1136,13 +1152,26 @@ INTERCROPPING_PAIRS_CATALOG: List[Dict[str, Any]] = [
 
 def get_intercropping_recommendations(crop_id: Optional[str] = None) -> List[Dict[str, Any]]:
     """Returns curated companion and intercropping pairs filtered by crop if requested."""
-    if not crop_id or crop_id == "all":
-        return INTERCROPPING_PAIRS_CATALOG
-    cid = crop_id.lower()
-    return [
-        p for p in INTERCROPPING_PAIRS_CATALOG
-        if p["main_crop_id"] == cid or p["companion_crop_id"] == cid
-    ]
+    pairs = INTERCROPPING_PAIRS_CATALOG
+    if crop_id and crop_id != "all":
+        cid = crop_id.lower()
+        pairs = [
+            p for p in INTERCROPPING_PAIRS_CATALOG
+            if p["main_crop_id"] == cid or p["companion_crop_id"] == cid
+        ]
+    
+    enriched = []
+    for p in pairs:
+        item = dict(p)
+        item["main_crop"] = p["main_crop_name"]
+        item["companion_crop"] = p["companion_crop_name"]
+        item["spatial_ratio"] = p["row_ratio"]
+        item["ler"] = p["land_equivalent_ratio"]
+        item["biological_benefit"] = p["pest_repellent_benefit"]
+        item["recommended_season"] = "Rabi" if "wheat" in p["main_crop_id"] or "mustard" in p["main_crop_id"] or "potato" in p["companion_crop_id"] else ("All seasons" if "tomato" in p["main_crop_id"] else "Kharif")
+        item["water_compatibility"] = "Drip / Conserved moisture"
+        enriched.append(item)
+    return enriched
 
 
 # ---------------- Post-Harvest Grain Storage & Moisture Engine ----------------
@@ -1243,13 +1272,20 @@ def get_grain_storage_catalog_list() -> List[Dict[str, Any]]:
     """Returns storage guidelines for all crops."""
     res = []
     for k, v in GRAIN_STORAGE_CATALOG.items():
+        pests_str = ", ".join(v.get("common_storage_pests", []))
+        practices_str = " ".join(v.get("natural_protectants", []))
         res.append({
             "crop_id": k,
             "crop_name": v["crop_name"],
+            "crop": v["crop_name"],
             "safe_moisture_limit_pct": v["safe_moisture_limit_pct"],
+            "safe_moisture_pct": v["safe_moisture_limit_pct"],
             "max_shelf_life_months": v["max_shelf_life_months"],
+            "max_safe_duration_months": v["max_shelf_life_months"],
             "common_storage_pests": v["common_storage_pests"],
+            "major_pests": pests_str,
             "natural_protectants": v["natural_protectants"],
+            "safe_practices": practices_str,
             "stacking_and_storage_guidelines": v["stacking_and_storage_guidelines"]
         })
     return res
@@ -1262,11 +1298,21 @@ def evaluate_grain_storage_risk(
     intended_duration_months: int = 6
 ) -> Dict[str, Any]:
     """Evaluates grain moisture, assigns risk tier, and prescribes sun-drying and preservation steps."""
-    cid = crop_id.lower()
+    cid = (crop_id or "wheat").lower().strip()
     profile = GRAIN_STORAGE_CATALOG.get(cid)
     if not profile:
+        for k, v in GRAIN_STORAGE_CATALOG.items():
+            k_lower = k.lower()
+            v_name_lower = v["crop_name"].lower()
+            if (k_lower in cid or cid in k_lower or 
+                any(token in cid for token in k_lower.split("_")) or
+                any(token in v_name_lower for token in cid.split() if len(token) > 2)):
+                profile = v
+                cid = k
+                break
+    if not profile:
         profile = {
-            "crop_name": crop_id.title(),
+            "crop_name": cid.title(),
             "safe_moisture_limit_pct": 11.0,
             "max_shelf_life_months": 8,
             "common_storage_pests": ["Storage weevils", "Grain moths"],
@@ -1305,16 +1351,28 @@ def evaluate_grain_storage_risk(
         "You can pledge the e-NWR with public banks for a 70% advance loan at subsidized 7% interest, avoiding post-harvest distress sales!"
     )
 
+    action_plan = []
+    if drying_hours > 0:
+        action_plan.append(f"Spread grain on clean tarpaulin for intensive sun-drying (approx {drying_hours} total hours across sunny days).")
+    else:
+        action_plan.append("Grain moisture is within safe physiological thresholds for storage.")
+    action_plan.extend(profile["natural_protectants"])
+    action_plan.append(profile["stacking_and_storage_guidelines"])
+
     return {
         "crop_id": cid,
         "crop_name": profile["crop_name"],
         "measured_moisture_pct": moisture,
+        "current_moisture_pct": moisture,
         "safe_moisture_limit_pct": safe_limit,
+        "safe_moisture_pct": safe_limit,
         "risk_level": risk_level,
         "risk_explanation": explanation,
         "sun_drying_hours_needed": drying_hours,
         "traditional_preservation_tips": profile["natural_protectants"],
-        "enwr_warehouse_pledge_benefit": enwr_benefit
+        "enwr_warehouse_pledge_benefit": enwr_benefit,
+        "spoilage_warnings": [explanation],
+        "drying_action_plan": action_plan
     }
 
 

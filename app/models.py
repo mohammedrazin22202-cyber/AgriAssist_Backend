@@ -396,11 +396,14 @@ class SeedRateResponse(BaseModel):
 # ---------------- Knapsack Sprayer & Dilution Models ----------------
 class SprayerRequest(BaseModel):
     tank_capacity_liters: float = 16.0
-    land_size_acres: float = 1.0
+    land_size_acres: Optional[float] = None
+    field_acres: Optional[float] = None  # Frontend compatibility alias
     dosage_mode: str = "per_liter"  # "per_liter" or "per_acre"
     dosage_amount: float = 2.0  # ml or grams
-    chemical_form: str = "Liquid (ml)"  # "Liquid (ml)" or "Powder (g)"
-    spray_volume_liters_per_acre: float = 150.0
+    chemical_form: Optional[str] = None  # "Liquid (ml)" or "Powder (g)"
+    chemical_formulation: Optional[str] = None  # Frontend compatibility alias
+    spray_volume_liters_per_acre: Optional[float] = None
+    water_volume_liters_per_acre: Optional[float] = None  # Frontend compatibility alias
 
 
 class SprayerResponse(BaseModel):
@@ -409,19 +412,25 @@ class SprayerResponse(BaseModel):
     chemical_per_tank: float
     chemical_unit: str
     tanks_needed_total: float
+    total_spray_tanks: Optional[float] = None  # Frontend compatibility alias
     total_water_liters: float
     total_chemical_needed: float
+    total_chemical_required: Optional[float] = None  # Frontend compatibility alias
+    total_chemical_unit: Optional[str] = None  # Frontend compatibility alias
     nozzle_recommendation: str
     safety_checklist: List[str]
     application_tips: List[str]
+    recommendations: Optional[List[str]] = None  # Frontend compatibility alias
 
 
 # ---------------- Solar Ag-Pump & PM-KUSUM Models ----------------
 class SolarPumpRequest(BaseModel):
     water_source: str = "Borewell"  # "Borewell", "Open Well", "Canal / Surface"
     water_depth_feet: float = 150.0
-    land_size_acres: float = 2.0
-    irrigation_type: str = "Drip / Sprinkler"  # "Flood", "Drip / Sprinkler"
+    land_size_acres: Optional[float] = None
+    command_area_acres: Optional[float] = None  # Frontend compatibility alias
+    irrigation_type: Optional[str] = None  # "Flood", "Drip / Sprinkler"
+    irrigation_method: Optional[str] = None  # Frontend compatibility alias
     farmer_category: str = "Small / Marginal (< 2 Ha)"
     state: Optional[str] = "All-India"
 
@@ -432,13 +441,23 @@ class SolarPumpResponse(BaseModel):
     land_size_acres: float
     recommended_pump_hp: float
     recommended_solar_array_kw: float
+    solar_array_kwp: Optional[float] = None  # Frontend compatibility alias
     pump_type: str
+    total_dynamic_head_meters: Optional[float] = None  # Frontend compatibility alias
     total_estimated_cost_inr: float
+    estimated_total_cost: Optional[float] = None  # Frontend compatibility alias
     central_subsidy_inr: float
+    central_subsidy: Optional[float] = None  # Frontend compatibility alias
     state_subsidy_inr: float
+    state_subsidy: Optional[float] = None  # Frontend compatibility alias
     farmer_share_inr: float
+    farmer_share: Optional[float] = None  # Frontend compatibility alias
+    bank_loan_available: Optional[float] = None  # Frontend compatibility alias
     subsidy_percentage_total: float
     annual_diesel_savings_inr: float
+    annual_diesel_cost_savings_rs: Optional[float] = None  # Frontend compatibility alias
+    annual_diesel_saved_liters: Optional[float] = None  # Frontend compatibility alias
+    co2_reduction_tons_per_year: Optional[float] = None  # Frontend compatibility alias
     payback_period_years: float
     advisory_notes: str
     pm_kusum_portal: str = "https://pmkusum.mnre.gov.in"
@@ -449,15 +468,22 @@ class IntercropPair(BaseModel):
     id: str
     main_crop_id: str
     main_crop_name: str
+    main_crop: Optional[str] = None  # Frontend compatibility alias
     companion_crop_id: str
     companion_crop_name: str
+    companion_crop: Optional[str] = None  # Frontend compatibility alias
     row_ratio: str
+    spatial_ratio: Optional[str] = None  # Frontend compatibility alias
     synergy_type: str
     land_equivalent_ratio: float
+    ler: Optional[float] = None  # Frontend compatibility alias
     nitrogen_fixation_kg_acre: float
     weed_suppression_pct: float
     pest_repellent_benefit: str
     economic_advisory: str
+    biological_benefit: Optional[str] = None  # Frontend compatibility alias
+    recommended_season: Optional[str] = None  # Frontend compatibility alias
+    water_compatibility: Optional[str] = None  # Frontend compatibility alias
 
 
 class IntercropResponse(BaseModel):
@@ -467,32 +493,45 @@ class IntercropResponse(BaseModel):
 
 # ---------------- Post-Harvest Storage & Moisture Models ----------------
 class StorageRiskCheckRequest(BaseModel):
-    crop_id: str = "wheat"
-    measured_moisture_pct: float = 12.0
+    crop_id: Optional[str] = None
+    crop_name: Optional[str] = None  # Frontend compatibility alias
+    measured_moisture_pct: Optional[float] = None
+    current_moisture_pct: Optional[float] = None  # Frontend compatibility alias
     storage_method: str = "Jute Gunny Bags"  # "Jute Gunny Bags", "HDPE Bags", "Metal Bins", "Mud Kothi"
-    intended_duration_months: int = 6
+    intended_duration_months: Optional[int] = None
+    planned_duration_months: Optional[int] = None  # Frontend compatibility alias
 
 
 class StorageRiskCheckResponse(BaseModel):
     crop_id: str
     crop_name: str
     measured_moisture_pct: float
+    current_moisture_pct: Optional[float] = None  # Frontend compatibility alias
     safe_moisture_limit_pct: float
+    safe_moisture_pct: Optional[float] = None  # Frontend compatibility alias
     risk_level: str  # "Safe / Green", "Moderate Risk / Yellow", "Critical Spoilage / Red"
     risk_explanation: str
     sun_drying_hours_needed: float
     traditional_preservation_tips: List[str]
     enwr_warehouse_pledge_benefit: str
+    spoilage_warnings: Optional[List[str]] = None  # Frontend compatibility alias
+    drying_action_plan: Optional[List[str]] = None  # Frontend compatibility alias
 
 
 class GrainStorageAdvisory(BaseModel):
     crop_id: str
     crop_name: str
+    crop: Optional[str] = None  # Frontend compatibility alias
     safe_moisture_limit_pct: float
+    safe_moisture_pct: Optional[float] = None  # Frontend compatibility alias
     max_shelf_life_months: int
+    max_safe_duration_months: Optional[int] = None  # Frontend compatibility alias
     common_storage_pests: List[str]
+    major_pests: Optional[str] = None  # Frontend compatibility alias
     natural_protectants: List[str]
+    safe_practices: Optional[str] = None  # Frontend compatibility alias
     stacking_and_storage_guidelines: str
+
 
 
 
