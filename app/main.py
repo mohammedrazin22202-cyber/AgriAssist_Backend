@@ -384,13 +384,16 @@ def get_seed_guidelines():
 def calculate_sprayer(req: SprayerRequest):
     """Calculates chemical dosage per tank, total tanks required, and safety instructions."""
     try:
+        acres = req.land_size_acres if req.land_size_acres is not None else (req.field_acres if req.field_acres is not None else 1.0)
+        chem_form = req.chemical_form if req.chemical_form is not None else (req.chemical_formulation if req.chemical_formulation is not None else "Liquid (ml)")
+        vol = req.spray_volume_liters_per_acre if req.spray_volume_liters_per_acre is not None else (req.water_volume_liters_per_acre if req.water_volume_liters_per_acre is not None else 150.0)
         return calculate_sprayer_dilution(
             tank_capacity_liters=req.tank_capacity_liters,
-            land_size_acres=req.land_size_acres,
+            land_size_acres=acres,
             dosage_mode=req.dosage_mode,
             dosage_amount=req.dosage_amount,
-            chemical_form=req.chemical_form,
-            spray_volume_liters_per_acre=req.spray_volume_liters_per_acre
+            chemical_form=chem_form,
+            spray_volume_liters_per_acre=vol
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Sprayer calculator error: {str(e)}")
@@ -401,11 +404,13 @@ def calculate_sprayer(req: SprayerRequest):
 def calculate_solar_pump(req: SolarPumpRequest):
     """Computes recommended solar pump HP, solar PV array, PM-KUSUM subsidy, and diesel savings."""
     try:
+        acres = req.land_size_acres if req.land_size_acres is not None else (req.command_area_acres if req.command_area_acres is not None else 2.0)
+        irrig = req.irrigation_type if req.irrigation_type is not None else (req.irrigation_method if req.irrigation_method is not None else "Drip / Sprinkler")
         return calculate_solar_pump_kusum(
             water_source=req.water_source,
             water_depth_feet=req.water_depth_feet,
-            land_size_acres=req.land_size_acres,
-            irrigation_type=req.irrigation_type,
+            land_size_acres=acres,
+            irrigation_type=irrig,
             farmer_category=req.farmer_category,
             state=req.state or "All-India"
         )
@@ -415,10 +420,11 @@ def calculate_solar_pump(req: SolarPumpRequest):
 
 # ---------------- Intercropping & Companion Crop Matrix ----------------
 @app.get("/api/intercropping", response_model=IntercropResponse)
-def get_intercropping_pairs(crop_id: str = None):
+def get_intercropping_pairs(crop_id: str = None, main_crop: str = None):
     """Returns synergistic intercropping combinations, row ratios, and LER advantages."""
     try:
-        pairs = get_intercropping_recommendations(crop_id=crop_id)
+        target = crop_id or main_crop
+        pairs = get_intercropping_recommendations(crop_id=target)
         return IntercropResponse(total_pairs=len(pairs), pairs=pairs)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Intercropping error: {str(e)}")
@@ -438,14 +444,18 @@ def get_grain_storage_advisories():
 def check_grain_storage_risk(req: StorageRiskCheckRequest):
     """Evaluates grain moisture, assigns spoilage risk tier, and prescribes sun-drying hours."""
     try:
+        cid = req.crop_id or req.crop_name or "wheat"
+        moist = req.measured_moisture_pct if req.measured_moisture_pct is not None else (req.current_moisture_pct if req.current_moisture_pct is not None else 12.0)
+        dur = req.intended_duration_months if req.intended_duration_months is not None else (req.planned_duration_months if req.planned_duration_months is not None else 6)
         return evaluate_grain_storage_risk(
-            crop_id=req.crop_id,
-            measured_moisture_pct=req.measured_moisture_pct,
-            storage_method=req.storage_method,
-            intended_duration_months=req.intended_duration_months
+            crop_id=cid,
+            measured_moisture_pct=moist,
+            storage_method=req.storage_method or "Jute Gunny Bags",
+            intended_duration_months=dur
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Grain storage risk error: {str(e)}")
+
 
 
 
