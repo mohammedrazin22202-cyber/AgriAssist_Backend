@@ -373,4 +373,94 @@ def test_grain_storage_catalog_and_risk_check():
     assert data_danger["sun_drying_hours_needed"] > 10.0
 
 
+def test_sprayer_frontend_aliases():
+    """Verify knapsack sprayer calculator accepts frontend keys and returns frontend aliases."""
+    payload = {
+        "tank_capacity_liters": 16.0,
+        "field_acres": 2.5,
+        "dosage_mode": "per_acre",
+        "dosage_amount": 200.0,
+        "chemical_formulation": "liquid_ml",
+        "water_volume_liters_per_acre": 160.0
+    }
+    response = client.post("/api/sprayer-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["land_size_acres"] == 2.5
+    assert data["total_water_liters"] == 400.0  # 2.5 * 160
+    assert data["total_spray_tanks"] == 25.0    # 400 / 16
+    assert data["total_chemical_required"] == 500.0  # 2.5 * 200
+    assert data["total_chemical_unit"] == "ml"
+    assert "recommendations" in data
+    assert len(data["recommendations"]) >= 3
+
+
+def test_solar_pump_frontend_aliases():
+    """Verify solar pump calculator accepts frontend keys and returns frontend aliases."""
+    payload = {
+        "water_source": "borewell",
+        "water_depth_feet": 120.0,
+        "command_area_acres": 3.0,
+        "irrigation_method": "drip",
+        "farmer_category": "General",
+        "state": "All-India"
+    }
+    response = client.post("/api/solar-pump-calculator", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["recommended_pump_hp"] >= 3.0
+    assert data["solar_array_kwp"] == data["recommended_solar_array_kw"]
+    assert data["farmer_share"] == data["farmer_share_inr"]
+    assert data["estimated_total_cost"] == data["total_estimated_cost_inr"]
+    assert data["annual_diesel_cost_savings_rs"] == data["annual_diesel_savings_inr"]
+    assert data["annual_diesel_saved_liters"] > 0
+    assert data["co2_reduction_tons_per_year"] > 0
+
+
+def test_intercropping_frontend_query_and_aliases():
+    """Verify intercropping endpoint handles main_crop param and returns frontend aliases."""
+    response = client.get("/api/intercropping?main_crop=Cotton")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_pairs"] >= 1
+    pair = data["pairs"][0]
+    assert pair["main_crop"] is not None
+    assert pair["companion_crop"] is not None
+    assert pair["spatial_ratio"] is not None
+    assert pair["ler"] == pair["land_equivalent_ratio"]
+    assert pair["biological_benefit"] is not None
+
+
+def test_grain_storage_frontend_aliases():
+    """Verify grain storage check-risk accepts frontend keys and returns frontend aliases."""
+    # 1. Advisory catalog aliases
+    response_cat = client.get("/api/grain-storage/advisory")
+    assert response_cat.status_code == 200
+    cat_data = response_cat.json()
+    paddy = next((c for c in cat_data if "rice" in c["crop_id"] or "paddy" in c["crop_name"].lower()), None)
+    assert paddy is not None
+    assert paddy["crop"] is not None
+    assert paddy["safe_moisture_pct"] == paddy["safe_moisture_limit_pct"]
+    assert paddy["max_safe_duration_months"] == paddy["max_shelf_life_months"]
+    assert paddy["major_pests"] is not None
+    assert paddy["safe_practices"] is not None
+
+    # 2. Check risk with frontend keys
+    payload = {
+        "crop_name": "Paddy / Rice",
+        "current_moisture_pct": 14.5,
+        "storage_method": "Jute Bags",
+        "planned_duration_months": 8
+    }
+    response_risk = client.post("/api/grain-storage/check-risk", json=payload)
+    assert response_risk.status_code == 200
+    risk_data = response_risk.json()
+    assert risk_data["current_moisture_pct"] == 14.5
+    assert risk_data["safe_moisture_pct"] == 13.0
+    assert "Caution" in risk_data["risk_level"] or "Moderate" in risk_data["risk_level"]
+    assert len(risk_data["spoilage_warnings"]) > 0
+    assert len(risk_data["drying_action_plan"]) > 0
+
+
+
 
