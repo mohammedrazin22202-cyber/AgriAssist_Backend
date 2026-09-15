@@ -7,6 +7,7 @@ Provides:
 
 from typing import Dict, Any, List, Optional
 import math
+from datetime import datetime, timedelta, date
 
 
 def calculate_fertilizer_prescription(
@@ -1374,6 +1375,779 @@ def evaluate_grain_storage_risk(
         "spoilage_warnings": [explanation],
         "drying_action_plan": action_plan
     }
+
+
+# =======================================================================
+# 1. Livestock & Dairy Advisory Logic
+# =======================================================================
+def calculate_livestock_ration(
+    animal_type: str = "Cow (Crossbred HF/Jersey)",
+    body_weight_kg: float = 400.0,
+    daily_milk_liters: float = 10.0,
+    milk_fat_pct: float = 4.0,
+    pregnancy_stage: str = "None"
+) -> Dict[str, Any]:
+    wt = max(15.0, body_weight_kg)
+    milk = max(0.0, daily_milk_liters)
+    fat = max(2.5, milk_fat_pct or 4.0)
+    anim_lower = animal_type.lower()
+
+    if "goat" in anim_lower:
+        dm_pct = 0.038
+        maint_concentrate = 0.15
+        conc_per_liter = 0.35
+        mineral_mix = 15.0
+        salt = 10.0
+        water_base = 6.0 + (milk * 1.5)
+    elif "buffalo" in anim_lower:
+        dm_pct = 0.030
+        maint_concentrate = 1.5
+        conc_per_liter = 0.50
+        mineral_mix = 55.0
+        salt = 35.0
+        water_base = 50.0 + (milk * 3.5)
+    elif "desi" in anim_lower or "indigenous" in anim_lower:
+        dm_pct = 0.026
+        maint_concentrate = 1.0
+        conc_per_liter = 0.40
+        mineral_mix = 50.0
+        salt = 30.0
+        water_base = 40.0 + (milk * 3.0)
+    else:
+        dm_pct = 0.030
+        maint_concentrate = 1.2
+        conc_per_liter = 0.38
+        mineral_mix = 50.0
+        salt = 30.0
+        water_base = 45.0 + (milk * 3.2)
+
+    total_dm = round(wt * dm_pct, 2)
+    preg_conc = 1.25 if "last" in pregnancy_stage.lower() or "advance" in pregnancy_stage.lower() else (0.5 if "early" in pregnancy_stage.lower() or "mid" in pregnancy_stage.lower() else 0.0)
+
+    concentrate_kg = round(maint_concentrate + (milk * conc_per_liter) + preg_conc, 2)
+    conc_dm = concentrate_kg * 0.90
+    remaining_dm = max(1.0, total_dm - conc_dm)
+
+    green_dm = remaining_dm * 0.65
+    dry_dm = remaining_dm * 0.35
+
+    green_fodder_fresh_kg = round(green_dm / 0.20, 1)
+    dry_straw_fresh_kg = round(dry_dm / 0.90, 1)
+
+    daily_cost = round((green_fodder_fresh_kg * 2.0) + (dry_straw_fresh_kg * 6.0) + (concentrate_kg * 28.0) + 5.0, 1)
+
+    tips = [
+        "Chaff (Kutti) all green and dry fodder to 1-2 inch pieces to reduce feed wastage by 20-30%.",
+        "Offer clean, fresh drinking water ad-libitum at least 3-4 times a day (clean water boosts milk yield by 10%).",
+        "Mix 50g area-specific mineral mixture and 30g iodized salt in concentrate daily to ensure regular heat cycles.",
+        "Provide leguminous green fodder (Berseem/Lucerne) alongside cereal fodder (Napier/Maize) for optimal crude protein."
+    ]
+    if "last" in pregnancy_stage.lower():
+        tips.append("Advance pregnancy: Avoid sudden feed changes, provide comfortable dry bedding, and supplement with Calcium boosters.")
+
+    return {
+        "animal_type": animal_type,
+        "body_weight_kg": wt,
+        "daily_milk_liters": milk,
+        "dry_matter_requirement_kg": total_dm,
+        "green_fodder_kg": green_fodder_fresh_kg,
+        "dry_straw_bhusa_kg": dry_straw_fresh_kg,
+        "concentrate_feed_kg": concentrate_kg,
+        "mineral_mixture_grams": mineral_mix,
+        "salt_grams": salt,
+        "water_requirement_liters": round(water_base, 1),
+        "estimated_daily_feed_cost_inr": daily_cost,
+        "feeding_tips": tips
+    }
+
+
+def calculate_gestation_calendar(animal_type: str, insemination_date: str) -> Dict[str, Any]:
+    try:
+        s_date = datetime.strptime(insemination_date.strip(), "%Y-%m-%d").date()
+    except Exception:
+        s_date = date.today()
+
+    anim_lower = animal_type.lower()
+    if "buffalo" in anim_lower:
+        gestation_days = 310
+        species = "Buffalo"
+    elif "goat" in anim_lower:
+        gestation_days = 150
+        species = "Goat"
+    else:
+        gestation_days = 280
+        species = "Cow"
+
+    heat_check_date = s_date + timedelta(days=21)
+    pd_date = s_date + timedelta(days=60 if species != "Goat" else 45)
+    dry_off_days = 210 if species == "Buffalo" else (180 if species == "Cow" else 100)
+    dry_off_date = s_date + timedelta(days=dry_off_days)
+    calving_date = s_date + timedelta(days=gestation_days)
+    steaming_up_days = gestation_days - 30
+    steaming_date = s_date + timedelta(days=steaming_up_days)
+
+    milestones = [
+        {
+            "days_after_insemination": 21,
+            "milestone_date": heat_check_date.strftime("%Y-%m-%d"),
+            "title": "First Heat Check (1st Estrus Cycle)",
+            "action_notes": "Carefully observe the animal at morning and evening for signs of repeat heat (mucus discharge, bellowing). If observed in heat, re-inseminate immediately."
+        },
+        {
+            "days_after_insemination": 60 if species != "Goat" else 45,
+            "milestone_date": pd_date.strftime("%Y-%m-%d"),
+            "title": "Veterinary Pregnancy Diagnosis (PD)",
+            "action_notes": "Have a certified veterinarian or livestock assistant perform rectal palpation or ultrasound to confirm successful conception."
+        },
+        {
+            "days_after_insemination": dry_off_days,
+            "milestone_date": dry_off_date.strftime("%Y-%m-%d"),
+            "title": "Drying-Off Milestone",
+            "action_notes": "Gradually cease milking to allow the mammary glands to regenerate and build colostrum for the upcoming calf. Apply dry cow intramammary antibiotic infusion if needed."
+        },
+        {
+            "days_after_insemination": steaming_up_days,
+            "milestone_date": steaming_date.strftime("%Y-%m-%d"),
+            "title": "Steaming-Up & Transition Feeding",
+            "action_notes": "Increase concentrate feed by +1.5 kg/day. Provide Vitamin AD3E and anionic mineral salts to prevent hypocalcemia (milk fever) post-calving."
+        },
+        {
+            "days_after_insemination": gestation_days,
+            "milestone_date": calving_date.strftime("%Y-%m-%d"),
+            "title": f"Expected Calving / Delivery Date ({species})",
+            "action_notes": "Prepare a clean, sanitized, straw-bedded maternity stall. Feed lukewarm colostrum (10% of body weight) to the newborn calf within 1 hour of delivery."
+        }
+    ]
+
+    return {
+        "animal_type": animal_type,
+        "insemination_date": s_date.strftime("%Y-%m-%d"),
+        "gestation_period_days": gestation_days,
+        "heat_check_date_21d": heat_check_date.strftime("%Y-%m-%d"),
+        "pregnancy_diagnosis_date_60d": pd_date.strftime("%Y-%m-%d"),
+        "dry_off_date": dry_off_date.strftime("%Y-%m-%d"),
+        "expected_calving_date": calving_date.strftime("%Y-%m-%d"),
+        "milestones": milestones,
+        "advisory_notes": f"Standard gestation period for {species} is {gestation_days} days. Expected delivery date: {calving_date.strftime('%d %B %Y')}."
+    }
+
+
+def get_livestock_evm_remedies() -> List[Dict[str, Any]]:
+    return [
+        {
+            "id": "mastitis",
+            "condition": "Sub-clinical & Clinical Mastitis (थनैला रोग / Udder Swelling)",
+            "symptoms": ["Swollen, hot, painful udder", "Yellowish, curd-like or watery milk clots", "Cow resists milking"],
+            "evm_formulation_name": "NDDB Haldi-Ghritkumari Lep (Turmeric-Aloe Udder Paste)",
+            "ingredients": ["Fresh Aloe Vera leaf: 250 g", "Turmeric rhizome/powder: 50 g", "Slaked Lime (Chuna): 15 g"],
+            "preparation_method": "Grind Aloe Vera, Turmeric, and Chuna into a smooth reddish-yellow paste. Dilute slightly with clean water to spreadable consistency.",
+            "dosage_and_application": "Milk out the affected quarter completely. Wash udder with clean water, dry, and apply paste generously over the entire udder 3-4 times daily for 5 consecutive days.",
+            "prevention_guidelines": "Dip teats in 0.5% povidone-iodine after every milking. Never allow cattle to lie down on wet mud for 30 minutes after milking."
+        },
+        {
+            "id": "bloat",
+            "condition": "Bloat & Ruminal Tympany (अफारा / Pet Phulna)",
+            "symptoms": ["Tense, drum-like swollen left flank", "Difficulty breathing, open mouth panting", "Restlessness and kicking at belly"],
+            "evm_formulation_name": "Sarson Tel-Hing Kadha (Mustard-Asafoetida Drench)",
+            "ingredients": ["Pure Mustard Oil: 100-150 ml", "Asafoetida (Hing): 10 g", "Garlic (Lahsun): 50 g", "Ginger (Adrak): 50 g", "Black salt: 25 g"],
+            "preparation_method": "Crush garlic and ginger into paste. Dissolve hing and black salt in lukewarm water (250 ml), then mix thoroughly with mustard oil.",
+            "dosage_and_application": "Drench orally slowly using a clean bottle. Keep animal's head elevated. Massage the left flank upward. Repeat in 4 hours if gas is not released.",
+            "prevention_guidelines": "Never feed excessively wet, dew-covered young legume fodder (Berseem/Lucerne) on an empty stomach. Always feed dry bhusa first."
+        },
+        {
+            "id": "fmd_mouth_foot",
+            "condition": "Foot & Mouth Disease (FMD) Lesions (खुरपका-मुंहपका छाले)",
+            "symptoms": ["Painful blisters/sores on tongue and gums", "Excessive frothy salivation", "Lameness and wounds between hooves"],
+            "evm_formulation_name": "Neem-Haldi Ghee Balm (Ethno-Veterinary Antiseptic)",
+            "ingredients": ["Turmeric powder: 50 g", "Neem oil or boiled neem leaf paste: 100 ml", "Pure desi ghee or coconut oil: 50 g", "Camphor (Kapur): 5 g"],
+            "preparation_method": "Warm ghee/neem oil lightly and blend in turmeric powder and crushed camphor to create an antibacterial antiseptic balm.",
+            "dosage_and_application": "Wash mouth ulcers with mild baking soda or alum water. Apply the soothing balm gently onto tongue and hoof fissures twice daily.",
+            "prevention_guidelines": "Get cattle vaccinated bi-annually under the National Animal Disease Control Programme (NADCP). Quarantine infected animals."
+        },
+        {
+            "id": "diarrhea_scours",
+            "condition": "Calf Scours & Simple Diarrhea (दस्त / Calf Diarrhea)",
+            "symptoms": ["Watery profuse feces", "Sunken eyes, weakness, dehydration", "Rough hair coat"],
+            "evm_formulation_name": "Methi-Dahi Rehydration Paste (Fenugreek-Curd Electuary)",
+            "ingredients": ["Fenugreek seeds (Methi): 50 g", "Pomegranate rind powder: 25 g", "Fresh Curd/Buttermilk: 200 ml", "Common salt: 5 g", "Jaggery: 50 g"],
+            "preparation_method": "Roast fenugreek seeds slightly, powder finely, and blend into buttermilk with pomegranate rind and jaggery.",
+            "dosage_and_application": "Administer orally twice daily for 2-3 days. Supplement with Oral Rehydration Solution (clean water + sugar + salt) to maintain hydration.",
+            "prevention_guidelines": "Feed maternal colostrum within the first hour of birth. Keep calf pens dry and bedded with clean straw."
+        },
+        {
+            "id": "deworming",
+            "condition": "Internal Parasites & Worms (पेट के कीड़े / Helminthiasis)",
+            "symptoms": ["Pot belly in calves", "Dull coat, emaciation despite feeding", "Diarrhea or bottle jaw swelling under chin"],
+            "evm_formulation_name": "Kaduwa Neem-Nirgundi Dewormer (Botanical Anthelmintic)",
+            "ingredients": ["Neem leaves (Azadirachta indica): 100 g", "Nirgundi leaves: 50 g", "Karela / Bitter gourd pulp: 50 g", "Jaggery: 50 g"],
+            "preparation_method": "Pound leaves into a thick paste with jaggery to form a sweet-bitter bolus.",
+            "dosage_and_application": "Feed orally in morning on an empty stomach once a month.",
+            "prevention_guidelines": "Rotate pastures and avoid grazing on marshy waterlogged riverbanks where snail hosts thrive."
+        }
+    ]
+
+
+# =======================================================================
+# 2. Mandi Distance & Profit Arbitrage Logic
+# =======================================================================
+def calculate_mandi_arbitrage(
+    crop_id: str,
+    quantity_quintals: float,
+    local_mandi_name: str,
+    local_mandi_price: float,
+    local_mandi_distance_km: float,
+    distant_mandi_name: str,
+    distant_mandi_price: float,
+    distant_mandi_distance_km: float,
+    vehicle_type: str = "Tractor Trolley",
+    diesel_price_per_liter: float = 90.0
+) -> Dict[str, Any]:
+    qty = max(0.5, quantity_quintals)
+    local_p = max(100.0, local_mandi_price)
+    dist_p = max(100.0, distant_mandi_price)
+    local_d = max(1.0, local_mandi_distance_km)
+    dist_d = max(1.0, distant_mandi_distance_km)
+    fuel_p = max(50.0, diesel_price_per_liter)
+
+    v_lower = vehicle_type.lower()
+    if "tractor" in v_lower:
+        mileage = 4.0
+        loading_unloading = 400.0
+        mandi_cess_pct = 0.01
+    elif "pickup" in v_lower or "bolero" in v_lower or "ace" in v_lower:
+        mileage = 9.0
+        loading_unloading = 300.0
+        mandi_cess_pct = 0.01
+    elif "loader" in v_lower or "3-wheeler" in v_lower or "auto" in v_lower:
+        mileage = 18.0
+        loading_unloading = 200.0
+        mandi_cess_pct = 0.01
+    else:
+        mileage = 3.5
+        loading_unloading = 800.0
+        mandi_cess_pct = 0.01
+
+    local_rt_km = round(local_d * 2.0, 1)
+    local_fuel_liters = round(local_rt_km / mileage, 1)
+    local_fuel_cost = local_fuel_liters * fuel_p
+    local_mandi_fee = (qty * local_p) * mandi_cess_pct
+    local_transport_total = round(local_fuel_cost + (loading_unloading * 0.5) + local_mandi_fee, 0)
+    local_gross = round(qty * local_p, 0)
+    local_net = round(local_gross - local_transport_total, 0)
+
+    dist_rt_km = round(dist_d * 2.0, 1)
+    dist_fuel_liters = round(dist_rt_km / mileage, 1)
+    dist_fuel_cost = dist_fuel_liters * fuel_p
+    dist_mandi_fee = (qty * dist_p) * mandi_cess_pct
+    toll_charges = 100.0 if dist_d > 35.0 else 0.0
+    distant_transport_total = round(dist_fuel_cost + loading_unloading + dist_mandi_fee + toll_charges, 0)
+    distant_gross = round(qty * dist_p, 0)
+    distant_net = round(distant_gross - distant_transport_total, 0)
+
+    net_diff = round(distant_net - local_net, 0)
+    is_worth_it = net_diff > 0
+
+    break_even_p = round((local_net + distant_transport_total) / qty, 1)
+
+    if is_worth_it:
+        rec = (
+            f"✅ GO TO DISTANT MANDI: You will earn an extra net in-hand profit of ₹{net_diff:,.0f} "
+            f"after accounting for ₹{distant_transport_total:,.0f} in round-trip diesel ({dist_fuel_liters} L) and transport."
+        )
+    else:
+        rec = (
+            f"🛑 SELL LOCALLY: Distant price appears higher by ₹{round(dist_p - local_p, 0)}/quintal, "
+            f"but diesel, tolls, and transport will cause a NET LOSS of ₹{abs(net_diff):,.0f}! "
+            f"Distant mandi rate must be at least ₹{break_even_p:,.0f}/quintal to be worthwhile."
+        )
+
+    return {
+        "crop_id": crop_id,
+        "quantity_quintals": qty,
+        "local_gross_revenue": local_gross,
+        "local_transport_cost": local_transport_total,
+        "local_net_revenue": local_net,
+        "distant_gross_revenue": distant_gross,
+        "distant_transport_cost": distant_transport_total,
+        "distant_net_revenue": distant_net,
+        "net_profit_difference": net_diff,
+        "is_distant_mandi_worth_it": is_worth_it,
+        "break_even_price_per_quintal": break_even_p,
+        "recommendation": rec,
+        "round_trip_km_distant": dist_rt_km,
+        "fuel_liters_consumed_distant": dist_fuel_liters
+    }
+
+
+# =======================================================================
+# 3. Soil Health Card Micronutrient Doctor Logic
+# =======================================================================
+def calculate_micronutrient_prescription(
+    crop_id: Optional[str] = "wheat",
+    land_size_acres: float = 1.0,
+    zinc_ppm: Optional[float] = None,
+    iron_ppm: Optional[float] = None,
+    sulfur_ppm: Optional[float] = None,
+    boron_ppm: Optional[float] = None,
+    organic_carbon_pct: Optional[float] = None
+) -> Dict[str, Any]:
+    acres = max(0.1, land_size_acres)
+    cid = (crop_id or "wheat").lower()
+    prescriptions: List[Dict[str, Any]] = []
+    total_cost = 0.0
+
+    # 1. Zinc (Zn) - Critical threshold 0.6 ppm
+    zn_val = zinc_ppm if zinc_ppm is not None else 0.45
+    if zn_val < 0.6:
+        status = "Critical Deficient" if zn_val < 0.4 else "Low / Deficient"
+        dosage_acre = 10.0
+        tot_kg = round(dosage_acre * acres, 1)
+        cost = round(tot_kg * 45.0, 0)
+        total_cost += cost
+        prescriptions.append({
+            "nutrient": "Zinc (Zn)",
+            "soil_status": status,
+            "measured_value": zn_val,
+            "critical_threshold": "0.60 ppm (DTPA extractable)",
+            "recommended_fertilizer": "Zinc Sulfate Heptahydrate (ZnSO4 21% Zn)",
+            "dosage_kg_per_acre": dosage_acre,
+            "total_dosage_kg": tot_kg,
+            "application_method": "Broadcast as basal dose before final plowing. DO NOT mix directly with DAP to avoid Zinc Phosphate precipitation.",
+            "visual_deficiency_symptom": "Khaira disease in paddy (rusty brown patches on middle leaves); white bud in maize; bleached interveinal bands in wheat."
+        })
+    else:
+        prescriptions.append({
+            "nutrient": "Zinc (Zn)",
+            "soil_status": "Optimal / Sufficient",
+            "measured_value": zn_val,
+            "critical_threshold": "0.60 ppm",
+            "recommended_fertilizer": "Maintenance baseline (optional)",
+            "dosage_kg_per_acre": 0.0,
+            "total_dosage_kg": 0.0,
+            "application_method": "Soil Zinc is sufficient. No chemical application required this season.",
+            "visual_deficiency_symptom": "Healthy green canopy with normal leaf expansion."
+        })
+
+    # 2. Sulfur (S) - Critical threshold 10.0 ppm
+    s_val = sulfur_ppm if sulfur_ppm is not None else 8.0
+    if s_val < 10.0:
+        status = "Critical Deficient" if s_val < 6.0 else "Low / Deficient"
+        dosage_acre = 12.0 if any(k in cid for k in ["mustard", "groundnut", "soybean", "sunflower", "sesame", "gram", "pigeonpea", "lentil"]) else 8.0
+        tot_kg = round(dosage_acre * acres, 1)
+        cost = round(tot_kg * 38.0, 0)
+        total_cost += cost
+        prescriptions.append({
+            "nutrient": "Sulfur (S)",
+            "soil_status": status,
+            "measured_value": s_val,
+            "critical_threshold": "10.0 ppm (Available Sulfate-S)",
+            "recommended_fertilizer": "Agricultural Bentonite Sulfur (90% S) or Gypsum",
+            "dosage_kg_per_acre": dosage_acre,
+            "total_dosage_kg": tot_kg,
+            "application_method": "Broadcast at sowing. In alkaline soils, agricultural Gypsum (50 kg/acre) also provides available calcium and sulfur.",
+            "visual_deficiency_symptom": "Uniform chlorosis (pale yellowing) appearing first on young top leaves; lower seed oil content."
+        })
+    else:
+        prescriptions.append({
+            "nutrient": "Sulfur (S)",
+            "soil_status": "Optimal / Sufficient",
+            "measured_value": s_val,
+            "critical_threshold": "10.0 ppm",
+            "recommended_fertilizer": "None required",
+            "dosage_kg_per_acre": 0.0,
+            "total_dosage_kg": 0.0,
+            "application_method": "Soil Sulfur level is adequate.",
+            "visual_deficiency_symptom": "Normal protein synthesis and oil yield."
+        })
+
+    # 3. Boron (B) - Critical threshold 0.5 ppm
+    b_val = boron_ppm if boron_ppm is not None else 0.35
+    if b_val < 0.5:
+        status = "Low / Deficient"
+        dosage_acre = 1.5
+        tot_kg = round(dosage_acre * acres, 1)
+        cost = round(tot_kg * 120.0, 0)
+        total_cost += cost
+        prescriptions.append({
+            "nutrient": "Boron (B)",
+            "soil_status": status,
+            "measured_value": b_val,
+            "critical_threshold": "0.50 ppm (Hot water extractable)",
+            "recommended_fertilizer": "Agricultural Borax (10.5% B) or Disodium Octaborate",
+            "dosage_kg_per_acre": dosage_acre,
+            "total_dosage_kg": tot_kg,
+            "application_method": "Soil application with sand/FYM at sowing, or 2 foliar sprays of Solubor (0.1% = 1g/L) before flowering.",
+            "visual_deficiency_symptom": "Hollow heart in cauliflower; fruit cracking in tomato; poor pollen viability and seed setting in mustard/sunflower."
+        })
+    else:
+        prescriptions.append({
+            "nutrient": "Boron (B)",
+            "soil_status": "Optimal / Sufficient",
+            "measured_value": b_val,
+            "critical_threshold": "0.50 ppm",
+            "recommended_fertilizer": "None required",
+            "dosage_kg_per_acre": 0.0,
+            "total_dosage_kg": 0.0,
+            "application_method": "Boron is sufficient. Avoid over-application as the safety margin is narrow.",
+            "visual_deficiency_symptom": "Normal flowering and fruit/pod set."
+        })
+
+    # 4. Iron (Fe) - Critical threshold 4.5 ppm
+    fe_val = iron_ppm if iron_ppm is not None else 3.8
+    if fe_val < 4.5:
+        dosage_acre = 8.0
+        tot_kg = round(dosage_acre * acres, 1)
+        cost = round(tot_kg * 30.0, 0)
+        total_cost += cost
+        prescriptions.append({
+            "nutrient": "Iron (Fe)",
+            "soil_status": "Low / Deficient",
+            "measured_value": fe_val,
+            "critical_threshold": "4.50 ppm (DTPA extractable)",
+            "recommended_fertilizer": "Ferrous Sulfate (FeSO4 19% Fe)",
+            "dosage_kg_per_acre": dosage_acre,
+            "total_dosage_kg": tot_kg,
+            "application_method": "Foliar spray recommended: Dissolve 0.5% FeSO4 (5g/L) + 0.1% Citric Acid (1g/L) in water and spray at 30-40 days.",
+            "visual_deficiency_symptom": "Interveinal chlorosis on young emerging leaves; veins remain sharply dark green while leaf blades turn ivory yellow."
+        })
+
+    # 5. Organic Carbon (OC %)
+    oc_val = organic_carbon_pct if organic_carbon_pct is not None else 0.42
+    if oc_val < 0.5:
+        fym_tons = round(2.5 * acres, 1)
+        organic_advice = (
+            f"CRITICAL: Soil Organic Carbon is low ({oc_val:.2f}% < 0.50%). Soil biological activity and nutrient retention are depressed. "
+            f"Incorporate {fym_tons} Tons of well-rotted Farm Yard Manure (FYM) or 1.0 Ton Vermicompost before sowing. "
+            "Adopt green manuring with Dhaincha (Sesbania) or Sunnhemp during summer."
+        )
+    elif oc_val < 0.75:
+        fym_tons = round(1.5 * acres, 1)
+        organic_advice = (
+            f"MODERATE: Soil Organic Carbon is {oc_val:.2f}%. Maintain humus by applying {fym_tons} Tons FYM per acre "
+            "and avoiding burning crop residues."
+        )
+    else:
+        organic_advice = (
+            f"EXCELLENT: Soil Organic Carbon is high ({oc_val:.2f}% >= 0.75%). Strong microbial diversity, cation exchange, and soil moisture buffering."
+        )
+
+    foliar_sprays = [
+        "Zinc Emergency Spray: Dissolve 500g ZnSO4 (21%) + 250g unslaked Lime in 100 Liters of water per acre. Spray at 30 & 45 days after sowing.",
+        "Boron Foliar Spray: Dissolve 100g to 150g Solubor (20% B) in 100 Liters of water per acre during vegetative and pre-flowering stage.",
+        "Iron Emergency Spray: Dissolve 500g FeSO4 + 100g Citric Acid in 100 Liters of water per acre for rapid recovery from chlorosis."
+    ]
+
+    return {
+        "land_size_acres": acres,
+        "crop_id": cid,
+        "prescriptions": prescriptions,
+        "organic_manure_advice": organic_advice,
+        "foliar_spray_options": foliar_sprays,
+        "approx_total_cost_inr": total_cost
+    }
+
+
+# =======================================================================
+# 4. Farm Pond (Khet Talab) & Rainwater Sizer Logic
+# =======================================================================
+def calculate_farm_pond_sizing(
+    catchment_acres: float = 5.0,
+    annual_rainfall_mm: float = 800.0,
+    catchment_soil_type: str = "Loam",
+    supplementary_irrigation_acres: float = 2.0,
+    dry_spell_days_target: int = 30
+) -> Dict[str, Any]:
+    acres = max(0.5, catchment_acres)
+    rain_mm = max(200.0, annual_rainfall_mm)
+    irrig_acres = max(0.5, min(supplementary_irrigation_acres, acres))
+    soil_lower = catchment_soil_type.lower()
+
+    if "clay" in soil_lower:
+        c_runoff = 0.32
+    elif "sandy" in soil_lower:
+        c_runoff = 0.15
+    else:
+        c_runoff = 0.22
+
+    catchment_sqm = acres * 4046.86
+    runoff_cu_m = catchment_sqm * (rain_mm / 1000.0) * c_runoff
+
+    req_cu_m = irrig_acres * 4046.86 * 0.05 * 2.0
+    target_capacity_cu_m = round(min(runoff_cu_m * 0.6, max(300.0, req_cu_m)), 0)
+
+    depth = 3.0
+    slope = 1.5
+    top_area_approx = target_capacity_cu_m / (depth * 0.75)
+    top_w = round(math.sqrt(top_area_approx / 1.3), 1)
+    top_l = round(top_w * 1.3, 1)
+
+    bottom_l = round(max(5.0, top_l - (2 * slope * depth)), 1)
+    bottom_w = round(max(4.0, top_w - (2 * slope * depth)), 1)
+
+    a_top = top_l * top_w
+    a_bot = bottom_l * bottom_w
+    a_mid = ((top_l + bottom_l) / 2.0) * ((top_w + bottom_w) / 2.0)
+    actual_volume_cu_m = round((depth / 6.0) * (a_top + a_bot + 4 * a_mid), 0)
+    storage_liters = round(actual_volume_cu_m * 1000.0, 0)
+    storage_lakh_liters = round(storage_liters / 100000.0, 2)
+
+    slant_height = math.sqrt((depth ** 2) + ((depth * slope) ** 2))
+    lining_area_sqm = round(a_bot + (2 * (top_l + bottom_l) / 2.0 * slant_height) + (2 * (top_w + bottom_w) / 2.0 * slant_height) + ((2 * (top_l + top_w)) * 1.0), 0)
+
+    earthwork_cost = round(actual_volume_cu_m * 65.0, 0)
+    hdpe_cost = round(lining_area_sqm * 85.0, 0)
+    total_cost = round(earthwork_cost + hdpe_cost, 0)
+
+    subsidy_inr = round(min(total_cost * 0.50, 105000.0), 0)
+    net_farmer = round(max(0.0, total_cost - subsidy_inr), 0)
+
+    advisory = (
+        f"A {top_l:.0f}m x {top_w:.0f}m farm pond ({depth}m deep) will safely impound {storage_lakh_liters} Lakh Liters of rainwater. "
+        f"This guarantees {dry_spell_days_target} days of drought buffer, sufficient to provide 2 lifesaver irrigations to {irrig_acres:.1f} acres of standing crop."
+    )
+
+    return {
+        "catchment_acres": acres,
+        "annual_rainfall_mm": rain_mm,
+        "runoff_volume_cu_meters": round(runoff_cu_m, 0),
+        "storage_capacity_liters": storage_liters,
+        "storage_capacity_lakh_liters": storage_lakh_liters,
+        "recommended_top_length_m": top_l,
+        "recommended_top_width_m": top_w,
+        "recommended_bottom_length_m": bottom_l,
+        "recommended_bottom_width_m": bottom_w,
+        "recommended_depth_m": depth,
+        "side_slope_ratio": "1:1.5 (V:H)",
+        "geomembrane_lining_area_sqm": lining_area_sqm,
+        "estimated_earthwork_cost_inr": earthwork_cost,
+        "estimated_hdpe_lining_cost_inr": hdpe_cost,
+        "estimated_total_cost_inr": total_cost,
+        "pmksy_khet_talab_subsidy_inr": subsidy_inr,
+        "net_farmer_cost_inr": net_farmer,
+        "water_security_advisory": advisory
+    }
+
+
+# =======================================================================
+# 5. Machinery Rent vs Buy Logic
+# =======================================================================
+def calculate_machinery_rent_vs_buy(
+    machine_type: str = "Tractor 45-50 HP",
+    farm_size_acres: float = 8.0,
+    purchase_price_inr: Optional[float] = None,
+    custom_hire_rate_per_acre_or_hr: Optional[float] = None,
+    commercial_rental_acres_to_others: Optional[float] = 0.0
+) -> Dict[str, Any]:
+    acres = max(0.5, farm_size_acres)
+    comm_acres = max(0.0, commercial_rental_acres_to_others or 0.0)
+    total_operated_acres = acres + comm_acres
+    m_lower = machine_type.lower()
+
+    is_tractor = "tractor" in m_lower
+    hours_per_acre = 4.0 if is_tractor else 1.0
+
+    if "rotavator" in m_lower:
+        price = purchase_price_inr or 120000.0
+        custom_rate = custom_hire_rate_per_acre_or_hr or 900.0
+        diesel_burn_per_acre = 4.5
+        economic_life_years = 8
+    elif "drill" in m_lower:
+        price = purchase_price_inr or 85000.0
+        custom_rate = custom_hire_rate_per_acre_or_hr or 700.0
+        diesel_burn_per_acre = 2.8
+        economic_life_years = 8
+    elif "laser" in m_lower:
+        price = purchase_price_inr or 350000.0
+        custom_rate = custom_hire_rate_per_acre_or_hr or 1100.0
+        diesel_burn_per_acre = 6.0
+        economic_life_years = 10
+    elif "harvester" in m_lower or "combine" in m_lower:
+        price = purchase_price_inr or 2400000.0
+        custom_rate = custom_hire_rate_per_acre_or_hr or 2200.0
+        diesel_burn_per_acre = 8.0
+        economic_life_years = 8
+    else:
+        # Default: 45-50 HP Tractor (used for multiple passes across crop season)
+        price = purchase_price_inr or 720000.0
+        custom_rate = (custom_hire_rate_per_acre_or_hr or 950.0) * hours_per_acre
+        diesel_burn_per_acre = 3.8 * hours_per_acre
+        economic_life_years = 10
+
+    annual_hiring_cost = round(acres * custom_rate, 0)
+    annual_depreciation = price / economic_life_years
+    annual_interest = price * 0.08 * 0.5  # average outstanding loan interest
+    annual_insurance = price * 0.015
+    annual_fixed_cost = annual_depreciation + annual_interest + annual_insurance
+
+    total_fuel_liters = round(total_operated_acres * diesel_burn_per_acre, 1)
+    annual_fuel_cost = round(total_fuel_liters * 90.0, 0)
+    annual_maintenance = round(price * 0.025, 0)
+    annual_labor = round(total_operated_acres * 150.0 * (hours_per_acre if is_tractor else 1.0), 0)
+    annual_variable_cost = annual_fuel_cost + annual_maintenance + annual_labor
+
+    annual_ownership_total = round(annual_fixed_cost + annual_variable_cost, 0)
+    commercial_income = round(comm_acres * custom_rate, 0)
+    net_ownership_cost = annual_ownership_total - commercial_income
+    net_saving_or_loss = round(annual_hiring_cost - net_ownership_cost, 0)
+
+    var_cost_per_acre = (diesel_burn_per_acre * 90.0) + (150.0 * (hours_per_acre if is_tractor else 1.0))
+    margin_per_acre = max(100.0, custom_rate - var_cost_per_acre)
+    break_even_acres = round(annual_fixed_cost / margin_per_acre, 1)
+    payback_years = round(price / max(1000.0, annual_hiring_cost + commercial_income - annual_variable_cost), 1)
+
+    if net_saving_or_loss > 0 or total_operated_acres >= break_even_acres:
+        rec = (
+            f"✅ BUY RECOMMENDED: With {total_operated_acres:.1f} total operated acres (including {comm_acres:.1f} custom rental acres to neighbors), "
+            f"owning this machine saves you ₹{net_saving_or_loss:,.0f}/year over hiring. Break-even threshold is {break_even_acres:.1f} acres."
+        )
+    else:
+        rec = (
+            f"🛑 RENT (CUSTOM HIRE) RECOMMENDED: For {acres:.1f} acres, custom hiring costs ₹{annual_hiring_cost:,.0f}/year, "
+            f"whereas buying will incur ₹{annual_ownership_total:,.0f}/year in fixed depreciation, fuel, and loan interest. "
+            f"Rent by the hour unless you expand custom hiring to neighbors up to at least {break_even_acres:.1f} acres."
+        )
+
+    factors = [
+        f"Annual Fixed Depreciation & Interest: ₹{round(annual_fixed_cost, 0):,}",
+        f"Operational Diesel Burn: {total_fuel_liters:.1f} Liters (₹{round(annual_fuel_cost, 0):,})",
+        f"Break-Even Operational Area: {break_even_acres:.1f} acres/year",
+        f"Estimated Payback Period: {payback_years} years"
+    ]
+
+    return {
+        "machine_type": machine_type,
+        "farm_size_acres": acres,
+        "commercial_rental_acres_to_others": comm_acres,
+        "total_operated_acres": total_operated_acres,
+        "annual_hiring_cost_inr": annual_hiring_cost,
+        "annual_ownership_cost_inr": annual_ownership_total,
+        "annual_diesel_burn_liters": total_fuel_liters,
+        "annual_fuel_cost_inr": annual_fuel_cost,
+        "break_even_acres": break_even_acres,
+        "commercial_rental_income_inr": commercial_income,
+        "net_annual_saving_or_loss_inr": net_saving_or_loss,
+        "recommendation": rec,
+        "payback_period_years": payback_years,
+        "key_decision_factors": factors
+    }
+
+
+# =======================================================================
+# 6. Dynamic Crop Calendar & ICS Logic
+# =======================================================================
+def generate_crop_calendar_events(
+    crop_id: str,
+    sowing_date: str,
+    land_size_acres: float = 1.0
+) -> Dict[str, Any]:
+    from app.database import get_crop_by_id
+    crop = get_crop_by_id(crop_id)
+    crop_name = crop["name"] if crop else crop_id.capitalize()
+
+    try:
+        s_date = datetime.strptime(sowing_date.strip(), "%Y-%m-%d").date()
+    except Exception:
+        s_date = date.today()
+
+    total_days = 120
+    if crop and "duration_days" in crop:
+        try:
+            parts = crop["duration_days"].split("-")
+            total_days = int(parts[-1].strip().split()[0])
+        except Exception:
+            total_days = 120
+
+    h_date = s_date + timedelta(days=total_days)
+
+    events: List[Dict[str, Any]] = [
+        {
+            "day_offset": 0,
+            "target_date": s_date.strftime("%Y-%m-%d"),
+            "phase_name": "Sowing & Basal Nutrients",
+            "activity_type": "Sowing",
+            "action_required": f"Treat certified seed with bio-fungicide (Trichoderma 5g/kg). Broadcast full DAP & MOP bags + 1/3rd Urea basal dose. Plant at specified row depth.",
+            "critical_alert": "Ensure adequate soil moisture before seed drilling; avoid sowing in dry soil.",
+            "weather_sensitivity": "Rain within 24h will cause soil crusting and impede seedling emergence."
+        },
+        {
+            "day_offset": min(21, int(total_days * 0.18)),
+            "target_date": (s_date + timedelta(days=min(21, int(total_days * 0.18)))).strftime("%Y-%m-%d"),
+            "phase_name": "Crown Root & Early Vegetative Initiation",
+            "activity_type": "Irrigation",
+            "action_required": "Provide 1st critical irrigation. Apply 1st top dressing of Urea (1/3rd dose) along with first weeding or intercultural hoeing.",
+            "critical_alert": "Critical yield-determining stage! Water stress now permanently reduces tiller count.",
+            "weather_sensitivity": "Postpone irrigation if rainfall > 15 mm is forecast."
+        },
+        {
+            "day_offset": min(35, int(total_days * 0.30)),
+            "target_date": (s_date + timedelta(days=min(35, int(total_days * 0.30)))).strftime("%Y-%m-%d"),
+            "phase_name": "Active Tillering & Weed Management",
+            "activity_type": "Weeding",
+            "action_required": "Perform second weeding or apply selective post-emergence herbicide. Scout leaf undersides for aphid colonies or early fungal spots.",
+            "critical_alert": "Weed competition during first 40 days causes up to 40% yield loss.",
+            "weather_sensitivity": "Spray herbicides only when wind speed is < 12 km/h and rain is not expected for 6 hours."
+        },
+        {
+            "day_offset": int(total_days * 0.50),
+            "target_date": (s_date + timedelta(days=int(total_days * 0.50))).strftime("%Y-%m-%d"),
+            "phase_name": "Stem Elongation & Panicle / Bud Initiation",
+            "activity_type": "Nutrient",
+            "action_required": "Apply final 1/3rd Urea split. Spray Micronutrient foliar booster (Zinc + Boron 0.1%) to enhance flower set.",
+            "critical_alert": "Do not delay nitrogen application beyond this stage to avoid vegetative lodging.",
+            "weather_sensitivity": "Avoid heavy irrigation during high wind gusts to prevent crop lodging."
+        },
+        {
+            "day_offset": int(total_days * 0.70),
+            "target_date": (s_date + timedelta(days=int(total_days * 0.70))).strftime("%Y-%m-%d"),
+            "phase_name": "Flowering & Grain / Fruit Filling",
+            "activity_type": "Pest Management",
+            "action_required": "Maintain optimum soil moisture. Install yellow sticky traps and pheromone traps for pest monitoring. Apply bio-control if pest threshold is crossed.",
+            "critical_alert": "Do not spray toxic synthetic insecticides during morning pollinator activity.",
+            "weather_sensitivity": "High temperatures (> 38°C) cause pollen desiccation; light misting/sprinklers help."
+        },
+        {
+            "day_offset": total_days,
+            "target_date": h_date.strftime("%Y-%m-%d"),
+            "phase_name": "Physiological Maturity & Harvest",
+            "activity_type": "Harvesting",
+            "action_required": "Harvest when 80-85% grains or pods turn golden brown. Sun-dry harvest immediately on clean tarpaulin to bring moisture under 12%.",
+            "critical_alert": "Avoid delaying harvest to minimize shattering losses and unseasonal rain damage.",
+            "weather_sensitivity": "Strict dry weather required for combining, threshing, and bagging."
+        }
+    ]
+
+    ics_lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//AgriAssist//Dynamic Crop Sowing Calendar//EN",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH"
+    ]
+    for ev in events:
+        d_clean = ev["target_date"].replace("-", "")
+        ics_lines.extend([
+            "BEGIN:VEVENT",
+            f"SUMMARY:AgriAssist: {crop_name} - {ev['phase_name']}",
+            f"DESCRIPTION:{ev['action_required']} | Alert: {ev['critical_alert']}",
+            f"DTSTART;VALUE=DATE:{d_clean}",
+            f"DTEND;VALUE=DATE:{d_clean}",
+            "STATUS:CONFIRMED",
+            "TRANSP:TRANSPARENT",
+            "END:VEVENT"
+        ])
+    ics_lines.append("END:VCALENDAR")
+    ics_text = "\r\n".join(ics_lines)
+
+    return {
+        "crop_id": crop_id,
+        "crop_name": crop_name,
+        "sowing_date": s_date.strftime("%Y-%m-%d"),
+        "harvest_date": h_date.strftime("%Y-%m-%d"),
+        "total_duration_days": total_days,
+        "events": events,
+        "ics_calendar_text": ics_text
+    }
+
 
 
 
