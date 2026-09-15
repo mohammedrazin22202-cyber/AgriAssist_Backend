@@ -34,7 +34,22 @@ from app.models import (
     IntercropResponse,
     StorageRiskCheckRequest,
     StorageRiskCheckResponse,
-    GrainStorageAdvisory
+    GrainStorageAdvisory,
+    LivestockRationRequest,
+    LivestockRationResponse,
+    GestationRequest,
+    GestationResponse,
+    LivestockRemedy,
+    MandiArbitrageRequest,
+    MandiArbitrageResponse,
+    MicronutrientPrescriptionRequest,
+    MicronutrientPrescriptionResponse,
+    FarmPondRequest,
+    FarmPondResponse,
+    MachineryRentVsBuyRequest,
+    MachineryRentVsBuyResponse,
+    CropCalendarRequest,
+    CropCalendarResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -54,8 +69,17 @@ from app.agri_tools import (
     calculate_solar_pump_kusum,
     get_intercropping_recommendations,
     get_grain_storage_catalog_list,
-    evaluate_grain_storage_risk
+    evaluate_grain_storage_risk,
+    calculate_livestock_ration,
+    calculate_gestation_calendar,
+    get_livestock_evm_remedies,
+    calculate_mandi_arbitrage,
+    calculate_micronutrient_prescription,
+    calculate_farm_pond_sizing,
+    calculate_machinery_rent_vs_buy,
+    generate_crop_calendar_events
 )
+
 
 
 
@@ -455,6 +479,129 @@ def check_grain_storage_risk(req: StorageRiskCheckRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Grain storage risk error: {str(e)}")
+
+
+# ---------------- 1. Dairy & Livestock Advisory Endpoints ----------------
+@app.post("/api/livestock/ration", response_model=LivestockRationResponse)
+def calculate_cattle_ration(req: LivestockRationRequest):
+    """Calculates scientific dry matter, green fodder, bhusa, and concentrate feed ration."""
+    try:
+        return calculate_livestock_ration(
+            animal_type=req.animal_type,
+            body_weight_kg=req.body_weight_kg,
+            daily_milk_liters=req.daily_milk_liters,
+            milk_fat_pct=req.milk_fat_pct or 4.0,
+            pregnancy_stage=req.pregnancy_stage or "None"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Livestock ration error: {str(e)}")
+
+
+@app.post("/api/livestock/gestation", response_model=GestationResponse)
+def get_gestation_schedule(req: GestationRequest):
+    """Computes 21-day heat check, drying-off, and calving delivery milestones."""
+    try:
+        return calculate_gestation_calendar(
+            animal_type=req.animal_type,
+            insemination_date=req.insemination_date
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gestation calendar error: {str(e)}")
+
+
+@app.get("/api/livestock/remedies", response_model=List[LivestockRemedy])
+def list_livestock_remedies():
+    """Returns validated Ethno-Veterinary Medicine (EVM) herbal formulations for common ailments."""
+    try:
+        return get_livestock_evm_remedies()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Livestock remedies error: {str(e)}")
+
+
+# ---------------- 2. Mandi Distance & Profit Arbitrage ----------------
+@app.post("/api/mandi-prices/arbitrage", response_model=MandiArbitrageResponse)
+def check_mandi_arbitrage(req: MandiArbitrageRequest):
+    """Calculates diesel consumption, transport cost, and true net profit between local vs distant mandis."""
+    try:
+        return calculate_mandi_arbitrage(
+            crop_id=req.crop_id,
+            quantity_quintals=req.quantity_quintals,
+            local_mandi_name=req.local_mandi_name,
+            local_mandi_price=req.local_mandi_price,
+            local_mandi_distance_km=req.local_mandi_distance_km,
+            distant_mandi_name=req.distant_mandi_name,
+            distant_mandi_price=req.distant_mandi_price,
+            distant_mandi_distance_km=req.distant_mandi_distance_km,
+            vehicle_type=req.vehicle_type,
+            diesel_price_per_liter=req.diesel_price_per_liter
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Mandi arbitrage error: {str(e)}")
+
+
+# ---------------- 3. Soil Health Card Micronutrient Doctor ----------------
+@app.post("/api/fertilizer/micronutrients", response_model=MicronutrientPrescriptionResponse)
+def get_micronutrient_prescription(req: MicronutrientPrescriptionRequest):
+    """Prescribes Zinc Sulfate, Bentonite Sulfur, Borax, and Iron amendments for micronutrient deficits."""
+    try:
+        return calculate_micronutrient_prescription(
+            crop_id=req.crop_id,
+            land_size_acres=req.land_size_acres,
+            zinc_ppm=req.zinc_ppm,
+            iron_ppm=req.iron_ppm,
+            sulfur_ppm=req.sulfur_ppm,
+            boron_ppm=req.boron_ppm,
+            organic_carbon_pct=req.organic_carbon_pct
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Micronutrient prescription error: {str(e)}")
+
+
+# ---------------- 4. Farm Pond & Rainwater Harvesting Sizer ----------------
+@app.post("/api/water-conservation/farm-pond", response_model=FarmPondResponse)
+def get_farm_pond_sizing(req: FarmPondRequest):
+    """Calculates required farm pond dimensions, HDPE lining area, and PMKSY subsidy."""
+    try:
+        return calculate_farm_pond_sizing(
+            catchment_acres=req.catchment_acres,
+            annual_rainfall_mm=req.annual_rainfall_mm,
+            catchment_soil_type=req.catchment_soil_type,
+            supplementary_irrigation_acres=req.supplementary_irrigation_acres,
+            dry_spell_days_target=req.dry_spell_days_target
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Farm pond sizing error: {str(e)}")
+
+
+# ---------------- 5. Machinery Rent vs Buy Calculator ----------------
+@app.post("/api/machinery/rent-vs-buy", response_model=MachineryRentVsBuyResponse)
+def check_machinery_rent_vs_buy(req: MachineryRentVsBuyRequest):
+    """Compares machinery ownership cost (fixed depreciation + fuel) vs custom hiring break-even."""
+    try:
+        return calculate_machinery_rent_vs_buy(
+            machine_type=req.machine_type,
+            farm_size_acres=req.farm_size_acres,
+            purchase_price_inr=req.purchase_price_inr,
+            custom_hire_rate_per_acre_or_hr=req.custom_hire_rate_per_acre_or_hr,
+            commercial_rental_acres_to_others=req.commercial_rental_acres_to_others or 0.0
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Machinery economics error: {str(e)}")
+
+
+# ---------------- 6. Dynamic Crop Calendar & ICS Generator ----------------
+@app.post("/api/crop-calendar/generate", response_model=CropCalendarResponse)
+def get_crop_calendar(req: CropCalendarRequest):
+    """Generates milestone timeline and RFC 5545 iCalendar (.ics) string for phone calendar import."""
+    try:
+        return generate_crop_calendar_events(
+            crop_id=req.crop_id,
+            sowing_date=req.sowing_date,
+            land_size_acres=req.land_size_acres or 1.0
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Crop calendar error: {str(e)}")
+
 
 
 
