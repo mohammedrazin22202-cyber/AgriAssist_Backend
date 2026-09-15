@@ -533,5 +533,223 @@ class GrainStorageAdvisory(BaseModel):
     stacking_and_storage_guidelines: str
 
 
+# =======================================================================
+# 1. Livestock & Dairy Advisory Models
+# =======================================================================
+class LivestockRationRequest(BaseModel):
+    animal_type: str = "Cow (Crossbred HF/Jersey)"  # "Cow (Indigenous/Desi)", "Cow (Crossbred HF/Jersey)", "Buffalo (Murrah)", "Goat"
+    body_weight_kg: float = 400.0
+    daily_milk_liters: float = 10.0
+    milk_fat_pct: Optional[float] = 4.0
+    pregnancy_stage: Optional[str] = "None"  # "None", "Early/Mid", "Last Trimester (Advance Pregnant)"
+
+
+class LivestockRationResponse(BaseModel):
+    animal_type: str
+    body_weight_kg: float
+    daily_milk_liters: float
+    dry_matter_requirement_kg: float
+    green_fodder_kg: float
+    dry_straw_bhusa_kg: float
+    concentrate_feed_kg: float
+    mineral_mixture_grams: float
+    salt_grams: float
+    water_requirement_liters: float
+    estimated_daily_feed_cost_inr: float
+    feeding_tips: List[str]
+
+
+class GestationRequest(BaseModel):
+    animal_type: str = "Cow"  # "Cow", "Buffalo", "Goat"
+    insemination_date: str  # "YYYY-MM-DD"
+
+
+class GestationMilestone(BaseModel):
+    days_after_insemination: int
+    milestone_date: str
+    title: str
+    action_notes: str
+
+
+class GestationResponse(BaseModel):
+    animal_type: str
+    insemination_date: str
+    gestation_period_days: int
+    heat_check_date_21d: str
+    pregnancy_diagnosis_date_60d: str
+    dry_off_date: str
+    expected_calving_date: str
+    milestones: List[GestationMilestone]
+    advisory_notes: str
+
+
+class LivestockRemedy(BaseModel):
+    id: str
+    condition: str
+    symptoms: List[str]
+    evm_formulation_name: str
+    ingredients: List[str]
+    preparation_method: str
+    dosage_and_application: str
+    prevention_guidelines: str
+
+
+# =======================================================================
+# 2. Mandi Distance & Profit Arbitrage Models
+# =======================================================================
+class MandiArbitrageRequest(BaseModel):
+    crop_id: str = "wheat"
+    quantity_quintals: float = 30.0
+    local_mandi_name: str = "Local Mandi"
+    local_mandi_price: float = 2200.0
+    local_mandi_distance_km: float = 10.0
+    distant_mandi_name: str = "Terminal District Mandi"
+    distant_mandi_price: float = 2400.0
+    distant_mandi_distance_km: float = 50.0
+    vehicle_type: str = "Tractor Trolley"  # "Tractor Trolley", "Pickup Truck (Bolero/Ace)", "3-Wheeler Loader", "Large 6-Wheeler Truck"
+    diesel_price_per_liter: float = 90.0
+
+
+class MandiArbitrageResponse(BaseModel):
+    crop_id: str
+    quantity_quintals: float
+    local_gross_revenue: float
+    local_transport_cost: float
+    local_net_revenue: float
+    distant_gross_revenue: float
+    distant_transport_cost: float
+    distant_net_revenue: float
+    net_profit_difference: float
+    is_distant_mandi_worth_it: bool
+    break_even_price_per_quintal: float
+    recommendation: str
+    round_trip_km_distant: float
+    fuel_liters_consumed_distant: float
+
+
+# =======================================================================
+# 3. Soil Health Card Micronutrient Doctor Models
+# =======================================================================
+class MicronutrientPrescriptionRequest(BaseModel):
+    crop_id: Optional[str] = "wheat"
+    land_size_acres: float = 1.0
+    zinc_ppm: Optional[float] = None
+    iron_ppm: Optional[float] = None
+    sulfur_ppm: Optional[float] = None
+    boron_ppm: Optional[float] = None
+    organic_carbon_pct: Optional[float] = None
+
+
+class MicronutrientItem(BaseModel):
+    nutrient: str
+    soil_status: str  # "Critical Deficient", "Low / Deficient", "Optimal / Sufficient"
+    measured_value: Optional[float] = None
+    critical_threshold: str
+    recommended_fertilizer: str
+    dosage_kg_per_acre: float
+    total_dosage_kg: float
+    application_method: str
+    visual_deficiency_symptom: str
+
+
+class MicronutrientPrescriptionResponse(BaseModel):
+    land_size_acres: float
+    crop_id: str
+    prescriptions: List[MicronutrientItem]
+    organic_manure_advice: str
+    foliar_spray_options: List[str]
+    approx_total_cost_inr: float
+
+
+# =======================================================================
+# 4. Farm Pond & Rainwater Harvesting Sizer Models
+# =======================================================================
+class FarmPondRequest(BaseModel):
+    catchment_acres: float = 5.0
+    annual_rainfall_mm: float = 800.0
+    catchment_soil_type: str = "Loam"  # "Clay", "Loam", "Sandy"
+    supplementary_irrigation_acres: float = 2.0
+    dry_spell_days_target: int = 30
+
+
+class FarmPondResponse(BaseModel):
+    catchment_acres: float
+    annual_rainfall_mm: float
+    runoff_volume_cu_meters: float
+    storage_capacity_liters: float
+    storage_capacity_lakh_liters: float
+    recommended_top_length_m: float
+    recommended_top_width_m: float
+    recommended_bottom_length_m: float
+    recommended_bottom_width_m: float
+    recommended_depth_m: float
+    side_slope_ratio: str
+    geomembrane_lining_area_sqm: float
+    estimated_earthwork_cost_inr: float
+    estimated_hdpe_lining_cost_inr: float
+    estimated_total_cost_inr: float
+    pmksy_khet_talab_subsidy_inr: float
+    net_farmer_cost_inr: float
+    water_security_advisory: str
+
+
+# =======================================================================
+# 5. Machinery Rent vs Buy Models
+# =======================================================================
+class MachineryRentVsBuyRequest(BaseModel):
+    machine_type: str = "Tractor 45-50 HP"  # "Tractor 45-50 HP", "Rotavator (6 ft)", "Seed Cum Fert Drill", "Laser Land Leveller", "Combine Harvester"
+    farm_size_acres: float = 8.0
+    purchase_price_inr: Optional[float] = None
+    custom_hire_rate_per_acre_or_hr: Optional[float] = None
+    commercial_rental_acres_to_others: Optional[float] = 0.0
+
+
+class MachineryRentVsBuyResponse(BaseModel):
+    machine_type: str
+    farm_size_acres: float
+    commercial_rental_acres_to_others: float
+    total_operated_acres: float
+    annual_hiring_cost_inr: float
+    annual_ownership_cost_inr: float
+    annual_diesel_burn_liters: float
+    annual_fuel_cost_inr: float
+    break_even_acres: float
+    commercial_rental_income_inr: float
+    net_annual_saving_or_loss_inr: float
+    recommendation: str
+    payback_period_years: float
+    key_decision_factors: List[str]
+
+
+# =======================================================================
+# 6. Dynamic Crop Calendar & ICS Models
+# =======================================================================
+class CropCalendarRequest(BaseModel):
+    crop_id: str = "wheat"
+    sowing_date: str = "2026-11-15"  # YYYY-MM-DD
+    land_size_acres: Optional[float] = 1.0
+
+
+class CropCalendarEvent(BaseModel):
+    day_offset: int
+    target_date: str
+    phase_name: str
+    activity_type: str  # "Sowing", "Irrigation", "Nutrient", "Weeding", "Pest Management", "Harvesting"
+    action_required: str
+    critical_alert: Optional[str] = None
+    weather_sensitivity: str
+
+
+class CropCalendarResponse(BaseModel):
+    crop_id: str
+    crop_name: str
+    sowing_date: str
+    harvest_date: str
+    total_duration_days: int
+    events: List[CropCalendarEvent]
+    ics_calendar_text: str
+
+
+
 
 
