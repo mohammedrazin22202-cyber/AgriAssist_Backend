@@ -1,5 +1,5 @@
 """Comprehensive agronomic crop database for AgriAssist.
-Contains detailed climate, soil, nutrient, and management guidelines for 28+ crops.
+Contains detailed climate, soil, nutrient, and management guidelines for 100 crops.
 """
 
 from typing import List, Dict, Any
@@ -3429,6 +3429,1111 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Indoor seasonal crop utilizing crop straw residues"
         ]
 }
+,
+    {
+        "id": "brinjal",
+        "name": "Brinjal / Eggplant (Baingan)",
+        "hindi_name": "बैंगन (Baingan)",
+        "scientific_name": "Solanum melongena",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 15.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif",
+                "Rabi",
+                "Zaid"
+        ],
+        "sowing_window": "June - July (Kharif), Oct - Nov (Rabi), or Feb (Summer)",
+        "duration_days": "120 - 150 days",
+        "estimated_yield_per_acre": "140 - 220 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 60.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Transplant 30-day seedlings on raised beds (75x60cm). Install pheromone traps for shoot and fruit borer.",
+        "fertilizer_advice": "Apply 50% N + full P/K basal; split remaining N in two top-dressings at 30 and 60 days.",
+        "soil_notes": "Deep, fertile, well-drained silt loams and clay loams rich in humus.",
+        "risk_factors": [
+                "Shoot and fruit borer (Leucinodes orbonalis)",
+                "Bacterial wilt (Ralstonia)",
+                "Little leaf disease"
+        ],
+        "companion_crops": [
+                "Marigold",
+                "Coriander"
+        ]
+},
+    {
+        "id": "okra",
+        "name": "Okra / Lady's Finger (Bhindi)",
+        "hindi_name": "भिंडी (Bhindi)",
+        "scientific_name": "Abelmoschus esculentus",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 42.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 35.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "Feb - March (Summer) or June - July (Kharif)",
+        "duration_days": "90 - 110 days",
+        "estimated_yield_per_acre": "40 - 65 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 80.0,
+        "ideal_p": 50.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Soak seeds in water for 12 hours before sowing. Ridge and furrow planting (45x30cm).",
+        "fertilizer_advice": "Apply half N + full P & K basal; top-dress remaining N in two splits during picking.",
+        "soil_notes": "Well-drained fertile sandy loam to clay loam rich in organic matter.",
+        "risk_factors": [
+                "Yellow Vein Mosaic Virus (YVMV - whitefly vector)",
+                "Fruit borer (Earias vittella)",
+                "Root knot nematodes"
+        ],
+        "companion_crops": [
+                "Cowpea",
+                "French Beans"
+        ]
+},
+    {
+        "id": "cabbage",
+        "name": "Cabbage (Patta Gobhi)",
+        "hindi_name": "पत्ता गोभी (Patta Gobhi)",
+        "scientific_name": "Brassica oleracea var. capitata",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 750.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "September - October (Nursery transplant)",
+        "duration_days": "80 - 105 days",
+        "estimated_yield_per_acre": "120 - 180 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 100.0,
+        "ideal_p": 60.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Cool season crucifer. Transplant 25-day seedlings on ridges (45x45cm). Uniform moisture prevents head splitting.",
+        "fertilizer_advice": "Heavy feeder: apply FYM @ 10 tons/acre + 50% N and full P/K basal; top-dress N in two splits.",
+        "soil_notes": "Deep fertile loams and clay loams with good water holding capacity.",
+        "risk_factors": [
+                "Diamondback moth (DBM)",
+                "Cabbage aphid",
+                "Black rot (Xanthomonas)",
+                "Head bursting"
+        ],
+        "companion_crops": [
+                "Mustard (as trap crop for DBM)",
+                "Tomato"
+        ]
+},
+    {
+        "id": "cauliflower",
+        "name": "Cauliflower (Phool Gobhi)",
+        "hindi_name": "फूल गोभी (Phool Gobhi)",
+        "scientific_name": "Brassica oleracea var. botrytis",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.0,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 750.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi",
+                "Kharif"
+        ],
+        "sowing_window": "Early: May-June; Main: Sept-Oct; Late: Nov",
+        "duration_days": "80 - 110 days",
+        "estimated_yield_per_acre": "100 - 160 Quintals",
+        "investment_level": "Moderate to High",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 60.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "Blanching (covering curds with outer leaves) prevents yellowing by direct sun.",
+        "fertilizer_advice": "Apply Borax @ 5 kg/acre (prevents brown rot / hollow stem) and Ammonium Molybdate (whip tail).",
+        "soil_notes": "Fertile, loamy soils rich in organic matter with excellent moisture retention.",
+        "risk_factors": [
+                "Boron deficiency (browning of curds)",
+                "Diamondback moth",
+                "Alternaria leaf blight",
+                "Buttoning"
+        ],
+        "companion_crops": [
+                "Mustard (trap crop)",
+                "Spinach"
+        ]
+},
+    {
+        "id": "carrot",
+        "name": "Carrot (Gajar)",
+        "hindi_name": "गाजर (Gajar)",
+        "scientific_name": "Daucus carota",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 7.2,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 6.8,
+        "min_temp": 8.0,
+        "max_temp": 26.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 20.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "September 15 - October 30",
+        "duration_days": "80 - 100 days",
+        "estimated_yield_per_acre": "100 - 150 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 40.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Direct sowing on raised beds or ridges. Requires deep friable loose soil for straight, un-forked root growth.",
+        "fertilizer_advice": "Avoid fresh un-decomposed manure (causes hairy, forked roots). Boost Potash for sweet deep red color.",
+        "soil_notes": "Deep, stone-free sandy loams without hardpan; stones cause root splitting and forking.",
+        "risk_factors": [
+                "Forking and splitting from heavy soil",
+                "Alternaria leaf blight",
+                "Root knot nematodes"
+        ],
+        "companion_crops": [
+                "Radish",
+                "Coriander",
+                "Onion"
+        ]
+},
+    {
+        "id": "radish",
+        "name": "Radish (Mooli)",
+        "hindi_name": "मूली (Mooli)",
+        "scientific_name": "Raphanus sativus",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 10.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 16.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi",
+                "All Season / Flexible"
+        ],
+        "sowing_window": "Year-round (Asiatic types) or Oct - Dec (European)",
+        "duration_days": "35 - 55 days",
+        "estimated_yield_per_acre": "80 - 130 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 30.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Fast-growing cash root crop (ready in 40 days). Sow on ridges 30cm apart.",
+        "fertilizer_advice": "DAP @ 30 kg/acre basal + top-dress Urea at 20 days. Fast turnaround requires quick nutrients.",
+        "soil_notes": "Friable, light sandy loam with good aeration; heavy clay causes malformed roots.",
+        "risk_factors": [
+                "Pithiness and pungency if harvest delayed",
+                "Flea beetle",
+                "Aphids"
+        ],
+        "companion_crops": [
+                "Carrot",
+                "Spinach",
+                "Cauliflower border"
+        ]
+},
+    {
+        "id": "bottle_gourd",
+        "name": "Bottle Gourd (Lauki / Ghiya)",
+        "hindi_name": "लौकी / घीया (Lauki)",
+        "scientific_name": "Lagenaria siceraria",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Zaid",
+                "Kharif"
+        ],
+        "sowing_window": "February - March (Summer) or June - July (Kharif)",
+        "duration_days": "75 - 95 days",
+        "estimated_yield_per_acre": "120 - 180 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Channel & bower / trellis system keeps cylindrical fruits straight, blemish-free, and doubles yield.",
+        "fertilizer_advice": "Apply 5 kg compost per pit along with basal DAP. Top-dress Urea during vine elongation.",
+        "soil_notes": "Well-drained rich sandy loam or silt loam; sensitive to root asphyxiation in waterlogged soil.",
+        "risk_factors": [
+                "Fruit fly (Bactrocera cucurbitae)",
+                "Downy mildew",
+                "Powdery mildew"
+        ],
+        "companion_crops": [
+                "Maize",
+                "Cowpea"
+        ]
+},
+    {
+        "id": "bitter_gourd",
+        "name": "Bitter Gourd (Karela)",
+        "hindi_name": "करेला (Karela)",
+        "scientific_name": "Momordica charantia",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.0,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Zaid",
+                "Kharif"
+        ],
+        "sowing_window": "January - March (Summer) or June - July (Kharif)",
+        "duration_days": "75 - 100 days",
+        "estimated_yield_per_acre": "60 - 90 Quintals",
+        "investment_level": "Moderate to High",
+        "profit_potential": "Very High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "High medicinal value cucurbit. Trellis training on wire-mesh pavilions prevents soil contact rots.",
+        "fertilizer_advice": "Basal DAP and Potash in pits; side dress Urea at 30 and 50 days.",
+        "soil_notes": "Well-aerated sandy loam with abundant organic compost; dislikes waterlogging.",
+        "risk_factors": [
+                "Fruit fly (puncturing young fruit)",
+                "Downy mildew",
+                "Fusarium wilt"
+        ],
+        "companion_crops": [
+                "Maize border",
+                "Marigold"
+        ]
+},
+    {
+        "id": "ridge_gourd",
+        "name": "Ridge Gourd (Turai)",
+        "hindi_name": "तुरई / तोरी (Turai)",
+        "scientific_name": "Luffa acutangula",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 20.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "February - March or June - July",
+        "duration_days": "70 - 90 days",
+        "estimated_yield_per_acre": "50 - 80 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Angled ribbed tender gourd. Grow on wire trellises; yellow evening blooms attract honeybees.",
+        "fertilizer_advice": "Apply FYM @ 5 tons/acre + basal DAP; top-dress Urea every 3 weeks.",
+        "soil_notes": "Well-drained warm sandy loam to alluvial loam rich in organic matter.",
+        "risk_factors": [
+                "Downy mildew in monsoon",
+                "Fruit fly",
+                "Red pumpkin beetle"
+        ],
+        "companion_crops": [
+                "Cowpea",
+                "Maize"
+        ]
+},
+    {
+        "id": "sponge_gourd",
+        "name": "Sponge Gourd (Gilki / Nenua)",
+        "hindi_name": "गिलकी / नेनुआ (Gilki / Nenua)",
+        "scientific_name": "Luffa aegyptiaca",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 20.0,
+        "max_temp": 40.0,
+        "optimal_temp_min": 26.0,
+        "optimal_temp_max": 34.0,
+        "min_rainfall": 450.0,
+        "max_rainfall": 950.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "Feb - March (Summer) or June - July (Monsoon)",
+        "duration_days": "70 - 90 days",
+        "estimated_yield_per_acre": "60 - 90 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Smooth-skinned, high-yielding gourd. Extremely popular home vegetable; mature dried gourds yield luffa bath sponges.",
+        "fertilizer_advice": "DAP @ 30 kg/acre basal with organic compost; side dress Nitrogen during fruiting.",
+        "soil_notes": "Well-drained alluvial and loam soils; tolerates heavier rains than bitter gourd.",
+        "risk_factors": [
+                "Fruit fly",
+                "Mosaic virus",
+                "Downy mildew"
+        ],
+        "companion_crops": [
+                "Maize",
+                "Okra"
+        ]
+},
+    {
+        "id": "cucumber",
+        "name": "Cucumber (Kheera)",
+        "hindi_name": "खीरा (Kheera)",
+        "scientific_name": "Cucumis sativus",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.0,
+        "min_temp": 16.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Zaid",
+                "Kharif"
+        ],
+        "sowing_window": "Feb - March (Summer) or June - July (Rainy)",
+        "duration_days": "60 - 75 days",
+        "estimated_yield_per_acre": "80 - 130 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Fast-turnaround salad vegetable. Drip fertigation with silver-black mulch delivers highest grade straight fruits.",
+        "fertilizer_advice": "Apply Potash generously for crisp texture and fruit firmness. Split N in 3 doses.",
+        "soil_notes": "Warm, light, well-drained sandy loam rich in organic humus.",
+        "risk_factors": [
+                "Powdery mildew",
+                "Downy mildew",
+                "Cucumber mosaic virus (aphids)",
+                "Fruit fly"
+        ],
+        "companion_crops": [
+                "Sweet corn",
+                "Sunflowers"
+        ]
+},
+    {
+        "id": "pumpkin",
+        "name": "Pumpkin (Kaddu / Sitaphal)",
+        "hindi_name": "कद्दू / सीताफल (Kaddu)",
+        "scientific_name": "Cucurbita moschata",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "January - March or June - July",
+        "duration_days": "100 - 125 days",
+        "estimated_yield_per_acre": "100 - 160 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Vigorous spreading vine yielding long-storing orange fruits packed with Vitamin A. Wide pit spacing (3x2m).",
+        "fertilizer_advice": "Apply FYM @ 5 kg per pit with basal DAP; top-dress Urea before vines sprawl.",
+        "soil_notes": "Deep fertile sandy loam to clay loam; excellent on riverbeds.",
+        "risk_factors": [
+                "Fruit fly",
+                "Powdery mildew on mature leaves",
+                "Mosaic virus"
+        ],
+        "companion_crops": [
+                "Maize",
+                "Beans (Three Sisters guild)"
+        ]
+},
+    {
+        "id": "sweet_potato",
+        "name": "Sweet Potato (Shakarkand)",
+        "hindi_name": "शकरकंद (Shakarkand)",
+        "scientific_name": "Ipomoea batatas",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Red Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.2,
+        "optimal_ph_min": 5.8,
+        "optimal_ph_max": 6.8,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 500.0,
+        "max_rainfall": 1000.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif",
+                "Rabi"
+        ],
+        "sowing_window": "June - July (Rainy) or September - October (Winter)",
+        "duration_days": "105 - 125 days",
+        "estimated_yield_per_acre": "70 - 110 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 40.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "Nutrient-dense tuber crop. Plant terminal vine cuttings (20-25cm) on ridges with ends exposed.",
+        "fertilizer_advice": "High Potash requirement (MOP/SOP) for tuber bulking; avoid excess Nitrogen which only produces leaves.",
+        "soil_notes": "Loose, well-drained sandy loam or light red loam; clay soils cause misshapen tubers.",
+        "risk_factors": [
+                "Sweet potato weevil (Cylas formicarius)",
+                "Vine turning / rooting at nodes",
+                "Feathery mottle virus"
+        ],
+        "companion_crops": [
+                "Pigeon Pea",
+                "Maize"
+        ]
+},
+    {
+        "id": "beetroot",
+        "name": "Beetroot (Chukandar)",
+        "hindi_name": "चुकंदर (Chukandar)",
+        "scientific_name": "Beta vulgaris",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 6.2,
+        "max_ph": 8.2,
+        "optimal_ph_min": 6.8,
+        "optimal_ph_max": 7.6,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 1 - November 15",
+        "duration_days": "75 - 90 days",
+        "estimated_yield_per_acre": "80 - 120 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 40.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Each seed ball contains 2-3 seeds; thinning to single seedling at 10cm is mandatory at 15 days.",
+        "fertilizer_advice": "Apply Boron (Borax @ 4 kg/acre); prevents heart rot / internal black spot.",
+        "soil_notes": "Deep fertile loams; exhibits superior salinity tolerance among all vegetables.",
+        "risk_factors": [
+                "Internal black spot (Boron deficiency)",
+                "Cercospora leaf spot",
+                "Zoning (pale white rings from heat)"
+        ],
+        "companion_crops": [
+                "Onion",
+                "Cabbage",
+                "Lettuce"
+        ]
+},
+    {
+        "id": "elephant_foot_yam",
+        "name": "Elephant Foot Yam (Jimikand / Suran)",
+        "hindi_name": "जिमीकंद / सूरन (Jimikand)",
+        "scientific_name": "Amorphophallus paeoniifolius",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Red Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Laterite Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 20.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 33.0,
+        "min_rainfall": 800.0,
+        "max_rainfall": 1500.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "April - May (Pre-monsoon planting of corm sets)",
+        "duration_days": "210 - 240 days",
+        "estimated_yield_per_acre": "140 - 220 Quintals",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 80.0,
+        "ideal_p": 60.0,
+        "ideal_k": 100.0,
+        "sowing_tips": "Massive cash-yielding underground corm (Gajendra variety has no acridity). Plant 500g corm pieces in 60x60cm pits.",
+        "fertilizer_advice": "Heavy application of FYM (10-12 tons/acre) plus NPK split in 3 doses with heavy earthing up.",
+        "soil_notes": "Deep, loose, fertile sandy loam or alluvial loam with high organic carbon.",
+        "risk_factors": [
+                "Collar rot (Sclerotium rolfsii)",
+                "Mosaic virus",
+                "Water stagnation rot"
+        ],
+        "companion_crops": [
+                "Turmeric",
+                "Ginger",
+                "Maize"
+        ]
+},
+    {
+        "id": "colocasia",
+        "name": "Taro / Colocasia (Arbi)",
+        "hindi_name": "अरबी (Arbi)",
+        "scientific_name": "Colocasia esculenta",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 800.0,
+        "max_rainfall": 1600.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "Feb - March (Summer) or June - July (Monsoon)",
+        "duration_days": "140 - 170 days",
+        "estimated_yield_per_acre": "70 - 110 Quintals (Corms) + Leaves",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Dual vegetable: underground cormels (Arbi) and green leaves (Patra). Loves moisture and tolerates shade.",
+        "fertilizer_advice": "Apply FYM @ 8 tons/acre + DAP basal; top-dress Potash and Nitrogen at 45 days.",
+        "soil_notes": "Heavy moist loams and clay loams with high water holding capacity.",
+        "risk_factors": [
+                "Phytophthora leaf blight",
+                "Red spider mite",
+                "Aphids"
+        ],
+        "companion_crops": [
+                "Banana orchard intercrop",
+                "Maize border"
+        ]
+},
+    {
+        "id": "capsicum",
+        "name": "Bell Pepper / Capsicum (Shimla Mirch)",
+        "hindi_name": "शिमला मिर्च (Shimla Mirch)",
+        "scientific_name": "Capsicum annuum var. grossum",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.2,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 6.8,
+        "min_temp": 12.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 450.0,
+        "max_rainfall": 850.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "Rabi",
+                "Kharif"
+        ],
+        "sowing_window": "Sept - Oct (Plains) or March - April (Hills/Polyhouse)",
+        "duration_days": "100 - 130 days",
+        "estimated_yield_per_acre": "90 - 150 Quintals (Open field) / 300+ (Polyhouse)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 60.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "High-value salad vegetable. Raised beds with drip fertigation and black mulch deliver export-grade bell peppers.",
+        "fertilizer_advice": "Drip fertigation with Calcium Nitrate, Potassium Nitrate, and Boron to prevent blossom end rot.",
+        "soil_notes": "Well-drained fertile loam rich in organic matter; extremely sensitive to standing water.",
+        "risk_factors": [
+                "Anthracnose / fruit rot",
+                "Thrips & mites causing leaf curl",
+                "Bacterial wilt"
+        ],
+        "companion_crops": [
+                "Marigold",
+                "Onion"
+        ]
+},
+    {
+        "id": "french_beans",
+        "name": "French Beans (Phasli)",
+        "hindi_name": "फ्रेंच बीन्स (Phasli)",
+        "scientific_name": "Phaseolus vulgaris",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 7.2,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 6.8,
+        "min_temp": 12.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 16.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi",
+                "Kharif"
+        ],
+        "sowing_window": "Sept - Oct (Plains) or March - April (Hills)",
+        "duration_days": "65 - 80 days",
+        "estimated_yield_per_acre": "40 - 70 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 50.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Bush and pole types available. Quick 65-day turnaround; succulent stringless green pods fetch premium winter prices.",
+        "fertilizer_advice": "Unlike other legumes, French bean requires moderate Nitrogen application as nodulation is low.",
+        "soil_notes": "Well-drained light loams with high organic content; sensitive to soil salinity and waterlogging.",
+        "risk_factors": [
+                "Anthracnose",
+                "Rust",
+                "Stem fly at seedling stage"
+        ],
+        "companion_crops": [
+                "Carrot",
+                "Cauliflower",
+                "Maize"
+        ]
+},
+    {
+        "id": "spinach",
+        "name": "Spinach (Palak)",
+        "hindi_name": "पालक (Palak)",
+        "scientific_name": "Spinacia oleracea",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 8.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi",
+                "All Season / Flexible"
+        ],
+        "sowing_window": "Year-round (Main: September - November)",
+        "duration_days": "30 - 45 days (Multiple cuttings)",
+        "estimated_yield_per_acre": "60 - 90 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Fastest iron-rich leafy vegetable (first cutting in 30 days; gives 4-5 cuttings).",
+        "fertilizer_advice": "Top-dress Nitrogen (Urea @ 15 kg/acre) after each leaf cut followed by light irrigation.",
+        "soil_notes": "Fertile alluvial and clay loams rich in organic matter; tolerates mild salinity well.",
+        "risk_factors": [
+                "Downy mildew (bluish mold under leaves)",
+                "Caterpillars",
+                "Bolting in hot summer"
+        ],
+        "companion_crops": [
+                "Radish",
+                "Onion",
+                "Cabbage"
+        ]
+},
+    {
+        "id": "fenugreek_greens",
+        "name": "Fenugreek Greens (Kasoori Methi)",
+        "hindi_name": "कसूरी मेथी (Kasoori Methi)",
+        "scientific_name": "Trigonella foenum-graecum",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 550.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "September 15 - November 15",
+        "duration_days": "35 - 50 days (First cut)",
+        "estimated_yield_per_acre": "40 - 70 Quintals (Green) or 8-12 Qtl (Dry Kasoori leaves)",
+        "investment_level": "Low",
+        "profit_potential": "Very High",
+        "ideal_n": 30.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Famous fragrant Nagaur Kasoori Methi. Multi-cut leafy crop; dried shade leaves command astronomical spice prices.",
+        "fertilizer_advice": "Basal DAP; top-dress light Urea after each green leaf harvest.",
+        "soil_notes": "Well-drained light loams and sandy loams with good calcium content.",
+        "risk_factors": [
+                "Powdery mildew",
+                "Aphids during warm winter days",
+                "Damping off"
+        ],
+        "companion_crops": [
+                "Carrot",
+                "Garlic",
+                "Radish"
+        ]
+},
+    {
+        "id": "muskmelon",
+        "name": "Muskmelon (Kharbooja)",
+        "hindi_name": "खरबूजा (Kharbooja)",
+        "scientific_name": "Cucumis melo",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Riverbed Sand"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 18.0,
+        "max_temp": 42.0,
+        "optimal_temp_min": 26.0,
+        "optimal_temp_max": 35.0,
+        "min_rainfall": 200.0,
+        "max_rainfall": 500.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Zaid"
+        ],
+        "sowing_window": "January 15 - March 15",
+        "duration_days": "75 - 90 days",
+        "estimated_yield_per_acre": "80 - 140 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Sweet summer dessert melon. Riverbed cultivation (diara land) or drip fertigation on silver-black mulch.",
+        "fertilizer_advice": "Apply Potash generously during fruit netting to elevate sugar content (TSS > 12° Brix).",
+        "soil_notes": "Warm sandy riverbeds and sandy loam with high drainage.",
+        "risk_factors": [
+                "Fruit fly",
+                "Powdery mildew",
+                "Fruit cracking if irrigated near maturity"
+        ],
+        "companion_crops": [
+                "Watermelon",
+                "Bottle gourd"
+        ]
+},
+    {
+        "id": "green_peas",
+        "name": "Green Garden Peas (Hari Matar)",
+        "hindi_name": "हरी मटर (Hari Matar)",
+        "scientific_name": "Pisum sativum",
+        "category": "Vegetable",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 10.0,
+        "max_temp": 26.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 20.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 650.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "Early: October 1-15; Main: Oct 20 - Nov 15",
+        "duration_days": "65 - 85 days",
+        "estimated_yield_per_acre": "35 - 55 Quintals (Green pods)",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 25.0,
+        "ideal_p": 50.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Premium winter vegetable. Early crop (GS-10, Arkel) in October commands premium prices in metropolitan mandis.",
+        "fertilizer_advice": "DAP @ 50 kg/acre basal; inoculate seeds with Rhizobium leguminosarum.",
+        "soil_notes": "Well-drained fertile loam; avoid waterlogged heavy clays.",
+        "risk_factors": [
+                "Powdery mildew",
+                "Pea aphid",
+                "Pod borer"
+        ],
+        "companion_crops": [
+                "Mustard",
+                "Wheat",
+                "Coriander"
+        ]
+}
 
 ]
 
@@ -5606,6 +6711,777 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Flushes Harvesting",
                         "activities": "Twist and harvest closed white button caps in 3-4 distinct flushes.",
                         "pest_warning": "Open gills if delayed."
+                }
+        ]
+}
+,
+    "brinjal": {
+        "msp_per_quintal": 1400.0,
+        "seed_rate_kg_acre": 0.2,
+        "seed_cost_per_kg": 4500.0,
+        "cultivation_cost_per_acre": 22000.0,
+        "yield_quintal_min": 140.0,
+        "yield_quintal_max": 220.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Nursery & Transplanting",
+                        "activities": "Transplant sturdy seedlings; dip roots in Trichoderma.",
+                        "pest_warning": "Damping off & flea beetle."
+                },
+                {
+                        "day_range": "Day 25-50",
+                        "stage_name": "Vegetative Branching",
+                        "activities": "Earthing up and first top-dressing of Urea.",
+                        "pest_warning": "Shoot borer wilting tips."
+                },
+                {
+                        "day_range": "Day 50-80",
+                        "stage_name": "Flowering & Fruit Set",
+                        "activities": "Install pheromone traps (12/acre); maintain moist root zone.",
+                        "pest_warning": "Fruit borer."
+                },
+                {
+                        "day_range": "Day 80-140+",
+                        "stage_name": "Multi-Pick Harvesting",
+                        "activities": "Pick glossy tender fruits every 4-5 days.",
+                        "pest_warning": "Red spider mites."
+                }
+        ]
+},
+    "okra": {
+        "msp_per_quintal": 2200.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 650.0,
+        "cultivation_cost_per_acre": 18000.0,
+        "yield_quintal_min": 40.0,
+        "yield_quintal_max": 65.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Seedling",
+                        "activities": "Direct seed on ridges. One hand weeding at 15 days.",
+                        "pest_warning": "Flea beetles & jassids."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Vegetative Squaring",
+                        "activities": "Top-dress Urea before first flowering irrigation.",
+                        "pest_warning": "Whitefly (YVMV vector)."
+                },
+                {
+                        "day_range": "Day 45-60",
+                        "stage_name": "First Harvest Flush",
+                        "activities": "First picking starts 45 days after sowing.",
+                        "pest_warning": "Fruit borer."
+                },
+                {
+                        "day_range": "Day 60-100+",
+                        "stage_name": "Continuous Alternate-Day Picking",
+                        "activities": "Pick tender green pods every alternate day to prolong fruiting.",
+                        "pest_warning": "Powdery mildew."
+                }
+        ]
+},
+    "cabbage": {
+        "msp_per_quintal": 1200.0,
+        "seed_rate_kg_acre": 0.15,
+        "seed_cost_per_kg": 5500.0,
+        "cultivation_cost_per_acre": 19000.0,
+        "yield_quintal_min": 120.0,
+        "yield_quintal_max": 180.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Transplanting & Establishment",
+                        "activities": "Transplant seedlings on ridges; irrigate immediately.",
+                        "pest_warning": "Damping off & cutworms."
+                },
+                {
+                        "day_range": "Day 25-50",
+                        "stage_name": "Foliage Spreading",
+                        "activities": "Top-dress Urea and earthing up around stems.",
+                        "pest_warning": "Diamondback moth (DBM)."
+                },
+                {
+                        "day_range": "Day 50-75",
+                        "stage_name": "Head Cupping & Firming",
+                        "activities": "Maintain regular watering; water stress causes loose heads.",
+                        "pest_warning": "Aphids inside leaves."
+                },
+                {
+                        "day_range": "Day 75-100+",
+                        "stage_name": "Solid Head Harvest",
+                        "activities": "Harvest firm, compact solid heads with 2-3 wrapper leaves.",
+                        "pest_warning": "Head bursting."
+                }
+        ]
+},
+    "cauliflower": {
+        "msp_per_quintal": 1500.0,
+        "seed_rate_kg_acre": 0.15,
+        "seed_cost_per_kg": 6000.0,
+        "cultivation_cost_per_acre": 21000.0,
+        "yield_quintal_min": 100.0,
+        "yield_quintal_max": 160.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Transplanting Phase",
+                        "activities": "Transplant in evening; apply starter fertilizer dose.",
+                        "pest_warning": "Cutworms."
+                },
+                {
+                        "day_range": "Day 25-50",
+                        "stage_name": "Vegetative Frame Growth",
+                        "activities": "Side-dress Urea and Boron; weed thoroughly.",
+                        "pest_warning": "Diamondback moth."
+                },
+                {
+                        "day_range": "Day 50-75",
+                        "stage_name": "Curd Initiation & Blanching",
+                        "activities": "Fold outer leaves over white curd to prevent sunlight yellowing.",
+                        "pest_warning": "Browning (Boron)."
+                },
+                {
+                        "day_range": "Day 75-100+",
+                        "stage_name": "Curd Harvesting",
+                        "activities": "Cut compact, snow-white curds with jacket leaves intact.",
+                        "pest_warning": "Ricing & loose curds."
+                }
+        ]
+},
+    "carrot": {
+        "msp_per_quintal": 1300.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 450.0,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 100.0,
+        "yield_quintal_max": 150.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Slow Germination & Emergence",
+                        "activities": "Shallow line sowing on ridges. Keep ridge moist.",
+                        "pest_warning": "Soil crusting."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Thinning & Taproot Elongation",
+                        "activities": "Thin plants to 6-8cm spacing. Weeding.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 45-75",
+                        "stage_name": "Root Swelling & Lycopene Flush",
+                        "activities": "Earthing up to prevent green shoulders in direct sun.",
+                        "pest_warning": "Alternaria leaf blight."
+                },
+                {
+                        "day_range": "Day 75-95+",
+                        "stage_name": "Root Uprooting & Washing",
+                        "activities": "Irrigate lightly before pulling; wash and pack.",
+                        "pest_warning": "Root splitting."
+                }
+        ]
+},
+    "radish": {
+        "msp_per_quintal": 900.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 280.0,
+        "cultivation_cost_per_acre": 11000.0,
+        "yield_quintal_min": 80.0,
+        "yield_quintal_max": 130.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-10",
+                        "stage_name": "Rapid Germination",
+                        "activities": "Sow on ridges at 2cm depth. Keep moist.",
+                        "pest_warning": "Flea beetles on cotyledons."
+                },
+                {
+                        "day_range": "Day 10-25",
+                        "stage_name": "Thinning & Rapid Rooting",
+                        "activities": "Thin to 10cm; top-dress light Urea dose.",
+                        "pest_warning": "Mustard sawfly."
+                },
+                {
+                        "day_range": "Day 25-40",
+                        "stage_name": "Root Bulking",
+                        "activities": "Earthing up to keep roots white and sweet.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 40-50+",
+                        "stage_name": "Quick Uprooting",
+                        "activities": "Pull crisp roots promptly; delay causes pithiness (spongy hollow).",
+                        "pest_warning": "Bolting (premature flowering)."
+                }
+        ]
+},
+    "bottle_gourd": {
+        "msp_per_quintal": 1200.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 600.0,
+        "cultivation_cost_per_acre": 16000.0,
+        "yield_quintal_min": 120.0,
+        "yield_quintal_max": 180.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Pit Emergence & Vine Creep",
+                        "activities": "Soak seeds 24h. Sow 3 seeds/pit (2x2m). Thin to 2 plants.",
+                        "pest_warning": "Red pumpkin beetle."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Trellis Training & Pruning",
+                        "activities": "Train main vine on bower wire; pinch tip at 2m to induce fruiting branches.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Evening Bloom & Fruit Set",
+                        "activities": "White nocturnal flowers pollinated by moths; hang cue-lure traps.",
+                        "pest_warning": "Fruit fly oviposition."
+                },
+                {
+                        "day_range": "Day 65-90+",
+                        "stage_name": "Tender Fruit Harvesting",
+                        "activities": "Harvest tender green fruits every 3-4 days.",
+                        "pest_warning": "Fruit scarring."
+                }
+        ]
+},
+    "bitter_gourd": {
+        "msp_per_quintal": 2600.0,
+        "seed_rate_kg_acre": 1.8,
+        "seed_cost_per_kg": 1200.0,
+        "cultivation_cost_per_acre": 20000.0,
+        "yield_quintal_min": 60.0,
+        "yield_quintal_max": 90.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Seedling Phase",
+                        "activities": "Nick seed coat or soak 12h. Direct sow in pits.",
+                        "pest_warning": "Red pumpkin beetle."
+                },
+                {
+                        "day_range": "Day 20-50",
+                        "stage_name": "Trellis Climbing",
+                        "activities": "Train tendrils onto bamboo trellis; side dress Urea.",
+                        "pest_warning": "Epilachna beetle."
+                },
+                {
+                        "day_range": "Day 50-70",
+                        "stage_name": "Yellow Bloom & Setting",
+                        "activities": "Install pheromone cue-lure traps for fruit flies.",
+                        "pest_warning": "Fruit fly maggot decay."
+                },
+                {
+                        "day_range": "Day 70-95+",
+                        "stage_name": "Prickly Fruit Harvest",
+                        "activities": "Harvest firm, dark green prickly fruits before turning yellow.",
+                        "pest_warning": "Yellowing over-ripeness."
+                }
+        ]
+},
+    "ridge_gourd": {
+        "msp_per_quintal": 2000.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 850.0,
+        "cultivation_cost_per_acre": 16000.0,
+        "yield_quintal_min": 50.0,
+        "yield_quintal_max": 80.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-18",
+                        "stage_name": "Sprouting & Vining",
+                        "activities": "Soak seeds in cow dung slurry; sow in raised pits.",
+                        "pest_warning": "Red beetle."
+                },
+                {
+                        "day_range": "Day 18-45",
+                        "stage_name": "Trellis Climbing",
+                        "activities": "Direct vines onto vertical netting / stakes.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Yellow Flowering",
+                        "activities": "Yellow blossoms open in late afternoon; bee pollination.",
+                        "pest_warning": "Fruit fly."
+                },
+                {
+                        "day_range": "Day 65-85+",
+                        "stage_name": "Ribbed Fruit Picking",
+                        "activities": "Harvest tender, ribbed green fruits before fibers harden.",
+                        "pest_warning": "Fibrous sponginess if late."
+                }
+        ]
+},
+    "sponge_gourd": {
+        "msp_per_quintal": 1800.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 750.0,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 60.0,
+        "yield_quintal_max": 90.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-18",
+                        "stage_name": "Emergence Phase",
+                        "activities": "Soak seeds overnight. Sow in channels at 2m spacing.",
+                        "pest_warning": "Beetles."
+                },
+                {
+                        "day_range": "Day 18-45",
+                        "stage_name": "Vine Spreading & Training",
+                        "activities": "Train over bamboo trellis or fence line.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Golden Morning Bloom",
+                        "activities": "Golden flowers open early morning; good honeybee visits.",
+                        "pest_warning": "Fruit fly."
+                },
+                {
+                        "day_range": "Day 65-85+",
+                        "stage_name": "Smooth Fruit Harvest",
+                        "activities": "Pick smooth cylindrical green fruits while crisp and seedless.",
+                        "pest_warning": "Sponge fibrous hardening."
+                }
+        ]
+},
+    "cucumber": {
+        "msp_per_quintal": 1600.0,
+        "seed_rate_kg_acre": 1.0,
+        "seed_cost_per_kg": 2200.0,
+        "cultivation_cost_per_acre": 18000.0,
+        "yield_quintal_min": 80.0,
+        "yield_quintal_max": 130.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Fast Sprouting",
+                        "activities": "Sow on raised beds with mulch; first irrigation.",
+                        "pest_warning": "Red pumpkin beetle."
+                },
+                {
+                        "day_range": "Day 15-35",
+                        "stage_name": "Vine Growth & Tendrils",
+                        "activities": "Inter-row weeding or training on vertical strings.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 35-50",
+                        "stage_name": "Yellow Bloom & Setting",
+                        "activities": "Maintain steady moisture; avoid blossom dryout.",
+                        "pest_warning": "Fruit fly & aphids."
+                },
+                {
+                        "day_range": "Day 50-70+",
+                        "stage_name": "Crisp Salad Harvesting",
+                        "activities": "Pick crisp, straight green fruits every other day.",
+                        "pest_warning": "Crooked fruit (boron deficit)."
+                }
+        ]
+},
+    "pumpkin": {
+        "msp_per_quintal": 1000.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 650.0,
+        "cultivation_cost_per_acre": 14000.0,
+        "yield_quintal_min": 100.0,
+        "yield_quintal_max": 160.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Pit Sprouting",
+                        "activities": "Sow 3 seeds per pit; thin to 2 healthy vines. Irrigate.",
+                        "pest_warning": "Pumpkin beetle."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Massive Vine Sprawling",
+                        "activities": "Vines cover soil completely; suppress late weeds.",
+                        "pest_warning": "Epilachna beetle."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Big Yellow Flowers & Fruit",
+                        "activities": "Fruit fly management; place straw under swelling fruits.",
+                        "pest_warning": "Fruit fly & rot."
+                },
+                {
+                        "day_range": "Day 85-120+",
+                        "stage_name": "Orange Fruit Hardening",
+                        "activities": "Harvest when skin turns dull orange and stem turns corky woody.",
+                        "pest_warning": "Sunburn on exposed rind."
+                }
+        ]
+},
+    "sweet_potato": {
+        "msp_per_quintal": 1600.0,
+        "seed_rate_kg_acre": 25000.0,
+        "seed_cost_per_kg": 0.2,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 70.0,
+        "yield_quintal_max": 110.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Vine Cutting Rooting",
+                        "activities": "Plant cuttings on ridges (60x20cm). Immediate irrigation.",
+                        "pest_warning": "Weeds before vine spread."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Canopy Coverage & Tuber Initiation",
+                        "activities": "Vines cover ridges; lift vines to prevent secondary rooting.",
+                        "pest_warning": "Sweet potato weevil."
+                },
+                {
+                        "day_range": "Day 60-95",
+                        "stage_name": "Tuber Bulking Phase",
+                        "activities": "Earthing up ridges to keep swelling tubers covered from weevils.",
+                        "pest_warning": "Weevil burrowing."
+                },
+                {
+                        "day_range": "Day 95-120+",
+                        "stage_name": "Tuber Digging & Curing",
+                        "activities": "Harvest when leaves turn yellow; cure in sun for 3 days to sweeten.",
+                        "pest_warning": "Skin cuts during digging."
+                }
+        ]
+},
+    "beetroot": {
+        "msp_per_quintal": 1500.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 550.0,
+        "cultivation_cost_per_acre": 14000.0,
+        "yield_quintal_min": 80.0,
+        "yield_quintal_max": 120.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Thinning",
+                        "activities": "Direct seed on ridges. Mandatory thinning to 10cm.",
+                        "pest_warning": "Damping off & cutworms."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Rosette Foliage & Taproot",
+                        "activities": "Top-dress Urea and Borax spray at 30 days.",
+                        "pest_warning": "Cercospora leaf spot."
+                },
+                {
+                        "day_range": "Day 45-70",
+                        "stage_name": "Root Swelling & Betalain Storing",
+                        "activities": "Maintain regular moisture; uneven watering causes ring zoning.",
+                        "pest_warning": "Boron black heart."
+                },
+                {
+                        "day_range": "Day 70-85+",
+                        "stage_name": "Globe Root Harvest",
+                        "activities": "Pull roots when 5-8cm diameter before texture gets woody.",
+                        "pest_warning": "Cracking if over-irrigated."
+                }
+        ]
+},
+    "elephant_foot_yam": {
+        "msp_per_quintal": 2500.0,
+        "seed_rate_kg_acre": 2500.0,
+        "seed_cost_per_kg": 22.0,
+        "cultivation_cost_per_acre": 40000.0,
+        "yield_quintal_min": 140.0,
+        "yield_quintal_max": 220.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-45",
+                        "stage_name": "Corm Sprouting & Umbrella Shoot",
+                        "activities": "Plant corm sets treated with cow dung slurry. Thick umbrella shoot emerges.",
+                        "pest_warning": "Collar rot."
+                },
+                {
+                        "day_range": "Day 45-120",
+                        "stage_name": "Canopy Expansion & Corm Bulking",
+                        "activities": "First and second earthing up with top dressing of Urea & Potash.",
+                        "pest_warning": "Leaf blight."
+                },
+                {
+                        "day_range": "Day 120-180",
+                        "stage_name": "Underground Corm Swelling",
+                        "activities": "Corms swell rapidly underground; third earthing up.",
+                        "pest_warning": "Sclerotium collar rot."
+                },
+                {
+                        "day_range": "Day 180-230+",
+                        "stage_name": "Leaf Senescence & Digging",
+                        "activities": "Leaves wither and collapse in Nov-Dec; dig out solid corms.",
+                        "pest_warning": "Storage rot."
+                }
+        ]
+},
+    "colocasia": {
+        "msp_per_quintal": 2400.0,
+        "seed_rate_kg_acre": 350.0,
+        "seed_cost_per_kg": 35.0,
+        "cultivation_cost_per_acre": 22000.0,
+        "yield_quintal_min": 70.0,
+        "yield_quintal_max": 110.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Cormel Sprouting",
+                        "activities": "Plant cormels on ridges at 45x30cm. First irrigation.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 30-70",
+                        "stage_name": "Elephant-Ear Foliage Flush",
+                        "activities": "Top-dress Urea; leaves can be selectively plucked for Patra.",
+                        "pest_warning": "Phytophthora blight."
+                },
+                {
+                        "day_range": "Day 70-120",
+                        "stage_name": "Cormel Multiplication",
+                        "activities": "Earthing up is crucial to bury developing side cormels.",
+                        "pest_warning": "Mites."
+                },
+                {
+                        "day_range": "Day 120-160+",
+                        "stage_name": "Maturity & Digging",
+                        "activities": "Dig corm bunches when leaves turn yellow; clean roots.",
+                        "pest_warning": "Corm rot."
+                }
+        ]
+},
+    "capsicum": {
+        "msp_per_quintal": 3200.0,
+        "seed_rate_kg_acre": 0.15,
+        "seed_cost_per_kg": 18000.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 90.0,
+        "yield_quintal_max": 150.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Transplanting & Staking",
+                        "activities": "Transplant 35-day seedlings on raised beds with drip; stake plants.",
+                        "pest_warning": "Damping off & thrips."
+                },
+                {
+                        "day_range": "Day 30-60",
+                        "stage_name": "Branching & Crown Bloom",
+                        "activities": "Remove first crown flower to build strong plant frame.",
+                        "pest_warning": "Mites & leaf curl."
+                },
+                {
+                        "day_range": "Day 60-90",
+                        "stage_name": "Blocky Fruit Setting",
+                        "activities": "Foliar Calcium Nitrate spray prevents blossom end rot.",
+                        "pest_warning": "Anthracnose."
+                },
+                {
+                        "day_range": "Day 90-125+",
+                        "stage_name": "Firm Bell Harvest",
+                        "activities": "Harvest firm, shiny green or colored 3-4 lobed bell peppers with stalk.",
+                        "pest_warning": "Sunscald on exposed fruit."
+                }
+        ]
+},
+    "french_beans": {
+        "msp_per_quintal": 3200.0,
+        "seed_rate_kg_acre": 25.0,
+        "seed_cost_per_kg": 140.0,
+        "cultivation_cost_per_acre": 17000.0,
+        "yield_quintal_min": 40.0,
+        "yield_quintal_max": 70.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Trifoliate",
+                        "activities": "Direct sow on ridges (45x15cm). First weeding at 18 days.",
+                        "pest_warning": "Stem fly."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Bush Canopy & Bloom",
+                        "activities": "Top-dress Urea before flowering irrigation.",
+                        "pest_warning": "Anthracnose & aphids."
+                },
+                {
+                        "day_range": "Day 45-60",
+                        "stage_name": "Pod Formation",
+                        "activities": "Moisture is critical; avoid flower drop from water stress.",
+                        "pest_warning": "Pod borer."
+                },
+                {
+                        "day_range": "Day 60-75+",
+                        "stage_name": "Tender Pod Pickings",
+                        "activities": "Pick tender, round stringless green pods every 3-4 days.",
+                        "pest_warning": "Tough stringy pods if late."
+                }
+        ]
+},
+    "spinach": {
+        "msp_per_quintal": 1100.0,
+        "seed_rate_kg_acre": 10.0,
+        "seed_cost_per_kg": 140.0,
+        "cultivation_cost_per_acre": 10000.0,
+        "yield_quintal_min": 60.0,
+        "yield_quintal_max": 90.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-10",
+                        "stage_name": "Rapid Germination",
+                        "activities": "Broadcast or line sow in flat beds. Light sprinkling.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 10-28",
+                        "stage_name": "Broad Leaf Rosette",
+                        "activities": "Hand weeding once; top-dress light Urea dose.",
+                        "pest_warning": "Flea beetles & aphids."
+                },
+                {
+                        "day_range": "Day 28-32",
+                        "stage_name": "First Leaf Cutting",
+                        "activities": "Cut tender dark green leaves 2cm above soil; leaves regrow fast.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Every 15d",
+                        "stage_name": "Multi-Rounds Ratoon Harvest",
+                        "activities": "Top-dress Urea and irrigate after each cut (takes 4 cuts).",
+                        "pest_warning": "Bolting in warm weather."
+                }
+        ]
+},
+    "fenugreek_greens": {
+        "msp_per_quintal": 2200.0,
+        "seed_rate_kg_acre": 8.0,
+        "seed_cost_per_kg": 160.0,
+        "cultivation_cost_per_acre": 11000.0,
+        "yield_quintal_min": 40.0,
+        "yield_quintal_max": 70.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-12",
+                        "stage_name": "Quick Seedling Emergence",
+                        "activities": "Broadcast or line drill. First light watering.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 12-35",
+                        "stage_name": "Fragrant Bushing",
+                        "activities": "Dense aromatic foliage forms carpet. Weed once.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 35-40",
+                        "stage_name": "First Leaf Flush Cut",
+                        "activities": "Cut tender upper shoots; leave 3cm stubble for regrowth.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Every 18d",
+                        "stage_name": "Continuous Leaf Cuts & Shade Drying",
+                        "activities": "Take 3-4 cuts; sun/shade dry for Kasoori Methi flakes.",
+                        "pest_warning": "Powdery mildew."
+                }
+        ]
+},
+    "muskmelon": {
+        "msp_per_quintal": 1800.0,
+        "seed_rate_kg_acre": 1.2,
+        "seed_cost_per_kg": 2800.0,
+        "cultivation_cost_per_acre": 18000.0,
+        "yield_quintal_min": 80.0,
+        "yield_quintal_max": 140.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Pit Sprouting",
+                        "activities": "Soak seeds 12h; sow in channels at 2m row distance.",
+                        "pest_warning": "Red pumpkin beetle."
+                },
+                {
+                        "day_range": "Day 15-40",
+                        "stage_name": "Vine Extension & Side Shoots",
+                        "activities": "Side-dress Urea before second irrigation.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 40-60",
+                        "stage_name": "Yellow Flowering & Fruit Set",
+                        "activities": "Install cue-lure traps for fruit fly; maintain bee pollination.",
+                        "pest_warning": "Fruit fly punctures."
+                },
+                {
+                        "day_range": "Day 60-85+",
+                        "stage_name": "Netting, Aromas & Slip Harvest",
+                        "activities": "Stop watering 5 days before harvest; pick at 'full-slip' stage.",
+                        "pest_warning": "Cracking if watered."
+                }
+        ]
+},
+    "green_peas": {
+        "msp_per_quintal": 3600.0,
+        "seed_rate_kg_acre": 35.0,
+        "seed_cost_per_kg": 110.0,
+        "cultivation_cost_per_acre": 17000.0,
+        "yield_quintal_min": 35.0,
+        "yield_quintal_max": 55.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Tendrils",
+                        "activities": "Sow in lines (30x10cm). Weed at 20 days. Light watering.",
+                        "pest_warning": "Cutworms."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Vegetative Climax & Bloom",
+                        "activities": "Inter-row hoeing. Protect from aphids.",
+                        "pest_warning": "Pea aphid."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Pod Set & Grain Bulking",
+                        "activities": "Irrigate at pod fill; spray Wettable Sulfur for powdery mildew.",
+                        "pest_warning": "Powdery mildew."
+                },
+                {
+                        "day_range": "Day 65-85+",
+                        "stage_name": "Succulent Pod Picking",
+                        "activities": "Pick well-filled succulent sweet green pods in 2-3 pickings.",
+                        "pest_warning": "Over-mature starchy pods."
                 }
         ]
 }

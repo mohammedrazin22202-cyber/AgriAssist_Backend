@@ -10,7 +10,7 @@ backend/
 │   ├── main.py          # FastAPI application with REST endpoints & CORS
 │   ├── engine.py        # Multi-factor agronomic scoring algorithm
 │   ├── agri_tools.py    # Fertilizer prescriber, farm economics & rotation planner
-│   ├── database.py      # Knowledge base of 28+ crops with MSP & growth stages
+│   ├── database.py      # Knowledge base of 100 crops with MSP & growth stages
 │   ├── soil_presets.py  # Regional soil benchmarks & season metadata
 │   └── models.py        # Pydantic schemas (Request / Response)
 ├── tests/
