@@ -1756,6 +1756,301 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Mustard"
         ]
 }
+,
+    {
+        "id": "sesamum",
+        "name": "Sesame / Gingelly (Til)",
+        "hindi_name": "तिल (Til)",
+        "scientific_name": "Sesamum indicum",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.2,
+        "min_temp": 20.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "June - July (Kharif) or February - March (Summer)",
+        "duration_days": "80 - 95 days",
+        "estimated_yield_per_acre": "4 - 7 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Very High",
+        "ideal_n": 40.0,
+        "ideal_p": 25.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Mix tiny seeds with dry sand (1:4) for uniform shallow drilling. Thin to 15cm at 15 days.",
+        "fertilizer_advice": "Apply Sulfur @ 15 kg/acre to boost oil content (>50%) and aroma.",
+        "soil_notes": "Well-drained light loams; extremely sensitive to standing water and soil crusting.",
+        "risk_factors": [
+                "Phyllody (transmitted by leafhoppers)",
+                "Antigastra shoot and pod borer",
+                "Water stagnation"
+        ],
+        "companion_crops": [
+                "Pigeon Pea",
+                "Groundnut"
+        ]
+},
+    {
+        "id": "castor",
+        "name": "Castor (Arandi)",
+        "hindi_name": "अरंडी (Arandi)",
+        "scientific_name": "Ricinus communis",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Red Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 40.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "July 15 - August 15",
+        "duration_days": "150 - 180 days",
+        "estimated_yield_per_acre": "10 - 16 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 80.0,
+        "ideal_p": 40.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Wide planting geometry (120x60 cm). Deep taproot breaks subsoil hardpans.",
+        "fertilizer_advice": "Split Nitrogen into 3 doses: basal, 40 days, and 70 days at secondary spike initiation.",
+        "soil_notes": "Well-drained sandy loams and red loamy soils. Susceptible to water stagnation.",
+        "risk_factors": [
+                "Semilooper (Achaea janata)",
+                "Botrytis gray rot in rainy spells",
+                "Fusarium wilt"
+        ],
+        "companion_crops": [
+                "Groundnut",
+                "Pigeon Pea"
+        ]
+},
+    {
+        "id": "linseed",
+        "name": "Linseed / Flaxseed (Alsi)",
+        "hindi_name": "अलसी (Alsi)",
+        "scientific_name": "Linum usitatissimum",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Clay Loam Soil",
+                "Alluvial Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Sandy Loam Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "115 - 130 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "High Omega-3 super-oilseed. Shallow 2-3 cm drilling. Also provides valuable bast fiber.",
+        "fertilizer_advice": "Basal application of DAP and Potash. Top-dress half Urea at first irrigation (35 days).",
+        "soil_notes": "Moisture-retentive black and clayey soils. Excellent relay crop in eastern rice fields.",
+        "risk_factors": [
+                "Linseed rust (Melampsora lini)",
+                "Powdery mildew",
+                "Gall midge"
+        ],
+        "companion_crops": [
+                "Chickpea",
+                "Wheat"
+        ]
+},
+    {
+        "id": "safflower",
+        "name": "Safflower (Kardi / Kusum)",
+        "hindi_name": "कुसुम (Kardi / Kusum)",
+        "scientific_name": "Carthamus tinctorius",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Black Soil (Regur)",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.5,
+        "optimal_ph_min": 6.8,
+        "optimal_ph_max": 8.0,
+        "min_temp": 12.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 1 - October 30",
+        "duration_days": "125 - 145 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 40.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Deep taproot (up to 2-3 meters) draws moisture from subsoil; ideal dryland black soil oilseed.",
+        "fertilizer_advice": "Apply DAP @ 40 kg/acre basal. Highly responsive to deep Phosphorus placement.",
+        "soil_notes": "Deep black vertisols with high clay content and moisture storage capacity.",
+        "risk_factors": [
+                "Safflower aphid (Uroleucon compositae)",
+                "Alternaria leaf blight",
+                "Spiny bract injury during harvest"
+        ],
+        "companion_crops": [
+                "Chickpea",
+                "Wheat (intercrop 3:1)"
+        ]
+},
+    {
+        "id": "niger_seed",
+        "name": "Niger Seed (Ramtil / Kala Til)",
+        "hindi_name": "रामतिल (Ramtil)",
+        "scientific_name": "Guizotia abyssinica",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Stony Upland Soil"
+        ],
+        "min_ph": 5.2,
+        "max_ph": 7.5,
+        "optimal_ph_min": 5.8,
+        "optimal_ph_max": 6.8,
+        "min_temp": 16.0,
+        "max_temp": 34.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "July 15 - August 15",
+        "duration_days": "95 - 110 days",
+        "estimated_yield_per_acre": "3 - 5 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 25.0,
+        "ideal_p": 25.0,
+        "ideal_k": 15.0,
+        "sowing_tips": "Valuable tribal highland oilseed; thrives on poorest slopes with zero chemical inputs.",
+        "fertilizer_advice": "Organic compost @ 2 tons/acre with modest basal DAP @ 20 kg/acre.",
+        "soil_notes": "Infertile, shallow, gravelly and marginal acidic hill soils.",
+        "risk_factors": [
+                "Cuscuta (dodder weed parasite)",
+                "Alternaria blight",
+                "Caterpillars"
+        ],
+        "companion_crops": [
+                "Finger Millet",
+                "Pigeon Pea"
+        ]
+},
+    {
+        "id": "canola",
+        "name": "Canola / Gobhi Sarson",
+        "hindi_name": "गोभी सरसों (Canola)",
+        "scientific_name": "Brassica napus",
+        "category": "Oilseed",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 10 - October 30",
+        "duration_days": "140 - 160 days",
+        "estimated_yield_per_acre": "9 - 14 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 80.0,
+        "ideal_p": 40.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Long-duration high-oil Brassica (42-44% oil with low erucic acid). Tender leaves usable as saag.",
+        "fertilizer_advice": "Apply Sulfur @ 20 kg/acre along with NPK; split Nitrogen into two top dressings.",
+        "soil_notes": "Fertile alluvial and clay loams with good drainage.",
+        "risk_factors": [
+                "Mustard aphid",
+                "White rust",
+                "Sclerotinia stem rot"
+        ],
+        "companion_crops": [
+                "Wheat",
+                "Gram"
+        ]
+}
 
 ]
 
@@ -2739,6 +3034,217 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Pod Ripening & Harvest",
                         "activities": "Sickle harvest when pods turn pale yellow.",
                         "pest_warning": "Pod borer."
+                }
+        ]
+}
+,
+    "sesamum": {
+        "msp_per_quintal": 9267.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 220.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 7.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Thinning",
+                        "activities": "Crucial thinning to 15cm at 15-20 days. Line weeding.",
+                        "pest_warning": "Damping off in wet soils."
+                },
+                {
+                        "day_range": "Day 20-50",
+                        "stage_name": "Branching & Early Bloom",
+                        "activities": "Top-dress remaining Nitrogen before light irrigation.",
+                        "pest_warning": "Leaf webber / Antigastra."
+                },
+                {
+                        "day_range": "Day 50-75",
+                        "stage_name": "Capsule Formation",
+                        "activities": "Avoid irrigation during flowering to prevent flower drop.",
+                        "pest_warning": "Phyllody (floral distortion)."
+                },
+                {
+                        "day_range": "Day 75-90+",
+                        "stage_name": "Capsule Ripening & Harvest",
+                        "activities": "Cut when lower capsules turn yellowish brown.",
+                        "pest_warning": "Capsule shattering."
+                }
+        ]
+},
+    "castor": {
+        "msp_per_quintal": 6800.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 250.0,
+        "cultivation_cost_per_acre": 12500.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 16.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Seedling & Primary Foliage",
+                        "activities": "Gap filling at 10 days. Inter-cultivation.",
+                        "pest_warning": "Cutworms & leafhopper."
+                },
+                {
+                        "day_range": "Day 30-70",
+                        "stage_name": "Primary Spike Emergence",
+                        "activities": "Top-dress Urea and earthing up.",
+                        "pest_warning": "Castor semilooper."
+                },
+                {
+                        "day_range": "Day 70-120",
+                        "stage_name": "Secondary & Tertiary Spikes",
+                        "activities": "Second top dressing. Maintain moisture.",
+                        "pest_warning": "Capsule borer."
+                },
+                {
+                        "day_range": "Day 120-170+",
+                        "stage_name": "Multi-Spike Pickings",
+                        "activities": "Harvest individual spikes when capsules turn brown.",
+                        "pest_warning": "Botrytis grey rot."
+                }
+        ]
+},
+    "linseed": {
+        "msp_per_quintal": 6200.0,
+        "seed_rate_kg_acre": 12.0,
+        "seed_cost_per_kg": 85.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Seedling Phase",
+                        "activities": "First weeding at 20 days. Light irrigation.",
+                        "pest_warning": "Flea beetle."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Vegetative & Branching",
+                        "activities": "Top-dress remaining Urea and irrigate.",
+                        "pest_warning": "Gall midge."
+                },
+                {
+                        "day_range": "Day 60-90",
+                        "stage_name": "Blue Bloom & Boll Set",
+                        "activities": "Moisture needed at capsule formation.",
+                        "pest_warning": "Rust & powdery mildew."
+                },
+                {
+                        "day_range": "Day 90-125+",
+                        "stage_name": "Boll Drying & Harvest",
+                        "activities": "Harvest when capsules turn dry brown and rattle.",
+                        "pest_warning": "Boll shatter."
+                }
+        ]
+},
+    "safflower": {
+        "msp_per_quintal": 5800.0,
+        "seed_rate_kg_acre": 5.0,
+        "seed_cost_per_kg": 95.0,
+        "cultivation_cost_per_acre": 8000.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Rosette Stage",
+                        "activities": "Slow vegetative rosette; weed thoroughly at 25 days.",
+                        "pest_warning": "Early aphid appearance."
+                },
+                {
+                        "day_range": "Day 30-75",
+                        "stage_name": "Elongation & Spines",
+                        "activities": "Plants develop spiny foliage; protect from heavy aphids.",
+                        "pest_warning": "Severe aphid infestation."
+                },
+                {
+                        "day_range": "Day 75-110",
+                        "stage_name": "Yellow Flower Heads",
+                        "activities": "Avoid overhead irrigation during flowering.",
+                        "pest_warning": "Alternaria blight."
+                },
+                {
+                        "day_range": "Day 110-140+",
+                        "stage_name": "Maturity & Morning Harvest",
+                        "activities": "Harvest in early morning before spines stiffen in sun.",
+                        "pest_warning": "Bird damage."
+                }
+        ]
+},
+    "niger_seed": {
+        "msp_per_quintal": 8717.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 5500.0,
+        "yield_quintal_min": 3.0,
+        "yield_quintal_max": 5.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Seedling Phase",
+                        "activities": "Broadcast or drill. One hand weeding to remove Cuscuta.",
+                        "pest_warning": "Cuscuta parasite."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Vegetative Branching",
+                        "activities": "Conserves steep hill slope soils from erosion.",
+                        "pest_warning": "Semilooper."
+                },
+                {
+                        "day_range": "Day 55-80",
+                        "stage_name": "Yellow Floral Capitula",
+                        "activities": "Profuse yellow blooms attract wild pollinators.",
+                        "pest_warning": "Alternaria leaf spot."
+                },
+                {
+                        "day_range": "Day 80-105+",
+                        "stage_name": "Achene Ripening & Harvest",
+                        "activities": "Cut heads when back of flower turns black.",
+                        "pest_warning": "Achene shattering."
+                }
+        ]
+},
+    "canola": {
+        "msp_per_quintal": 6100.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 240.0,
+        "cultivation_cost_per_acre": 10500.0,
+        "yield_quintal_min": 9.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Gobhi Rosette Stage",
+                        "activities": "Thinning to 15cm. Tender leaves can be plucked as saag.",
+                        "pest_warning": "Sawfly larvae."
+                },
+                {
+                        "day_range": "Day 30-80",
+                        "stage_name": "Stem Elongation (Bolting)",
+                        "activities": "Side-dress second Urea dose before second watering.",
+                        "pest_warning": "White rust."
+                },
+                {
+                        "day_range": "Day 80-120",
+                        "stage_name": "Flowering & Siliqua",
+                        "activities": "Moisture is critical; protect against aphid colonies.",
+                        "pest_warning": "Aphid outbreak."
+                },
+                {
+                        "day_range": "Day 120-155+",
+                        "stage_name": "Siliqua Ripening",
+                        "activities": "Harvest when 75% pods turn yellow.",
+                        "pest_warning": "Pod shattering."
                 }
         ]
 }
