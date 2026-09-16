@@ -965,7 +965,452 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
         "soil_notes": "Well-drained medium black or alluvial loam with good moisture holding capacity.",
         "risk_factors": ["Powdery mildew during flowering", "Aphids during cloudy weather"],
         "companion_crops": ["Chickpea", "Fenugreek", "Mustard"]
-    }
+    },
+    {
+        "id": "barley",
+        "name": "Barley (Jau)",
+        "hindi_name": "जौ (Jau)",
+        "scientific_name": "Hordeum vulgare",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.8,
+        "min_temp": 10.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 650.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 20 - November 15",
+        "duration_days": "110 - 125 days",
+        "estimated_yield_per_acre": "16 - 22 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Moderate",
+        "ideal_n": 60.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Sow at 4-5 cm depth. Exceptional tolerance to soil salinity and drought compared to wheat.",
+        "fertilizer_advice": "Apply half N and full P & K at sowing; remaining half N at first irrigation (30 days).",
+        "soil_notes": "Thrives on well-drained loams; possesses high salinity and alkalinity tolerance.",
+        "risk_factors": [
+                "Stripe rust",
+                "Aphids during grain filling",
+                "Lodging under excessive N"
+        ],
+        "companion_crops": [
+                "Mustard",
+                "Chickpea"
+        ]
+},
+    {
+        "id": "oats",
+        "name": "Oats (Jai)",
+        "hindi_name": "जई (Jai)",
+        "scientific_name": "Avena sativa",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 12.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 750.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 20",
+        "duration_days": "100 - 120 days",
+        "estimated_yield_per_acre": "14 - 18 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 80.0,
+        "ideal_p": 40.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Excellent dual-purpose crop for nutrient-rich grain and succulent green fodder.",
+        "fertilizer_advice": "Apply 40kg N basal + full P/K; top dress remaining N after each fodder cut.",
+        "soil_notes": "Prefers moist, friable loam soils with good organic matter content.",
+        "risk_factors": [
+                "Crown rust",
+                "Powdery mildew",
+                "Lodging under heavy rain"
+        ],
+        "companion_crops": [
+                "Berseem",
+                "Mustard"
+        ]
+},
+    {
+        "id": "foxtail_millet",
+        "name": "Foxtail Millet (Kangni / Kakum)",
+        "hindi_name": "कंगनी (Kangni)",
+        "scientific_name": "Setaria italica",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Red Soil",
+                "Sandy Loam Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.2,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif",
+                "Zaid"
+        ],
+        "sowing_window": "June - July (Monsoon) or February (Summer)",
+        "duration_days": "70 - 85 days",
+        "estimated_yield_per_acre": "8 - 12 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 20.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Low-GI super-millet. Sow at 2-3 cm shallow depth. Thinning at 15 days is critical.",
+        "fertilizer_advice": "Modest fertility: apply 5 tons FYM/acre with half N and full P basal.",
+        "soil_notes": "Well-drained shallow to medium soils; thrives in drought-prone upland terrain.",
+        "risk_factors": [
+                "Downy mildew",
+                "Shoot fly during seedling stage",
+                "Grain smut"
+        ],
+        "companion_crops": [
+                "Pigeon Pea",
+                "Cowpea"
+        ]
+},
+    {
+        "id": "kodo_millet",
+        "name": "Kodo Millet (Kodon)",
+        "hindi_name": "कोदो (Kodo)",
+        "scientific_name": "Paspalum scrobiculatum",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Gravelly Uplands"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 7.0,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 33.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 650.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "June 15 - July 15",
+        "duration_days": "100 - 115 days",
+        "estimated_yield_per_acre": "7 - 11 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 20.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Ancient climate-resilient grain with high fiber and antioxidant profile.",
+        "fertilizer_advice": "Apply organic compost or FYM @ 3 tons/acre with modest basal DAP.",
+        "soil_notes": "Survives on degraded, stony, and nutrient-exhausted red soils.",
+        "risk_factors": [
+                "Head smut",
+                "Rust",
+                "Water stagnation in lowlands"
+        ],
+        "companion_crops": [
+                "Black Gram",
+                "Soybean"
+        ]
+},
+    {
+        "id": "little_millet",
+        "name": "Little Millet (Kutki)",
+        "hindi_name": "कुटकी (Kutki)",
+        "scientific_name": "Panicum sumatrense",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 6.8,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "June 15 - July 20",
+        "duration_days": "75 - 90 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 30.0,
+        "ideal_p": 20.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Extremely fast growing and drought resistant. Ideal insurance crop for short monsoons.",
+        "fertilizer_advice": "Requires very little chemical fertilizer; 2-3 tons FYM per acre is sufficient.",
+        "soil_notes": "Performs well even in infertile, stony upland terrain.",
+        "risk_factors": [
+                "Shoot fly",
+                "Rust",
+                "Grain mold during late rains"
+        ],
+        "companion_crops": [
+                "Pigeon Pea",
+                "Horse Gram"
+        ]
+},
+    {
+        "id": "barnyard_millet",
+        "name": "Barnyard Millet (Sanwa / Jhangora)",
+        "hindi_name": "सांवा / झंगोरा (Sanwa)",
+        "scientific_name": "Echinochloa frumentacea",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Laterite Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.2,
+        "min_temp": 16.0,
+        "max_temp": 36.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "May - June (Hills) or June - July (Plains)",
+        "duration_days": "70 - 85 days",
+        "estimated_yield_per_acre": "8 - 14 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 20.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Fastest growing among millets; popular Navratri fasting grain (Vrat ke chawal).",
+        "fertilizer_advice": "Basal application of 3-4 tons FYM with 20 kg DAP per acre.",
+        "soil_notes": "Adapts from warm plains to cold Himalayan foothills up to 2000m altitude.",
+        "risk_factors": [
+                "Head smut",
+                "Stem borer",
+                "Lodging in heavy winds"
+        ],
+        "companion_crops": [
+                "Soybean",
+                "Cowpea"
+        ]
+},
+    {
+        "id": "proso_millet",
+        "name": "Proso Millet (Cheena / Barri)",
+        "hindi_name": "चीना (Cheena)",
+        "scientific_name": "Panicum miliaceum",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 16.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 200.0,
+        "max_rainfall": 500.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Zaid",
+                "Kharif"
+        ],
+        "sowing_window": "March 15 - April 15 (Summer) or July (Kharif)",
+        "duration_days": "60 - 75 days",
+        "estimated_yield_per_acre": "7 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 30.0,
+        "ideal_p": 20.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Short 60-day catch crop between Rabi harvest and Kharif sowing.",
+        "fertilizer_advice": "Modest basal dose of DAP @ 25 kg/acre. Requires very low nitrogen.",
+        "soil_notes": "Well-drained light loams; highly vulnerable to waterlogging.",
+        "risk_factors": [
+                "Shoot fly",
+                "Leaf blast",
+                "Grain shattering if harvest is delayed"
+        ],
+        "companion_crops": [
+                "Green Gram",
+                "Cowpea"
+        ]
+},
+    {
+        "id": "buckwheat",
+        "name": "Buckwheat (Kuttu)",
+        "hindi_name": "कुट्टू (Kuttu)",
+        "scientific_name": "Fagopyrum esculentum",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Laterite Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Acidic Hill Soils"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 7.2,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 6.8,
+        "min_temp": 12.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 16.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif",
+                "Rabi"
+        ],
+        "sowing_window": "August - September (Plains) or May - June (Hills)",
+        "duration_days": "70 - 85 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 30.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Nutrient-dense pseudo-cereal loaded with Rutin. Excellent pollinator attractor.",
+        "fertilizer_advice": "Avoid excess Nitrogen which causes excessive foliage and lodging.",
+        "soil_notes": "Prefers well-drained acidic to neutral light loams in temperate/cool climates.",
+        "risk_factors": [
+                "High temperatures (>30°C) blasting flowers",
+                "Damping off"
+        ],
+        "companion_crops": [
+                "Mustard",
+                "Apple orchard intercrop"
+        ]
+},
+    {
+        "id": "amaranth_grain",
+        "name": "Grain Amaranth (Rajgira / Ramdana)",
+        "hindi_name": "राजगिरा / रामदाना (Rajgira)",
+        "scientific_name": "Amaranthus hypochondriacus",
+        "category": "Cereal",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.5,
+        "min_temp": 15.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi",
+                "Kharif"
+        ],
+        "sowing_window": "Oct - Nov (Plains) or May - June (Hills)",
+        "duration_days": "90 - 115 days",
+        "estimated_yield_per_acre": "7 - 12 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Very High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Mix tiny seeds with dry sand (1:5 ratio) for uniform shallow broadcasting.",
+        "fertilizer_advice": "Apply FYM @ 5 tons/acre basal with moderate DAP. Top-dress N once at 30 days.",
+        "soil_notes": "Wide adaptation; thrives in fertile well-drained loamy soils.",
+        "risk_factors": [
+                "Stem borer",
+                "Damping off in stagnant moisture",
+                "Aphids on tender plumes"
+        ],
+        "companion_crops": [
+                "Chickpea",
+                "Lentil"
+        ]
+}
+
 ]
 
 # Comprehensive Economics, MSP, and 4-Stage Growth Timeline Extensions
@@ -1389,7 +1834,323 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
             {"day_range": "Day 50-75", "stage_name": "Umbels & Flowering", "activities": "One light irrigation at flowering. Spray Sulfur for mildew.", "pest_warning": "Powdery mildew."},
             {"day_range": "Day 75-95+", "stage_name": "Grain Hardening & Harvest", "activities": "Harvest when umbels turn brownish yellow. Shade dry to preserve aroma.", "pest_warning": "Stem gall."}
         ]
-    }
+    },
+    "barley": {
+        "msp_per_quintal": 1980.0,
+        "seed_rate_kg_acre": 35.0,
+        "seed_cost_per_kg": 40.0,
+        "cultivation_cost_per_acre": 10500.0,
+        "yield_quintal_min": 16.0,
+        "yield_quintal_max": 22.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Germination & Crown Root",
+                        "activities": "First irrigation at 25-30 days. Weed control.",
+                        "pest_warning": "Watch for termite damage."
+                },
+                {
+                        "day_range": "Day 25-55",
+                        "stage_name": "Tillering & Jointing",
+                        "activities": "Top-dress remaining Urea before light irrigation.",
+                        "pest_warning": "Early aphid colonies."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Heading & Anthesis",
+                        "activities": "Maintain light moisture during flowering.",
+                        "pest_warning": "Covered smut and rust."
+                },
+                {
+                        "day_range": "Day 85-120+",
+                        "stage_name": "Grain Hardening & Harvest",
+                        "activities": "Harvest when crop turns golden yellow and straw is brittle.",
+                        "pest_warning": "Bird damage."
+                }
+        ]
+},
+    "oats": {
+        "msp_per_quintal": 2250.0,
+        "seed_rate_kg_acre": 35.0,
+        "seed_cost_per_kg": 55.0,
+        "cultivation_cost_per_acre": 11000.0,
+        "yield_quintal_min": 14.0,
+        "yield_quintal_max": 18.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Seedling & Tillering",
+                        "activities": "Irrigate at 20-25 days. Light hoeing to check weeds.",
+                        "pest_warning": "Damping off in wet soils."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Vegetative & First Cut",
+                        "activities": "First fodder cutting at 50-60 days if dual-purpose.",
+                        "pest_warning": "Stem borer."
+                },
+                {
+                        "day_range": "Day 60-90",
+                        "stage_name": "Panicle Emergence",
+                        "activities": "Apply top-dressing Urea and irrigate.",
+                        "pest_warning": "Crown rust."
+                },
+                {
+                        "day_range": "Day 90-115+",
+                        "stage_name": "Grain Maturity & Harvest",
+                        "activities": "Harvest when panicles turn light brown.",
+                        "pest_warning": "Loose smut."
+                }
+        ]
+},
+    "foxtail_millet": {
+        "msp_per_quintal": 3600.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 90.0,
+        "cultivation_cost_per_acre": 7500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Emergence & Thinning",
+                        "activities": "Inter-row weeding and thinning to 10cm.",
+                        "pest_warning": "Shoot fly."
+                },
+                {
+                        "day_range": "Day 15-40",
+                        "stage_name": "Active Tillering",
+                        "activities": "Top-dress remaining Urea during weeding.",
+                        "pest_warning": "Leaf blast."
+                },
+                {
+                        "day_range": "Day 40-65",
+                        "stage_name": "Heading & Grain Formation",
+                        "activities": "Moisture stress protection during head emergence.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 65-80+",
+                        "stage_name": "Ripening & Harvest",
+                        "activities": "Harvest earheads when grains are hard and dry.",
+                        "pest_warning": "Bird damage."
+                }
+        ]
+},
+    "kodo_millet": {
+        "msp_per_quintal": 3800.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 85.0,
+        "cultivation_cost_per_acre": 7000.0,
+        "yield_quintal_min": 7.0,
+        "yield_quintal_max": 11.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Germination & Establishment",
+                        "activities": "Gap filling and line weeding.",
+                        "pest_warning": "Flea beetle."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Tillering Phase",
+                        "activities": "Intercultivation to conserve soil moisture.",
+                        "pest_warning": "Shoot fly."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Flowering & Seed Set",
+                        "activities": "Light weed check; ensure good drainage.",
+                        "pest_warning": "Smut."
+                },
+                {
+                        "day_range": "Day 85-110+",
+                        "stage_name": "Maturity & Cutting",
+                        "activities": "Cut and thresh when plants turn pale yellow.",
+                        "pest_warning": "Field rodents."
+                }
+        ]
+},
+    "little_millet": {
+        "msp_per_quintal": 3900.0,
+        "seed_rate_kg_acre": 3.5,
+        "seed_cost_per_kg": 85.0,
+        "cultivation_cost_per_acre": 6800.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Seedling Phase",
+                        "activities": "Hand weeding and thinning at 15 days.",
+                        "pest_warning": "Shoot fly."
+                },
+                {
+                        "day_range": "Day 15-45",
+                        "stage_name": "Vegetative Clump Growth",
+                        "activities": "Hoeing between rows to create dust mulch.",
+                        "pest_warning": "Grasshoppers."
+                },
+                {
+                        "day_range": "Day 45-70",
+                        "stage_name": "Flowering & Grain Filling",
+                        "activities": "Maintain moisture if prolonged dry spell occurs.",
+                        "pest_warning": "Earhead bugs."
+                },
+                {
+                        "day_range": "Day 70-85+",
+                        "stage_name": "Harvesting",
+                        "activities": "Sickle harvest when panicles turn straw brown.",
+                        "pest_warning": "Grain shedding if delayed."
+                }
+        ]
+},
+    "barnyard_millet": {
+        "msp_per_quintal": 3750.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 90.0,
+        "cultivation_cost_per_acre": 7200.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-18",
+                        "stage_name": "Establishment",
+                        "activities": "Weed once at 15-18 days. Maintain 25cm row spacing.",
+                        "pest_warning": "Seedling blight."
+                },
+                {
+                        "day_range": "Day 18-45",
+                        "stage_name": "Rapid Tillering",
+                        "activities": "Top-dress light Urea if soil is deficient.",
+                        "pest_warning": "Shoot fly."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Inflorescence & Grain",
+                        "activities": "Monitor for smut and earhead caterpillars.",
+                        "pest_warning": "Head smut."
+                },
+                {
+                        "day_range": "Day 65-80+",
+                        "stage_name": "Harvest & Threshing",
+                        "activities": "Harvest when panicles turn yellowish brown.",
+                        "pest_warning": "Birds."
+                }
+        ]
+},
+    "proso_millet": {
+        "msp_per_quintal": 3650.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 80.0,
+        "cultivation_cost_per_acre": 6500.0,
+        "yield_quintal_min": 7.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Emergence",
+                        "activities": "Shallow line sowing. First light irrigation at 15 days.",
+                        "pest_warning": "Ants carrying seeds."
+                },
+                {
+                        "day_range": "Day 15-35",
+                        "stage_name": "Vegetative Phase",
+                        "activities": "One hand weeding at 20 days. Side dress light N.",
+                        "pest_warning": "Shoot fly."
+                },
+                {
+                        "day_range": "Day 35-55",
+                        "stage_name": "Panicle & Seed Filling",
+                        "activities": "Ensure moisture during flowering.",
+                        "pest_warning": "Rust."
+                },
+                {
+                        "day_range": "Day 55-70+",
+                        "stage_name": "Quick Harvest",
+                        "activities": "Harvest early morning to prevent grain shattering.",
+                        "pest_warning": "Grain shatter."
+                }
+        ]
+},
+    "buckwheat": {
+        "msp_per_quintal": 4500.0,
+        "seed_rate_kg_acre": 15.0,
+        "seed_cost_per_kg": 95.0,
+        "cultivation_cost_per_acre": 8000.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Rapid Seedling Growth",
+                        "activities": "Quick ground cover suppresses weeds naturally.",
+                        "pest_warning": "Flea beetles."
+                },
+                {
+                        "day_range": "Day 20-45",
+                        "stage_name": "Profuse Flowering",
+                        "activities": "Maintain active beehives for optimal cross pollination.",
+                        "pest_warning": "Blossom blast if hot."
+                },
+                {
+                        "day_range": "Day 45-65",
+                        "stage_name": "Nutlet Development",
+                        "activities": "Monitor soil moisture; avoid water stress.",
+                        "pest_warning": "Leaf spot."
+                },
+                {
+                        "day_range": "Day 65-80+",
+                        "stage_name": "Harvesting",
+                        "activities": "Swath when 75% seeds turn dark brown.",
+                        "pest_warning": "Seed drop."
+                }
+        ]
+},
+    "amaranth_grain": {
+        "msp_per_quintal": 5200.0,
+        "seed_rate_kg_acre": 1.5,
+        "seed_cost_per_kg": 180.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 7.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Thinning",
+                        "activities": "Thin plants to 15cm spacing. Very slow early growth.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Vegetative Climax",
+                        "activities": "Hoeing and single top-dressing of Urea.",
+                        "pest_warning": "Stem weevil."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Tassel & Plume Formation",
+                        "activities": "Showy inflorescences develop; avoid heavy sprinkler irrigation.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 85-110+",
+                        "stage_name": "Ripening & Harvesting",
+                        "activities": "Cut plumes when seeds easily rub out dry in palms.",
+                        "pest_warning": "Birds."
+                }
+        ]
+}
+
 }
 
 
