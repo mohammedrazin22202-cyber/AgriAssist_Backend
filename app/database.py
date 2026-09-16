@@ -2198,6 +2198,549 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Stylosanthes pasture intercrop"
         ]
 }
+,
+    {
+        "id": "cumin",
+        "name": "Cumin (Jeera)",
+        "hindi_name": "जीरा (Jeera)",
+        "scientific_name": "Cuminum cyminum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 6.8,
+        "max_ph": 8.2,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 7.8,
+        "min_temp": 8.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 150.0,
+        "max_rainfall": 400.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "November 1 - November 25",
+        "duration_days": "100 - 115 days",
+        "estimated_yield_per_acre": "4 - 6 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 30.0,
+        "ideal_p": 25.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "High-value arid spice. Soak seeds 8 hours before sowing. Extremely delicate root system.",
+        "fertilizer_advice": "Avoid excessive Nitrogen which triggers devastating blight and powdery mildew.",
+        "soil_notes": "Well-drained sandy loam rich in organic matter with neutral to mildly alkaline pH.",
+        "risk_factors": [
+                "Alternaria blight (devastating in cloudy weather)",
+                "Fusarium wilt",
+                "Powdery mildew"
+        ],
+        "companion_crops": [
+                "Mustard (border crop)",
+                "Fenugreek"
+        ]
+},
+    {
+        "id": "fennel",
+        "name": "Fennel (Saunf)",
+        "hindi_name": "सौंफ (Saunf)",
+        "scientific_name": "Foeniculum vulgare",
+        "category": "Spices",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 6.5,
+        "max_ph": 8.2,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 7.8,
+        "min_temp": 12.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 1 - October 25 (Transplanting nursery: Sept)",
+        "duration_days": "150 - 180 days",
+        "estimated_yield_per_acre": "8 - 12 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 50.0,
+        "ideal_p": 30.0,
+        "ideal_k": 25.0,
+        "sowing_tips": "Transplanting 45-day nursery seedlings gives 30% higher seed yield than direct sowing.",
+        "fertilizer_advice": "Split Nitrogen into 3 doses (basal, 45 days, and 75 days).",
+        "soil_notes": "Deep fertile alluvial or medium black loam with good aeration.",
+        "risk_factors": [
+                "Ramularia blight",
+                "Powdery mildew",
+                "Aphids during umbel formation"
+        ],
+        "companion_crops": [
+                "Garlic",
+                "Coriander"
+        ]
+},
+    {
+        "id": "fenugreek_seed",
+        "name": "Fenugreek (Methi Dana)",
+        "hindi_name": "मेथी दाना (Methi Dana)",
+        "scientific_name": "Trigonella foenum-graecum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Clay Loam Soil",
+                "Alluvial Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.2,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 10.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "100 - 120 days",
+        "estimated_yield_per_acre": "7 - 11 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 20.0,
+        "ideal_p": 40.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Dual spice & medicinal seed crop; fixes rich soil Nitrogen. Treat seed with Rhizobium meliloti.",
+        "fertilizer_advice": "DAP @ 40 kg/acre basal. Avoid excess Nitrogen which induces fungal diseases.",
+        "soil_notes": "Well-drained fertile loamy soils; sensitive to water stagnation.",
+        "risk_factors": [
+                "Powdery mildew",
+                "Downy mildew",
+                "Aphids during flowering"
+        ],
+        "companion_crops": [
+                "Chickpea",
+                "Coriander"
+        ]
+},
+    {
+        "id": "black_pepper",
+        "name": "Black Pepper (Kali Mirch)",
+        "hindi_name": "काली मिर्च (Kali Mirch)",
+        "scientific_name": "Piper nigrum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Forest Humus Loam"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 6.5,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 6.2,
+        "min_temp": 18.0,
+        "max_temp": 36.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 3000.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "May - June (Pre-monsoon planting of rooted cuttings)",
+        "duration_days": "Perennial (Harvest starts Year 3)",
+        "estimated_yield_per_acre": "8 - 14 Quintals (Dry berries)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 40.0,
+        "ideal_k": 120.0,
+        "sowing_tips": "King of Spices. Train perennial vines on shade trees (Arecanut, Silver Oak).",
+        "fertilizer_advice": "Apply FYM @ 10 kg/vine + NPK (100:40:140g) in two splits (May-June & Sept-Oct).",
+        "soil_notes": "Well-drained virgin forest laterite or red loam rich in organic leaf humus.",
+        "risk_factors": [
+                "Quick wilt (Phytophthora foot rot)",
+                "Slow decline (nematodes)",
+                "Pollu beetle"
+        ],
+        "companion_crops": [
+                "Arecanut (intercrop)",
+                "Coffee",
+                "Cardamom"
+        ]
+},
+    {
+        "id": "cardamom_small",
+        "name": "Small Cardamom (Chhoti Elaichi)",
+        "hindi_name": "छोटी इलायची (Chhoti Elaichi)",
+        "scientific_name": "Elettaria cardamomum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Laterite Soil",
+                "Red Soil",
+                "Forest Humus Loam"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 4.5,
+        "max_ph": 6.5,
+        "optimal_ph_min": 5.0,
+        "optimal_ph_max": 6.0,
+        "min_temp": 12.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 1800.0,
+        "max_rainfall": 3500.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - July (Monsoon planting of suckers)",
+        "duration_days": "Perennial (Harvest starts Year 3)",
+        "estimated_yield_per_acre": "1.5 - 3.5 Quintals (Dry capsules)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 75.0,
+        "ideal_p": 50.0,
+        "ideal_k": 100.0,
+        "sowing_tips": "Queen of Spices. Requires filtered forest shade (50-60%) and cool humid mountain climate.",
+        "fertilizer_advice": "Heavy application of decomposed compost plus balanced NPK split in 3 doses.",
+        "soil_notes": "Deep, well-drained loamy soil rich in organic leaf litter in Western Ghats altitudes (800-1500m).",
+        "risk_factors": [
+                "Azhukal disease (Capsule rot)",
+                "Cardamom thrips",
+                "Shoot borer"
+        ],
+        "companion_crops": [
+                "Coffee shade canopy",
+                "Black Pepper"
+        ]
+},
+    {
+        "id": "cardamom_large",
+        "name": "Large Cardamom (Badi Elaichi)",
+        "hindi_name": "बड़ी इलायची (Badi Elaichi)",
+        "scientific_name": "Amomum subulatum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Laterite Soil",
+                "Red Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Forest Humus Loam"
+        ],
+        "min_ph": 4.5,
+        "max_ph": 6.2,
+        "optimal_ph_min": 5.0,
+        "optimal_ph_max": 5.8,
+        "min_temp": 6.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 12.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 2000.0,
+        "max_rainfall": 4000.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "May - June (Sikkim & Himalayan foothills)",
+        "duration_days": "Perennial (Harvest starts Year 3)",
+        "estimated_yield_per_acre": "2 - 4 Quintals (Dry capsules)",
+        "investment_level": "Moderate to High",
+        "profit_potential": "Very High",
+        "ideal_n": 60.0,
+        "ideal_p": 40.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "Native pride of Eastern Himalayas. Cultivated along shaded mountain stream beds (Alnus nepalensis canopy).",
+        "fertilizer_advice": "Natural leaf mulch from Himalayan Alder tree supplies all organic nitrogen.",
+        "soil_notes": "Moist, acidic, humic hill slope soils with perennial seepage.",
+        "risk_factors": [
+                "Chirke and Foorkey viral diseases (aphid vector)",
+                "Stem borer",
+                "Hail damage"
+        ],
+        "companion_crops": [
+                "Alnus nepalensis (Utis shade tree)",
+                "Mandarin orange"
+        ]
+},
+    {
+        "id": "clove",
+        "name": "Clove (Laung)",
+        "hindi_name": "लौंग (Laung)",
+        "scientific_name": "Syzygium aromaticum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 6.8,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 6.5,
+        "min_temp": 18.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 2800.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - August (Monsoon planting of saplings)",
+        "duration_days": "Perennial Tree (Harvest starts Year 7-8)",
+        "estimated_yield_per_acre": "4 - 8 Quintals (Dry unopened buds)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 80.0,
+        "ideal_p": 40.0,
+        "ideal_k": 100.0,
+        "sowing_tips": "Aromatic unopened flower buds. Requires warm humid coastal / mid-elevation tropical microclimate.",
+        "fertilizer_advice": "Apply 50kg compost + 300g N, 250g P, 750g K per adult tree annually in two doses.",
+        "soil_notes": "Deep, fertile red and laterite loams with high water retention and no subsoil hardpan.",
+        "risk_factors": [
+                "Die-back disease",
+                "Stem borer",
+                "Scale insects"
+        ],
+        "companion_crops": [
+                "Coconut",
+                "Arecanut",
+                "Nutmeg"
+        ]
+},
+    {
+        "id": "cinnamon",
+        "name": "Cinnamon (Dalchini)",
+        "hindi_name": "दालचीनी (Dalchini)",
+        "scientific_name": "Cinnamomum verum",
+        "category": "Spices",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Laterite Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 6.8,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 6.5,
+        "min_temp": 18.0,
+        "max_temp": 36.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 2500.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - July (Monsoon planting of seedlings)",
+        "duration_days": "Perennial (Coppicing starts Year 3)",
+        "estimated_yield_per_acre": "3 - 6 Quintals (Dry quills)",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 50.0,
+        "ideal_p": 25.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "True Ceylon cinnamon bark. Coppiced bush form produces straight tender shoots for premium quills.",
+        "fertilizer_advice": "Apply 20 kg FYM + NPK (20:18:25g) per bush annually after coppicing.",
+        "soil_notes": "Sandy loam or lateritic gravelly soil rich in humus; poor soil gives finer sweet aroma.",
+        "risk_factors": [
+                "Stripe canker",
+                "Leaf spot",
+                "Cinnamon butterfly caterpillar"
+        ],
+        "companion_crops": [
+                "Coconut",
+                "Arecanut"
+        ]
+},
+    {
+        "id": "ajwain",
+        "name": "Carom Seeds (Ajwain)",
+        "hindi_name": "अजवाइन (Ajwain)",
+        "scientific_name": "Trachyspermum ammi",
+        "category": "Spices",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Black Soil (Regur)",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Sandy Loam Soil"
+        ],
+        "min_ph": 6.5,
+        "max_ph": 8.5,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 8.0,
+        "min_temp": 10.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 16.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "130 - 150 days",
+        "estimated_yield_per_acre": "5 - 8 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Very High",
+        "ideal_n": 40.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Thymol-rich medicinal spice. Extremely tiny seeds; mix with soil/sand for shallow broadcasting.",
+        "fertilizer_advice": "Apply DAP @ 30 kg/acre basal. Top-dress Urea once at first irrigation (30 days).",
+        "soil_notes": "Well-drained black clay soils or fertile alluvial loams; possesses high sodicity tolerance.",
+        "risk_factors": [
+                "Root rot in waterlogged soil",
+                "Powdery mildew during cloudy weather",
+                "Aphids"
+        ],
+        "companion_crops": [
+                "Chickpea",
+                "Coriander"
+        ]
+},
+    {
+        "id": "nutmeg",
+        "name": "Nutmeg / Mace (Jaiphal)",
+        "hindi_name": "जायफल / जावित्री (Jaiphal)",
+        "scientific_name": "Myristica fragrans",
+        "category": "Spices",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 6.8,
+        "min_temp": 18.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 3000.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - August (Monsoon planting)",
+        "duration_days": "Perennial Tree (Harvest starts Year 7-8)",
+        "estimated_yield_per_acre": "4 - 7 Quintals (Nutmeg seed + Mace)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 75.0,
+        "ideal_p": 40.0,
+        "ideal_k": 90.0,
+        "sowing_tips": "Yields two distinct high-value spices: Nutmeg (seed) and crimson Mace (aril). Dioecious tree (use grafted plants).",
+        "fertilizer_advice": "Apply 50 kg organic manure + 500g N, 250g P, 1000g K per adult tree annually.",
+        "soil_notes": "Deep fertile humic lateritic and alluvial river valley loams with excellent drainage.",
+        "risk_factors": [
+                "Fruit rot / Thread blight",
+                "Dieback",
+                "Waterlogging root rot"
+        ],
+        "companion_crops": [
+                "Coconut",
+                "Arecanut",
+                "Clove"
+        ]
+},
+    {
+        "id": "mint",
+        "name": "Field Mint / Mentha (Pudina)",
+        "hindi_name": "मेंथा / पुदीना (Pudina)",
+        "scientific_name": "Mentha arvensis",
+        "category": "Spices",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 16.0,
+        "max_temp": 40.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 33.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "Zaid",
+                "Kharif"
+        ],
+        "sowing_window": "January 15 - February 25 (Sucker planting)",
+        "duration_days": "100 - 120 days (2 cuttings)",
+        "estimated_yield_per_acre": "50 - 75 kg (Mentha Oil)",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 80.0,
+        "ideal_p": 40.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "India is the global leader in Menthol mint oil. Plant root suckers in furrows at 45cm distance.",
+        "fertilizer_advice": "Apply half N + full P/K basal; top-dress N after first cutting at 75 days.",
+        "soil_notes": "Moist, fertile, deep alluvial loams with plenty of organic matter.",
+        "risk_factors": [
+                "Stolons rot (Rhizoctonia)",
+                "Hairy caterpillar",
+                "Severe leaf drop if moisture stressed"
+        ],
+        "companion_crops": [
+                "Sugarcane (intercropped in early spring)",
+                "Wheat rotation"
+        ]
+}
 
 ]
 
@@ -3498,6 +4041,392 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Annual Harvesting & Rasping",
                         "activities": "Annual leaf harvesting; extract fiber with mechanical raspador.",
                         "pest_warning": "Pole emergence (pole cutting)."
+                }
+        ]
+}
+,
+    "cumin": {
+        "msp_per_quintal": 22000.0,
+        "seed_rate_kg_acre": 5.0,
+        "seed_cost_per_kg": 350.0,
+        "cultivation_cost_per_acre": 16000.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 6.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Slow Germination",
+                        "activities": "First light irrigation at sowing; second at 8 days. Weed hand.",
+                        "pest_warning": "Damping off & ants."
+                },
+                {
+                        "day_range": "Day 20-50",
+                        "stage_name": "Vegetative Clump Growth",
+                        "activities": "Keep field strictly weed-free. Light hoeing.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 50-80",
+                        "stage_name": "Umbels & Flowering",
+                        "activities": "Spray Mancozeb prophylactically if clouds appear.",
+                        "pest_warning": "Alternaria blight outbreak."
+                },
+                {
+                        "day_range": "Day 80-110+",
+                        "stage_name": "Seed Hardening & Harvest",
+                        "activities": "Pull plants early morning when seeds turn brownish.",
+                        "pest_warning": "Powdery mildew."
+                }
+        ]
+},
+    "fennel": {
+        "msp_per_quintal": 14500.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 250.0,
+        "cultivation_cost_per_acre": 16500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-35",
+                        "stage_name": "Transplanting & Rooting",
+                        "activities": "Transplant seedlings at 60x45cm spacing. Immediate irrigation.",
+                        "pest_warning": "Cutworms."
+                },
+                {
+                        "day_range": "Day 35-80",
+                        "stage_name": "Branching & Bushing",
+                        "activities": "Top-dress Urea before third irrigation.",
+                        "pest_warning": "Aphids on young shoots."
+                },
+                {
+                        "day_range": "Day 80-130",
+                        "stage_name": "Primary & Secondary Umbels",
+                        "activities": "Maintain moisture; spray Wettable Sulfur for mildew.",
+                        "pest_warning": "Ramularia blight."
+                },
+                {
+                        "day_range": "Day 130-170+",
+                        "stage_name": "Umbel Picking (Green / Dry)",
+                        "activities": "Pick umbels when seeds are half ripe for green chewing saunf.",
+                        "pest_warning": "Seed shattering."
+                }
+        ]
+},
+    "fenugreek_seed": {
+        "msp_per_quintal": 7200.0,
+        "seed_rate_kg_acre": 10.0,
+        "seed_cost_per_kg": 90.0,
+        "cultivation_cost_per_acre": 9000.0,
+        "yield_quintal_min": 7.0,
+        "yield_quintal_max": 11.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Emergence & Early Foliage",
+                        "activities": "First irrigation at sowing; second at 25 days. Hand weeding.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Vegetative Climax",
+                        "activities": "Can take one leaf cut for greens at 40 days if market allows.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 60-90",
+                        "stage_name": "Flowering & Pod Setting",
+                        "activities": "Irrigate at flowering; spray Sulfur for mildew.",
+                        "pest_warning": "Powdery mildew."
+                },
+                {
+                        "day_range": "Day 90-115+",
+                        "stage_name": "Pod Ripening & Harvest",
+                        "activities": "Harvest when pods turn yellowish brown.",
+                        "pest_warning": "Pod borer."
+                }
+        ]
+},
+    "black_pepper": {
+        "msp_per_quintal": 58000.0,
+        "seed_rate_kg_acre": 450.0,
+        "seed_cost_per_kg": 40.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Vine Training on Standards",
+                        "activities": "Tie runner shoots to support tree every 30cm.",
+                        "pest_warning": "Phytophthora quick wilt."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "Spike Emergence (Monsoon)",
+                        "activities": "Apply Bordeaux paste to vine collar before heavy rains.",
+                        "pest_warning": "Pollu beetle."
+                },
+                {
+                        "day_range": "Month 6-8",
+                        "stage_name": "Berry Development",
+                        "activities": "Mulch vine basins with dry leaves to conserve moisture.",
+                        "pest_warning": "Nematodes."
+                },
+                {
+                        "day_range": "Month 9-11",
+                        "stage_name": "Berry Harvesting & Sun Drying",
+                        "activities": "Harvest spikes when 1-2 berries turn red; sun dry to black.",
+                        "pest_warning": "Berry drop."
+                }
+        ]
+},
+    "cardamom_small": {
+        "msp_per_quintal": 180000.0,
+        "seed_rate_kg_acre": 800.0,
+        "seed_cost_per_kg": 35.0,
+        "cultivation_cost_per_acre": 45000.0,
+        "yield_quintal_min": 1.5,
+        "yield_quintal_max": 3.5,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Tillering Clump Formation",
+                        "activities": "Weed manually; maintain shade trees.",
+                        "pest_warning": "Shoot fly & thrips."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "Panicle Emergence",
+                        "activities": "Clean debris from panicles lying near ground.",
+                        "pest_warning": "Thrips damaging capsules."
+                },
+                {
+                        "day_range": "Monsoon",
+                        "stage_name": "Capsule Swelling",
+                        "activities": "Prophylactic 1% Bordeaux spray for capsule rot.",
+                        "pest_warning": "Azhukal rot."
+                },
+                {
+                        "day_range": "Aug-Feb",
+                        "stage_name": "Multi-Round Harvesting & Curing",
+                        "activities": "Pick ripe green capsules every 25 days; dry in curing house.",
+                        "pest_warning": "Quality loss if uncured."
+                }
+        ]
+},
+    "cardamom_large": {
+        "msp_per_quintal": 95000.0,
+        "seed_rate_kg_acre": 600.0,
+        "seed_cost_per_kg": 40.0,
+        "cultivation_cost_per_acre": 30000.0,
+        "yield_quintal_min": 2.0,
+        "yield_quintal_max": 4.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Rhizome & Tiller Establishment",
+                        "activities": "Inter-terrace weeding; maintain canopy shade.",
+                        "pest_warning": "Aphid vectors."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "Inflorescence Spikes",
+                        "activities": "Flower spikes appear at rhizome base in spring.",
+                        "pest_warning": "Viral Chirke symptoms."
+                },
+                {
+                        "day_range": "Monsoon",
+                        "stage_name": "Capsule Hardening",
+                        "activities": "Ensure shaded streams do not erode terraces.",
+                        "pest_warning": "Caterpillars."
+                },
+                {
+                        "day_range": "Sep-Nov",
+                        "stage_name": "Harvesting & Bhatti Smoke Curing",
+                        "activities": "Cut ripe dark maroon capsules; cure in traditional bhatti.",
+                        "pest_warning": "Charring in bhatti."
+                }
+        ]
+},
+    "clove": {
+        "msp_per_quintal": 75000.0,
+        "seed_rate_kg_acre": 160.0,
+        "seed_cost_per_kg": 80.0,
+        "cultivation_cost_per_acre": 28000.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 8.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-4",
+                        "stage_name": "Juvenile Canopy Development",
+                        "activities": "Provide artificial shade to young saplings.",
+                        "pest_warning": "Scale insects."
+                },
+                {
+                        "day_range": "Year 5-7",
+                        "stage_name": "Crown Maturation",
+                        "activities": "Annual fertilizer application in trenches around canopy drip.",
+                        "pest_warning": "Stem borer."
+                },
+                {
+                        "day_range": "Month 0-3",
+                        "stage_name": "Bud Cluster Flush",
+                        "activities": "Flower buds appear in clusters; irrigate during dry spells.",
+                        "pest_warning": "Bud caterpillars."
+                },
+                {
+                        "day_range": "Month 4-5",
+                        "stage_name": "Hand Picking & Sun Curing",
+                        "activities": "Pick buds when base turns pinkish before petals open.",
+                        "pest_warning": "Rain damage while drying."
+                }
+        ]
+},
+    "cinnamon": {
+        "msp_per_quintal": 45000.0,
+        "seed_rate_kg_acre": 800.0,
+        "seed_cost_per_kg": 25.0,
+        "cultivation_cost_per_acre": 22000.0,
+        "yield_quintal_min": 3.0,
+        "yield_quintal_max": 6.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Establishment & Coppicing",
+                        "activities": "Cut main stem at 15cm from ground to induce side shoots.",
+                        "pest_warning": "Leaf caterpillar."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "Straight Shoot Growth",
+                        "activities": "Straight tender canes grow to 2m height.",
+                        "pest_warning": "Stripe canker."
+                },
+                {
+                        "day_range": "May / Nov",
+                        "stage_name": "Harvesting Shoots",
+                        "activities": "Cut finger-thick straight shoots when sap is flowing freely.",
+                        "pest_warning": "Bark sticking."
+                },
+                {
+                        "day_range": "Post-Harvest",
+                        "stage_name": "Peeling & Quill Rolling",
+                        "activities": "Scrape outer rough skin, peel inner bark and roll into golden quills.",
+                        "pest_warning": "Fungal mold in shade."
+                }
+        ]
+},
+    "ajwain": {
+        "msp_per_quintal": 12000.0,
+        "seed_rate_kg_acre": 2.0,
+        "seed_cost_per_kg": 200.0,
+        "cultivation_cost_per_acre": 9500.0,
+        "yield_quintal_min": 5.0,
+        "yield_quintal_max": 8.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Emergence & Establishment",
+                        "activities": "Light irrigation at sowing; second at 12 days. Hand weeding.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 25-70",
+                        "stage_name": "Feathery Foliage & Bushing",
+                        "activities": "Inter-cultivation; thin to 20cm spacing.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 70-110",
+                        "stage_name": "White Umbel Flowering",
+                        "activities": "Spray Wettable Sulfur at flowering to prevent powdery mildew.",
+                        "pest_warning": "Powdery mildew."
+                },
+                {
+                        "day_range": "Day 110-145+",
+                        "stage_name": "Seed Hardening & Harvest",
+                        "activities": "Harvest when umbels turn grayish brown.",
+                        "pest_warning": "Seed shattering."
+                }
+        ]
+},
+    "nutmeg": {
+        "msp_per_quintal": 48000.0,
+        "seed_rate_kg_acre": 120.0,
+        "seed_cost_per_kg": 150.0,
+        "cultivation_cost_per_acre": 26000.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 7.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-4",
+                        "stage_name": "Sapling Shading & Growth",
+                        "activities": "Provide heavy shade (banana or arecanut) to young plants.",
+                        "pest_warning": "Scale insects."
+                },
+                {
+                        "day_range": "Year 5-7",
+                        "stage_name": "Canopy Spreading",
+                        "activities": "Pruning lower drooping branches; maintain basin mulching.",
+                        "pest_warning": "Dieback."
+                },
+                {
+                        "day_range": "Month 0-6",
+                        "stage_name": "Fruit Development",
+                        "activities": "Yellow fleshy fruit forms; irrigate during summer.",
+                        "pest_warning": "Fruit rot."
+                },
+                {
+                        "day_range": "Month 7-9",
+                        "stage_name": "Fruit Splitting & Harvest",
+                        "activities": "Harvest when fruit splits naturally revealing red mace.",
+                        "pest_warning": "Mold on fallen fruits."
+                }
+        ]
+},
+    "mint": {
+        "msp_per_quintal": 105000.0,
+        "seed_rate_kg_acre": 200.0,
+        "seed_cost_per_kg": 25.0,
+        "cultivation_cost_per_acre": 18000.0,
+        "yield_quintal_min": 0.5,
+        "yield_quintal_max": 0.8,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Sucker Sprouting & Carpet",
+                        "activities": "Irrigate immediately after planting; repeat every 7-10 days.",
+                        "pest_warning": "Weeds competing with young stolons."
+                },
+                {
+                        "day_range": "Day 30-75",
+                        "stage_name": "Vegetative Foliage Flush",
+                        "activities": "Top-dress Urea before fourth irrigation.",
+                        "pest_warning": "Hairy caterpillar."
+                },
+                {
+                        "day_range": "Day 75-80",
+                        "stage_name": "First Harvest & Distillation",
+                        "activities": "Harvest bright sunny day at 10% bloom; steam distill oil.",
+                        "pest_warning": "Leaf rust."
+                },
+                {
+                        "day_range": "Day 80-115+",
+                        "stage_name": "Ratoon Regrowth & Second Cut",
+                        "activities": "Irrigate immediately after cutting; top-dress Urea.",
+                        "pest_warning": "Termites in stubbles."
                 }
         ]
 }
