@@ -1410,6 +1410,352 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Lentil"
         ]
 }
+,
+    {
+        "id": "field_pea",
+        "name": "Field Pea / Dry Pea (Matar)",
+        "hindi_name": "मटर (Matar)",
+        "scientific_name": "Pisum sativum var. arvense",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Black Soil (Regur)"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 10.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "100 - 120 days",
+        "estimated_yield_per_acre": "8 - 14 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 20.0,
+        "ideal_p": 50.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Inoculate seeds with Rhizobium leguminosarum. Sow at 5-7 cm depth.",
+        "fertilizer_advice": "DAP basal dose @ 50 kg/acre. Legume fixes its own Nitrogen.",
+        "soil_notes": "Well-drained fertile loam; extremely sensitive to soil acidity and water stagnation.",
+        "risk_factors": [
+                "Powdery mildew",
+                "Pod borer (Helicoverpa)",
+                "Rust"
+        ],
+        "companion_crops": [
+                "Mustard",
+                "Wheat"
+        ]
+},
+    {
+        "id": "kidney_beans",
+        "name": "Kidney Beans (Rajma)",
+        "hindi_name": "राजमा (Rajma)",
+        "scientific_name": "Phaseolus vulgaris",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.0,
+        "min_temp": 12.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 16.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 450.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi",
+                "Kharif"
+        ],
+        "sowing_window": "Oct 15 - Nov 10 (Plains) or May - June (Hills)",
+        "duration_days": "110 - 130 days",
+        "estimated_yield_per_acre": "8 - 12 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 80.0,
+        "ideal_p": 60.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Unlike other pulses, Rajma lacks native nodulation in plains and requires full Nitrogen application.",
+        "fertilizer_advice": "Apply 40kg N + full P & K basal; top dress remaining 40kg N in two equal splits.",
+        "soil_notes": "Deep fertile, well-drained loam with high organic matter; sensitive to waterlogging.",
+        "risk_factors": [
+                "Angular leaf spot",
+                "Rust",
+                "Stem borer",
+                "Water stagnation"
+        ],
+        "companion_crops": [
+                "Maize (in hills)",
+                "Coriander"
+        ]
+},
+    {
+        "id": "moth_bean",
+        "name": "Moth Bean (Matki)",
+        "hindi_name": "मोठ (Moth / Matki)",
+        "scientific_name": "Vigna aconitifolia",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Desert Sand Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 8.0,
+        "min_temp": 22.0,
+        "max_temp": 45.0,
+        "optimal_temp_min": 28.0,
+        "optimal_temp_max": 38.0,
+        "min_rainfall": 150.0,
+        "max_rainfall": 450.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "July 1 - July 25",
+        "duration_days": "65 - 80 days",
+        "estimated_yield_per_acre": "4 - 7 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 15.0,
+        "ideal_p": 30.0,
+        "ideal_k": 15.0,
+        "sowing_tips": "Most drought-tolerant legume in the world. Thrives in the Thar desert with single rainfall.",
+        "fertilizer_advice": "SSP @ 30 kg/acre basal. Fixes abundant atmospheric Nitrogen.",
+        "soil_notes": "Well-drained sandy or light gravelly soils; prevents wind erosion.",
+        "risk_factors": [
+                "Yellow mosaic virus",
+                "Bacterial leaf blight",
+                "Heavy rain during maturity"
+        ],
+        "companion_crops": [
+                "Pearl Millet (Bajra)",
+                "Cluster Bean (Guar)"
+        ]
+},
+    {
+        "id": "horse_gram",
+        "name": "Horse Gram (Kulthi)",
+        "hindi_name": "कुलथी (Kulthi)",
+        "scientific_name": "Macrotyloma uniflorum",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Sandy Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Poor Gravelly Uplands"
+        ],
+        "min_ph": 5.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 5.5,
+        "optimal_ph_max": 7.0,
+        "min_temp": 16.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 600.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif",
+                "Rabi"
+        ],
+        "sowing_window": "August - September (Late Kharif / Semi-dry)",
+        "duration_days": "110 - 130 days",
+        "estimated_yield_per_acre": "5 - 8 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 15.0,
+        "ideal_p": 30.0,
+        "ideal_k": 15.0,
+        "sowing_tips": "Excellent emergency / contingent crop when main rains fail. High iron and medicinal value.",
+        "fertilizer_advice": "Basal DAP @ 25 kg/acre. Extremely efficient at extracting nutrients from poor soil.",
+        "soil_notes": "Tolerates severe acidity and degraded, eroded soils.",
+        "risk_factors": [
+                "Anthracnose",
+                "Rust",
+                "Root rot in waterlogged soils"
+        ],
+        "companion_crops": [
+                "Finger Millet",
+                "Castor"
+        ]
+},
+    {
+        "id": "cluster_bean",
+        "name": "Cluster Bean (Guar)",
+        "hindi_name": "ग्वार (Guar)",
+        "scientific_name": "Cyamopsis tetragonoloba",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Desert Sandy Soil"
+        ],
+        "min_ph": 6.5,
+        "max_ph": 8.5,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 8.0,
+        "min_temp": 20.0,
+        "max_temp": 42.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 35.0,
+        "min_rainfall": 250.0,
+        "max_rainfall": 550.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "June 25 - July 20",
+        "duration_days": "90 - 115 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "High",
+        "ideal_n": 15.0,
+        "ideal_p": 40.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Major industrial cash pulse; source of high-demand Guar Gum for food and drilling.",
+        "fertilizer_advice": "DAP @ 30-40 kg/acre basal. Deep taproot enriches soil with biological Nitrogen.",
+        "soil_notes": "Well-drained alluvial and sandy loams; alkaline soils are well tolerated.",
+        "risk_factors": [
+                "Bacterial blight",
+                "Alternaria leaf spot",
+                "Whitefly"
+        ],
+        "companion_crops": [
+                "Pearl Millet",
+                "Moth Bean"
+        ]
+},
+    {
+        "id": "broad_bean",
+        "name": "Broad Bean / Faba Bean (Bakla)",
+        "hindi_name": "बाकला (Bakla)",
+        "scientific_name": "Vicia faba",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Clay Loam Soil",
+                "Alluvial Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Sandy Loam Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.5,
+        "min_temp": 8.0,
+        "max_temp": 26.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 20.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 15 - November 15",
+        "duration_days": "115 - 135 days",
+        "estimated_yield_per_acre": "10 - 15 Quintals",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 25.0,
+        "ideal_p": 50.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Cold-hardy heavy-yielding winter legume. Excellent biological nitrogen fixer.",
+        "fertilizer_advice": "Apply DAP @ 50 kg/acre basal with Potash. Treat seed with Rhizobium leguminosarum.",
+        "soil_notes": "Heavy loams and clays with high moisture holding capacity.",
+        "risk_factors": [
+                "Chocolate spot (Botrytis)",
+                "Black bean aphid",
+                "Root rot"
+        ],
+        "companion_crops": [
+                "Barley",
+                "Wheat"
+        ]
+},
+    {
+        "id": "grass_pea",
+        "name": "Grass Pea / Khesari (Khesari Dal)",
+        "hindi_name": "खेसारी (Khesari)",
+        "scientific_name": "Lathyrus sativus",
+        "category": "Pulse",
+        "suitable_soils": [
+                "Clay Loam Soil",
+                "Alluvial Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Waterlogged Lowlands (as relay crop)"
+        ],
+        "min_ph": 5.8,
+        "max_ph": 8.2,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.8,
+        "min_temp": 10.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 24.0,
+        "min_rainfall": 300.0,
+        "max_rainfall": 700.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October - November (often broadcast into standing paddy)",
+        "duration_days": "110 - 125 days",
+        "estimated_yield_per_acre": "6 - 10 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 15.0,
+        "ideal_p": 35.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Supreme relay / utera crop in eastern rice fallows; uses residual paddy moisture without tillage.",
+        "fertilizer_advice": "No tillage or basal fertilizer needed when sown as utera; fixes 50 kg N/ha.",
+        "soil_notes": "Heavy clay and alluvial soils; survives extreme drought as well as temporary water stagnation.",
+        "risk_factors": [
+                "Downy mildew",
+                "Rust",
+                "Pod borer"
+        ],
+        "companion_crops": [
+                "Paddy (relay/paira)",
+                "Mustard"
+        ]
+}
 
 ]
 
@@ -2147,6 +2493,252 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Ripening & Harvesting",
                         "activities": "Cut plumes when seeds easily rub out dry in palms.",
                         "pest_warning": "Birds."
+                }
+        ]
+}
+,
+    "field_pea": {
+        "msp_per_quintal": 5400.0,
+        "seed_rate_kg_acre": 30.0,
+        "seed_cost_per_kg": 85.0,
+        "cultivation_cost_per_acre": 11500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Seedling & Root Nodulation",
+                        "activities": "Weed once at 20-25 days. Light irrigation.",
+                        "pest_warning": "Cutworms."
+                },
+                {
+                        "day_range": "Day 25-55",
+                        "stage_name": "Branching & Pre-bloom",
+                        "activities": "Inter-row hoeing. Protect against aphids.",
+                        "pest_warning": "Pea aphid."
+                },
+                {
+                        "day_range": "Day 55-80",
+                        "stage_name": "Flowering & Pod Set",
+                        "activities": "Critical irrigation at pod formation. Spray Wettable Sulfur.",
+                        "pest_warning": "Powdery mildew."
+                },
+                {
+                        "day_range": "Day 80-110+",
+                        "stage_name": "Pod Filling & Harvest",
+                        "activities": "Harvest when pods turn parchment color and seeds rattle.",
+                        "pest_warning": "Pod borer."
+                }
+        ]
+},
+    "kidney_beans": {
+        "msp_per_quintal": 7800.0,
+        "seed_rate_kg_acre": 35.0,
+        "seed_cost_per_kg": 140.0,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Germination & Canopy Cover",
+                        "activities": "First irrigation at 25 days. Hand weeding.",
+                        "pest_warning": "Stem fly."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Vegetative & Branching",
+                        "activities": "Top dress Urea before second irrigation.",
+                        "pest_warning": "Anthracnose."
+                },
+                {
+                        "day_range": "Day 60-90",
+                        "stage_name": "Flowering & Pod Filling",
+                        "activities": "Moisture is crucial; irrigate every 12-15 days.",
+                        "pest_warning": "Rust & pod borer."
+                },
+                {
+                        "day_range": "Day 90-120+",
+                        "stage_name": "Maturity & Dry Harvest",
+                        "activities": "Harvest when 80% pods turn straw yellow.",
+                        "pest_warning": "Bruchid weevils."
+                }
+        ]
+},
+    "moth_bean": {
+        "msp_per_quintal": 7200.0,
+        "seed_rate_kg_acre": 5.0,
+        "seed_cost_per_kg": 110.0,
+        "cultivation_cost_per_acre": 6000.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 7.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-15",
+                        "stage_name": "Emergence & Spreading",
+                        "activities": "Shallow line sowing. Creeping vines cover soil.",
+                        "pest_warning": "Flea beetles."
+                },
+                {
+                        "day_range": "Day 15-40",
+                        "stage_name": "Vegetative & Flowering",
+                        "activities": "Conserves moisture like a living mulch.",
+                        "pest_warning": "Whitefly (YMV vector)."
+                },
+                {
+                        "day_range": "Day 40-65",
+                        "stage_name": "Pod Formation",
+                        "activities": "Pods form close to ground; keep clear of weeds.",
+                        "pest_warning": "Pod borer."
+                },
+                {
+                        "day_range": "Day 65-75+",
+                        "stage_name": "Harvesting",
+                        "activities": "Harvest early morning before pods shatter in hot sun.",
+                        "pest_warning": "Pod shattering."
+                }
+        ]
+},
+    "horse_gram": {
+        "msp_per_quintal": 6400.0,
+        "seed_rate_kg_acre": 10.0,
+        "seed_cost_per_kg": 80.0,
+        "cultivation_cost_per_acre": 5500.0,
+        "yield_quintal_min": 5.0,
+        "yield_quintal_max": 8.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Emergence & Rooting",
+                        "activities": "Broadcast or drill after late rains. One weeding.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 20-60",
+                        "stage_name": "Trailing Vegetative",
+                        "activities": "Forms dense ground cover that smothers weeds.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 60-95",
+                        "stage_name": "Flowering & Pod Fill",
+                        "activities": "Requires no supplemental irrigation under residual moisture.",
+                        "pest_warning": "Rust."
+                },
+                {
+                        "day_range": "Day 95-120+",
+                        "stage_name": "Maturity & Pulling",
+                        "activities": "Pull whole dry plants and thresh under tractor/bullocks.",
+                        "pest_warning": "Rodents."
+                }
+        ]
+},
+    "cluster_bean": {
+        "msp_per_quintal": 5800.0,
+        "seed_rate_kg_acre": 6.0,
+        "seed_cost_per_kg": 95.0,
+        "cultivation_cost_per_acre": 7500.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Seedling Growth",
+                        "activities": "Sow behind plough at 3-4 cm. Weed at 20 days.",
+                        "pest_warning": "Jassids & whitefly."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Branching & Node Cluster",
+                        "activities": "Intercultivation to break soil crust after rains.",
+                        "pest_warning": "Bacterial blight."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Pod Cluster Development",
+                        "activities": "Monitor for pod borers; avoid waterlogged roots.",
+                        "pest_warning": "Alternaria spot."
+                },
+                {
+                        "day_range": "Day 85-110+",
+                        "stage_name": "Drying & Threshing",
+                        "activities": "Harvest when pods turn grayish brown and brittle.",
+                        "pest_warning": "Mold if rain at harvest."
+                }
+        ]
+},
+    "broad_bean": {
+        "msp_per_quintal": 5100.0,
+        "seed_rate_kg_acre": 35.0,
+        "seed_cost_per_kg": 70.0,
+        "cultivation_cost_per_acre": 11000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 15.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Germination & Stolon Emergence",
+                        "activities": "Deep sowing 6-8 cm. First irrigation.",
+                        "pest_warning": "Cutworms."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Erect Stem & Branching",
+                        "activities": "Earthing up to support sturdy square stems.",
+                        "pest_warning": "Black aphids."
+                },
+                {
+                        "day_range": "Day 60-95",
+                        "stage_name": "Axillary Flowering",
+                        "activities": "Moisture critical at flowering; irrigate every 15 days.",
+                        "pest_warning": "Chocolate spot."
+                },
+                {
+                        "day_range": "Day 95-125+",
+                        "stage_name": "Pod Maturity & Harvest",
+                        "activities": "Harvest when lower pods turn black and dry.",
+                        "pest_warning": "Pod borer."
+                }
+        ]
+},
+    "grass_pea": {
+        "msp_per_quintal": 5450.0,
+        "seed_rate_kg_acre": 25.0,
+        "seed_cost_per_kg": 65.0,
+        "cultivation_cost_per_acre": 5000.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Relay Establishment",
+                        "activities": "Broadcast into standing paddy 10 days before harvest.",
+                        "pest_warning": "Slugs in wet mulch."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Vegetative Growth",
+                        "activities": "Uses residual soil moisture; zero weeding cost.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Blue Flower & Pod Set",
+                        "activities": "Drought-hardy roots penetrate deep clay fissures.",
+                        "pest_warning": "Powdery mildew."
+                },
+                {
+                        "day_range": "Day 85-115+",
+                        "stage_name": "Pod Ripening & Harvest",
+                        "activities": "Sickle harvest when pods turn pale yellow.",
+                        "pest_warning": "Pod borer."
                 }
         ]
 }
