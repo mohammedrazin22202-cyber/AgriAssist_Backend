@@ -2051,6 +2051,153 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Gram"
         ]
 }
+,
+    {
+        "id": "sunn_hemp",
+        "name": "Sunn Hemp (Sanai)",
+        "hindi_name": "सनई (Sanai)",
+        "scientific_name": "Crotalaria juncea",
+        "category": "Fiber",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 900.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "April - May (Pre-monsoon) or June",
+        "duration_days": "75 - 90 days",
+        "estimated_yield_per_acre": "8 - 12 Quintals (Fiber) or 100 Qtl (Green manure)",
+        "investment_level": "Low",
+        "profit_potential": "Moderate to High",
+        "ideal_n": 15.0,
+        "ideal_p": 40.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Dual-purpose miracle legume: high-tensile cordage fiber and fixes 80-100 kg N/ha as green manure.",
+        "fertilizer_advice": "DAP @ 30 kg/acre basal. Inoculate with Rhizobium for massive root nodulation.",
+        "soil_notes": "Well-drained light loamy soils. Suppresses root-knot nematodes naturally.",
+        "risk_factors": [
+                "Sunnhemp moth / hairy caterpillar",
+                "Fusarium wilt",
+                "Water stagnation"
+        ],
+        "companion_crops": [
+                "Sugarcane (green manure before planting)",
+                "Paddy"
+        ]
+},
+    {
+        "id": "mesta",
+        "name": "Mesta / Kenaf (Patsan)",
+        "hindi_name": "पटसन / मेस्टा (Mesta)",
+        "scientific_name": "Hibiscus cannabinus",
+        "category": "Fiber",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Red Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Sandy Loam Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.8,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.2,
+        "min_temp": 20.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 33.0,
+        "min_rainfall": 500.0,
+        "max_rainfall": 1100.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "May - June",
+        "duration_days": "120 - 140 days",
+        "estimated_yield_per_acre": "10 - 15 Quintals",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "Moderate",
+        "ideal_n": 50.0,
+        "ideal_p": 25.0,
+        "ideal_k": 25.0,
+        "sowing_tips": "Hardy substitute for jute in drier, less waterlogged soils. Used for burlap, rope, and paper pulp.",
+        "fertilizer_advice": "Apply 50% N + full P & K basal; top dress remaining N at 30 days.",
+        "soil_notes": "Tolerates lower rainfall and less fertile soils than true jute.",
+        "risk_factors": [
+                "Spiral borer",
+                "Mealybug",
+                "Foot and stem rot"
+        ],
+        "companion_crops": [
+                "Paddy",
+                "Groundnut"
+        ]
+},
+    {
+        "id": "sisal",
+        "name": "Sisal (Agave)",
+        "hindi_name": "रामबांस (Rambans / Sisal)",
+        "scientific_name": "Agave sisalana",
+        "category": "Fiber",
+        "suitable_soils": [
+                "Red Soil",
+                "Sandy Loam Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Degraded Rocky Wastelands"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 42.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 35.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "July - August (Planting bulbils / suckers)",
+        "duration_days": "Perennial (Harvest starts Year 3)",
+        "estimated_yield_per_acre": "12 - 18 Quintals (Dry Fiber/yr)",
+        "investment_level": "Moderate",
+        "profit_potential": "High",
+        "ideal_n": 40.0,
+        "ideal_p": 20.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "Hardy perennial succulent providing durable maritime rope fiber. Living bio-fence against wild animals.",
+        "fertilizer_advice": "Apply organic mulch and modest Potash annually; returns leaf waste to soil.",
+        "soil_notes": "Survives on arid, eroded, stony wastelands where no other crop grows.",
+        "risk_factors": [
+                "Zebra disease (Phytophthora)",
+                "Agave snout weevil"
+        ],
+        "companion_crops": [
+                "Live fence border",
+                "Stylosanthes pasture intercrop"
+        ]
+}
 
 ]
 
@@ -3245,6 +3392,112 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Siliqua Ripening",
                         "activities": "Harvest when 75% pods turn yellow.",
                         "pest_warning": "Pod shattering."
+                }
+        ]
+}
+,
+    "sunn_hemp": {
+        "msp_per_quintal": 5200.0,
+        "seed_rate_kg_acre": 20.0,
+        "seed_cost_per_kg": 65.0,
+        "cultivation_cost_per_acre": 6500.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 12.0,
+        "is_legume": True,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Rapid Seedling Emergence",
+                        "activities": "Quick emergence smothers all weeds.",
+                        "pest_warning": "Flea beetles."
+                },
+                {
+                        "day_range": "Day 20-50",
+                        "stage_name": "Vegetative Cane Growth",
+                        "activities": "Grows up to 2-3 meters tall; incorporates nitrogen.",
+                        "pest_warning": "Hairy caterpillar."
+                },
+                {
+                        "day_range": "Day 50-70",
+                        "stage_name": "Flowering & Fiber Climax",
+                        "activities": "Harvest at 50% flowering for best fiber quality.",
+                        "pest_warning": "Pod borer."
+                },
+                {
+                        "day_range": "Day 70-85+",
+                        "stage_name": "Harvesting & Retting",
+                        "activities": "Cut stems, bundle and submerge in slow-moving water.",
+                        "pest_warning": "Over-retting fiber."
+                }
+        ]
+},
+    "mesta": {
+        "msp_per_quintal": 5050.0,
+        "seed_rate_kg_acre": 6.0,
+        "seed_cost_per_kg": 90.0,
+        "cultivation_cost_per_acre": 9000.0,
+        "yield_quintal_min": 10.0,
+        "yield_quintal_max": 15.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Seedling & Weeding",
+                        "activities": "Thin plants to 10cm spacing. One hand weeding.",
+                        "pest_warning": "Flea beetle."
+                },
+                {
+                        "day_range": "Day 25-65",
+                        "stage_name": "Rapid Stem Elongation",
+                        "activities": "Top-dress Urea before rain or irrigation.",
+                        "pest_warning": "Spiral borer."
+                },
+                {
+                        "day_range": "Day 65-105",
+                        "stage_name": "Cane Maturation",
+                        "activities": "Ensures strong bast fiber formation.",
+                        "pest_warning": "Mealybug."
+                },
+                {
+                        "day_range": "Day 105-135+",
+                        "stage_name": "Harvest & Retting",
+                        "activities": "Cut at 50% flowering; steep bundles in water for retting.",
+                        "pest_warning": "Stem rot."
+                }
+        ]
+},
+    "sisal": {
+        "msp_per_quintal": 7500.0,
+        "seed_rate_kg_acre": 2000.0,
+        "seed_cost_per_kg": 2.5,
+        "cultivation_cost_per_acre": 14000.0,
+        "yield_quintal_min": 12.0,
+        "yield_quintal_max": 18.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Month 0-6",
+                        "stage_name": "Bulbil Establishment",
+                        "activities": "Plant suckers in pits (2x2m). Water once to settle.",
+                        "pest_warning": "Weeds around young crown."
+                },
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Rosette Leaf Accumulation",
+                        "activities": "Keep base clean; intercrop with drought legumes.",
+                        "pest_warning": "Snout weevil."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "First Leaf Cutting",
+                        "activities": "Cut lower 15-20 mature leaves leaving central whorl.",
+                        "pest_warning": "Zebra disease."
+                },
+                {
+                        "day_range": "Year 4-10",
+                        "stage_name": "Annual Harvesting & Rasping",
+                        "activities": "Annual leaf harvesting; extract fiber with mechanical raspador.",
+                        "pest_warning": "Pole emergence (pole cutting)."
                 }
         ]
 }
