@@ -2741,6 +2741,694 @@ CROPS_DATABASE: List[Dict[str, Any]] = [
                 "Wheat rotation"
         ]
 }
+,
+    {
+        "id": "tea",
+        "name": "Tea (Chai)",
+        "hindi_name": "चाय (Chai)",
+        "scientific_name": "Camellia sinensis",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Laterite Soil",
+                "Red Soil",
+                "Forest Humus Loam"
+        ],
+        "tolerated_soils": [
+                "Acidic Mountain Soils"
+        ],
+        "min_ph": 4.5,
+        "max_ph": 5.8,
+        "optimal_ph_min": 4.8,
+        "optimal_ph_max": 5.5,
+        "min_temp": 12.0,
+        "max_temp": 32.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 3500.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "April - June (Spring / Early Monsoon)",
+        "duration_days": "Perennial (Productive for 50+ years)",
+        "estimated_yield_per_acre": "80 - 120 Quintals (Green leaf/yr)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 120.0,
+        "ideal_p": 40.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "Requires strictly acidic, high-organic hill soils and cool, misty mountain slopes.",
+        "fertilizer_advice": "Apply NPK (2:1:2 ratio) in 3-4 split applications during plucking season.",
+        "soil_notes": "Deep, well-drained acidic laterites with high aluminum and organic leaf litter.",
+        "risk_factors": [
+                "Tea mosquito bug (Helopeltis)",
+                "Red spider mite",
+                "Blister blight"
+        ],
+        "companion_crops": [
+                "Albizia chinensis (shade tree)",
+                "Silver oak"
+        ]
+},
+    {
+        "id": "coffee_arabica",
+        "name": "Coffee (Arabica)",
+        "hindi_name": "कॉफ़ी (Coffee)",
+        "scientific_name": "Coffea arabica",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Forest Humus Loam"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 6.8,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 6.5,
+        "min_temp": 15.0,
+        "max_temp": 30.0,
+        "optimal_temp_min": 18.0,
+        "optimal_temp_max": 25.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 2500.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - July (Monsoon planting of basket plants)",
+        "duration_days": "Perennial (First commercial harvest Year 4)",
+        "estimated_yield_per_acre": "6 - 10 Quintals (Clean parchment)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 80.0,
+        "ideal_p": 60.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "Shade-grown premium mountain coffee. Requires two-tier forest canopy and blossom showers in March.",
+        "fertilizer_advice": "Apply NPK (120:90:120 kg/ha) in 3 splits (pre-monsoon, mid-monsoon, post-monsoon).",
+        "soil_notes": "Deep, fertile, friable volcanic or lateritic loam rich in humus on high slopes (1000-1500m).",
+        "risk_factors": [
+                "White stem borer (Xylotrechus quadripes)",
+                "Coffee leaf rust (Hemileia vastatrix)",
+                "Berry borer"
+        ],
+        "companion_crops": [
+                "Black Pepper (trained on shade trees)",
+                "Cardamom",
+                "Silver Oak"
+        ]
+},
+    {
+        "id": "rubber",
+        "name": "Natural Rubber",
+        "hindi_name": "रबर (Rubber)",
+        "scientific_name": "Hevea brasiliensis",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Laterite Soil",
+                "Red Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 4.5,
+        "max_ph": 6.2,
+        "optimal_ph_min": 5.0,
+        "optimal_ph_max": 5.8,
+        "min_temp": 20.0,
+        "max_temp": 36.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 2000.0,
+        "max_rainfall": 3500.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - July (South-West Monsoon)",
+        "duration_days": "Perennial (Tapping starts Year 7, lasts 25-30 years)",
+        "estimated_yield_per_acre": "8 - 14 Quintals (Dry sheet rubber/yr)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 40.0,
+        "ideal_p": 40.0,
+        "ideal_k": 35.0,
+        "sowing_tips": "Major industrial plantation crop. Plant budded polybag plants on contour terraces with cover crops.",
+        "fertilizer_advice": "Apply NPK 10:10:10 mixture along with Magnesium for high latex yield.",
+        "soil_notes": "Deep, well-drained acidic laterites and red loams with depth > 1 meter.",
+        "risk_factors": [
+                "Abnormal leaf fall (Phytophthora)",
+                "Pink disease",
+                "Corynespora leaf disease"
+        ],
+        "companion_crops": [
+                "Mucuna bracteata (nitrogen cover crop)",
+                "Pineapple (first 3 years)"
+        ]
+},
+    {
+        "id": "tobacco",
+        "name": "Tobacco (Tambaku)",
+        "hindi_name": "तंबाकू (Tambaku)",
+        "scientific_name": "Nicotiana tabacum",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Sandy Loam Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Red Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 15.0,
+        "max_temp": 35.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 400.0,
+        "max_rainfall": 800.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October - November (Transplanting nursery)",
+        "duration_days": "110 - 130 days",
+        "estimated_yield_per_acre": "8 - 14 Quintals (Cured leaf)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 50.0,
+        "ideal_p": 40.0,
+        "ideal_k": 80.0,
+        "sowing_tips": "High commercial value. Requires strict control of soil chlorides to prevent burning defects.",
+        "fertilizer_advice": "Never use MOP (Chloride ruins burn quality); always use Potassium Sulfate (SOP).",
+        "soil_notes": "Well-aerated sandy loam (for light flue-cured VFC) or heavy black soil (for bidi/natu).",
+        "risk_factors": [
+                "Tobacco caterpillar (Spodoptera litura)",
+                "Mosaic virus (TMV)",
+                "Orobanche (broomrape root parasite)"
+        ],
+        "companion_crops": [
+                "Castor (trap crop)",
+                "Groundnut rotation"
+        ]
+},
+    {
+        "id": "coconut",
+        "name": "Coconut (Nariyal)",
+        "hindi_name": "नारियल (Nariyal)",
+        "scientific_name": "Cocos nucifera",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil",
+                "Red Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Coastal Sand"
+        ],
+        "min_ph": 5.2,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.5,
+        "min_temp": 20.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 1000.0,
+        "max_rainfall": 2500.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "May - June (Onset of monsoon)",
+        "duration_days": "Perennial Palm (Harvest starts Year 5-6, productive for 60+ years)",
+        "estimated_yield_per_acre": "3500 - 5500 Nuts / acre / yr",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 500.0,
+        "ideal_p": 320.0,
+        "ideal_k": 1200.0,
+        "sowing_tips": "Kalpavriksha - tree of life. Plant 1-year vigorous seedlings in 1x1x1m pits filled with sand & manure.",
+        "fertilizer_advice": "Apply 500g N, 320g P, 1200g K per adult palm annually in two split doses (May & Sept).",
+        "soil_notes": "Well-drained coastal sands, alluvial riverbanks, and red loams with high water table (1-2m).",
+        "risk_factors": [
+                "Rhinoceros beetle",
+                "Red palm weevil",
+                "Bud rot (Phytophthora)",
+                "Eriophyid mite"
+        ],
+        "companion_crops": [
+                "Black Pepper",
+                "Cocoa",
+                "Banana",
+                "Nutmeg (multi-tier farming)"
+        ]
+},
+    {
+        "id": "arecanut",
+        "name": "Arecanut / Betel Nut (Supari)",
+        "hindi_name": "सुपारी (Supari)",
+        "scientific_name": "Areca catechu",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Laterite Soil",
+                "Red Soil",
+                "Clay Loam Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.0,
+        "optimal_ph_max": 7.0,
+        "min_temp": 15.0,
+        "max_temp": 36.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 3500.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "May - July (South-West Monsoon)",
+        "duration_days": "Perennial Palm (Bearing starts Year 5-6)",
+        "estimated_yield_per_acre": "8 - 14 Quintals (Dry chali/supari)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 100.0,
+        "ideal_p": 40.0,
+        "ideal_k": 140.0,
+        "sowing_tips": "High commercial value palm. Plant at 2.7 x 2.7 m spacing. Extremely sensitive to drought and sunscald.",
+        "fertilizer_advice": "Apply 100g N, 40g P, 140g K per bearing palm per year along with green leaf manure.",
+        "soil_notes": "Deep fertile red clay loams and laterites with high organic matter and perennial moisture.",
+        "risk_factors": [
+                "Koleroga / Mahali (Phytophthora fruit rot)",
+                "Yellow leaf disease",
+                "Spindle bug"
+        ],
+        "companion_crops": [
+                "Black Pepper (vines on palms)",
+                "Banana",
+                "Vanilla",
+                "Cocoa"
+        ]
+},
+    {
+        "id": "betel_vine",
+        "name": "Betel Vine (Paan)",
+        "hindi_name": "पान (Paan)",
+        "scientific_name": "Piper betle",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Clay Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Sandy Loam Soil"
+        ],
+        "min_ph": 6.5,
+        "max_ph": 7.8,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 7.5,
+        "min_temp": 15.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 1200.0,
+        "max_rainfall": 2200.0,
+        "water_requirement": "High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "September - October or March - April",
+        "duration_days": "Perennial Vine (Plucking every 15-20 days)",
+        "estimated_yield_per_acre": "25 - 45 Lakh Leaves / acre / yr",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 150.0,
+        "ideal_p": 80.0,
+        "ideal_k": 100.0,
+        "sowing_tips": "Grown under covered thatched conservatories (bareja/pan-baroj) providing 70% shade and high humidity.",
+        "fertilizer_advice": "Heavy feeder of mustard oil cake and well-rotted FYM. Avoid harsh chemical nitrogen.",
+        "soil_notes": "Rich, friable loams with exceptional drainage; water stagnation causes swift foot rot.",
+        "risk_factors": [
+                "Foot rot / Phytophthora wilt",
+                "Anthracnose leaf spot",
+                "Root knot nematodes"
+        ],
+        "companion_crops": [
+                "Sesbania grandiflora (Agathi as live stake)"
+        ]
+},
+    {
+        "id": "ashwagandha",
+        "name": "Ashwagandha (Indian Ginseng)",
+        "hindi_name": "अश्वगंधा (Ashwagandha)",
+        "scientific_name": "Withania somnifera",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Red Soil",
+                "Black Soil (Regur)"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 6.5,
+        "max_ph": 8.5,
+        "optimal_ph_min": 7.2,
+        "optimal_ph_max": 8.0,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 350.0,
+        "max_rainfall": 750.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Kharif",
+                "Rabi"
+        ],
+        "sowing_window": "August 15 - September 15 (Late Kharif)",
+        "duration_days": "150 - 180 days",
+        "estimated_yield_per_acre": "3 - 5 Quintals (Dry roots) + 50 kg Seeds",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "Very High",
+        "ideal_n": 30.0,
+        "ideal_p": 30.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "High-demand Ayurvedic adaptogen. Low input dryland crop; excessive irrigation degrades root alkaloid quality.",
+        "fertilizer_advice": "Apply organic compost @ 3 tons/acre basal with modest DAP. Avoid high synthetic Nitrogen.",
+        "soil_notes": "Well-drained sandy loam or light red soil with alkaline pH (7.5-8.0).",
+        "risk_factors": [
+                "Seedling rot / damping off",
+                "Leaf spot",
+                "Water stagnation rot"
+        ],
+        "companion_crops": [
+                "Senna",
+                "Isabgol"
+        ]
+},
+    {
+        "id": "isabgol",
+        "name": "Psyllium Husk (Isabgol)",
+        "hindi_name": "ईसबगोल (Isabgol)",
+        "scientific_name": "Plantago ovata",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 6.8,
+        "max_ph": 8.5,
+        "optimal_ph_min": 7.2,
+        "optimal_ph_max": 8.0,
+        "min_temp": 8.0,
+        "max_temp": 28.0,
+        "optimal_temp_min": 15.0,
+        "optimal_temp_max": 22.0,
+        "min_rainfall": 150.0,
+        "max_rainfall": 350.0,
+        "water_requirement": "Low",
+        "seasons": [
+                "Rabi"
+        ],
+        "sowing_window": "October 20 - November 15",
+        "duration_days": "110 - 125 days",
+        "estimated_yield_per_acre": "4 - 7 Quintals",
+        "investment_level": "Low",
+        "profit_potential": "Very High",
+        "ideal_n": 30.0,
+        "ideal_p": 25.0,
+        "ideal_k": 20.0,
+        "sowing_tips": "Source of natural dietary fiber husk. High export value; requires completely dry weather during maturity.",
+        "fertilizer_advice": "DAP @ 25 kg/acre basal + 15 kg Urea at 30 days. Minimal fertilizer needed.",
+        "soil_notes": "Well-drained light sandy loam; moderately tolerant to soil salinity.",
+        "risk_factors": [
+                "Downy mildew during cloudy weather",
+                "Rain/dew during harvest causes seed mucilage to swell and ruin crop"
+        ],
+        "companion_crops": [
+                "Cumin",
+                "Mustard border"
+        ]
+},
+    {
+        "id": "lemongrass",
+        "name": "Lemongrass",
+        "hindi_name": "नींबू घास (Lemongrass)",
+        "scientific_name": "Cymbopogon flexuosus",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Red Soil",
+                "Sandy Loam Soil",
+                "Laterite Soil"
+        ],
+        "tolerated_soils": [
+                "Saline / Sodic Soil"
+        ],
+        "min_ph": 5.5,
+        "max_ph": 8.0,
+        "optimal_ph_min": 6.2,
+        "optimal_ph_max": 7.5,
+        "min_temp": 18.0,
+        "max_temp": 40.0,
+        "optimal_temp_min": 25.0,
+        "optimal_temp_max": 33.0,
+        "min_rainfall": 500.0,
+        "max_rainfall": 1200.0,
+        "water_requirement": "Low to Medium",
+        "seasons": [
+                "Kharif",
+                "All Season / Flexible"
+        ],
+        "sowing_window": "June - July (Planting rooted slips)",
+        "duration_days": "Perennial (3-4 cuttings per year for 4-5 years)",
+        "estimated_yield_per_acre": "60 - 90 kg (Essential Oil/yr)",
+        "investment_level": "Low to Moderate",
+        "profit_potential": "High",
+        "ideal_n": 60.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "Aromatic grass providing citral-rich essential oil for pharma and perfumes. Animal-proof (not eaten by cattle).",
+        "fertilizer_advice": "Apply 30kg N basal + full P & K; top-dress 15kg Nitrogen after each grass cut.",
+        "soil_notes": "Hardy perennial grass; performs remarkably on barren, undulating, and degraded wasteland soils.",
+        "risk_factors": [
+                "Rust",
+                "Leaf blight during heavy monsoons"
+        ],
+        "companion_crops": [
+                "Live erosion hedge on contours"
+        ]
+},
+    {
+        "id": "safed_musli",
+        "name": "Safed Musli",
+        "hindi_name": "सफेद मूसली (Safed Musli)",
+        "scientific_name": "Chlorophytum borivilianum",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Sandy Loam Soil",
+                "Red Soil"
+        ],
+        "tolerated_soils": [
+                "Alluvial Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 18.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 24.0,
+        "optimal_temp_max": 32.0,
+        "min_rainfall": 500.0,
+        "max_rainfall": 1000.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Kharif"
+        ],
+        "sowing_window": "June 15 - July 15",
+        "duration_days": "90 - 105 days (Foliage) / 180 days (Tuber maturation)",
+        "estimated_yield_per_acre": "4 - 6 Quintals (Dry peeled fingers)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 40.0,
+        "ideal_p": 40.0,
+        "ideal_k": 40.0,
+        "sowing_tips": "White Gold of herbal medicine. Plant crown-attached finger tubers on raised beds (BBF) with drip irrigation.",
+        "fertilizer_advice": "Strictly organic: apply 10 tons FYM/acre + 2 tons vermicompost and neem cake. Chemical N causes tuber rot.",
+        "soil_notes": "Light, friable sandy loam rich in organic carbon with exceptional natural drainage.",
+        "risk_factors": [
+                "Crown rot / soft rot (Pythium)",
+                "Waterlogging (lethal to tubers)",
+                "Flea beetle"
+        ],
+        "companion_crops": [
+                "Pigeon Pea (as border shade)"
+        ]
+},
+    {
+        "id": "stevia",
+        "name": "Stevia (Meethi Tulsi)",
+        "hindi_name": "स्टीविया / मीठी तुलसी (Stevia)",
+        "scientific_name": "Stevia rebaudiana",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Red Soil",
+                "Sandy Loam Soil",
+                "Alluvial Soil"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 6.0,
+        "max_ph": 7.5,
+        "optimal_ph_min": 6.5,
+        "optimal_ph_max": 7.2,
+        "min_temp": 15.0,
+        "max_temp": 38.0,
+        "optimal_temp_min": 20.0,
+        "optimal_temp_max": 30.0,
+        "min_rainfall": 800.0,
+        "max_rainfall": 1500.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "February - March or September - October",
+        "duration_days": "Perennial (3-4 leaf cuts per year for 4-5 years)",
+        "estimated_yield_per_acre": "12 - 18 Quintals (Dry green leaves/yr)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 50.0,
+        "ideal_p": 40.0,
+        "ideal_k": 50.0,
+        "sowing_tips": "Zero-calorie natural sweetener (300x sweeter than sugar). Raised beds with micro-sprinklers / drip.",
+        "fertilizer_advice": "Apply vermicompost liberally with moderate NPK. Avoid high nitrogen which reduces stevioside sweetness.",
+        "soil_notes": "Well-drained red or sandy loam; plants cannot withstand standing water even for 6 hours.",
+        "risk_factors": [
+                "Stem rot (Sclerotinia)",
+                "Leaf spot",
+                "Frost damage (<5°C)"
+        ],
+        "companion_crops": [
+                "Orchard intercrop under light shade"
+        ]
+},
+    {
+        "id": "vanilla",
+        "name": "Vanilla",
+        "hindi_name": "वैनिला (Vanilla)",
+        "scientific_name": "Vanilla planifolia",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Red Soil",
+                "Laterite Soil",
+                "Forest Humus Loam"
+        ],
+        "tolerated_soils": [
+                "Clay Loam Soil"
+        ],
+        "min_ph": 5.2,
+        "max_ph": 6.8,
+        "optimal_ph_min": 5.8,
+        "optimal_ph_max": 6.5,
+        "min_temp": 18.0,
+        "max_temp": 34.0,
+        "optimal_temp_min": 22.0,
+        "optimal_temp_max": 28.0,
+        "min_rainfall": 1500.0,
+        "max_rainfall": 3000.0,
+        "water_requirement": "Medium to High",
+        "seasons": [
+                "All Season / Flexible"
+        ],
+        "sowing_window": "August - October (Planting rooted vine cuttings)",
+        "duration_days": "Perennial Orchid (Harvest starts Year 3)",
+        "estimated_yield_per_acre": "1.5 - 3.0 Quintals (Cured beans)",
+        "investment_level": "High",
+        "profit_potential": "Very High",
+        "ideal_n": 40.0,
+        "ideal_p": 30.0,
+        "ideal_k": 60.0,
+        "sowing_tips": "Second most expensive spice in the world. Semi-epiphytic orchid requiring hand pollination of each flower at dawn.",
+        "fertilizer_advice": "Surface organic mulch of decomposed leaves, compost, and wood ash. Avoid synthetic fertilizer contact with roots.",
+        "soil_notes": "Well-drained forest loam with heavy organic leaf mulch; sensitive to waterlogging.",
+        "risk_factors": [
+                "Fusarium root and stem rot",
+                "Anthracnose",
+                "Lack of manual pollination leading to zero pods"
+        ],
+        "companion_crops": [
+                "Glyricidia (live trellis support)",
+                "Arecanut",
+                "Coconut"
+        ]
+},
+    {
+        "id": "mushroom_button",
+        "name": "Button Mushroom (Khumb)",
+        "hindi_name": "बटन मशरूम (Khumb)",
+        "scientific_name": "Agaricus bisporus",
+        "category": "Cash Crop",
+        "suitable_soils": [
+                "Alluvial Soil",
+                "Composted Wheat Straw"
+        ],
+        "tolerated_soils": [
+                "Indoor Controlled Climate"
+        ],
+        "min_ph": 6.8,
+        "max_ph": 7.8,
+        "optimal_ph_min": 7.0,
+        "optimal_ph_max": 7.5,
+        "min_temp": 12.0,
+        "max_temp": 24.0,
+        "optimal_temp_min": 14.0,
+        "optimal_temp_max": 18.0,
+        "min_rainfall": 0.0,
+        "max_rainfall": 500.0,
+        "water_requirement": "Medium",
+        "seasons": [
+                "Rabi",
+                "All Season / Flexible"
+        ],
+        "sowing_window": "October - March (Seasonal hut) or Year-Round (AC)",
+        "duration_days": "60 - 75 days",
+        "estimated_yield_per_acre": "60 - 90 Quintals (Per 1000 sq ft room)",
+        "investment_level": "Moderate to High",
+        "profit_potential": "Very High",
+        "ideal_n": 60.0,
+        "ideal_p": 30.0,
+        "ideal_k": 30.0,
+        "sowing_tips": "High-profit indoor vertical cash crop. Spawn mixed into pasteurized wheat/paddy straw compost with coir casing layer.",
+        "fertilizer_advice": "No field soil needed; grown on pasteurized compost formulated with wheat straw, poultry manure, and gypsum.",
+        "soil_notes": "Grown in dark cropping rooms or insulated straw-thatched huts on sterilized casing soil.",
+        "risk_factors": [
+                "Green mold (Trichoderma)",
+                "Wet bubble disease (Mycogone)",
+                "Sciarid and phorid flies"
+        ],
+        "companion_crops": [
+                "Indoor seasonal crop utilizing crop straw residues"
+        ]
+}
 
 ]
 
@@ -4427,6 +5115,497 @@ CROP_METADATA_EXTENSIONS: Dict[str, Dict[str, Any]] = {
                         "stage_name": "Ratoon Regrowth & Second Cut",
                         "activities": "Irrigate immediately after cutting; top-dress Urea.",
                         "pest_warning": "Termites in stubbles."
+                }
+        ]
+}
+,
+    "tea": {
+        "msp_per_quintal": 2200.0,
+        "seed_rate_kg_acre": 4000.0,
+        "seed_cost_per_kg": 12.0,
+        "cultivation_cost_per_acre": 40000.0,
+        "yield_quintal_min": 80.0,
+        "yield_quintal_max": 120.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Formative Pruning & Centering",
+                        "activities": "Frame pruning at 15-20cm to encourage wide plucking table.",
+                        "pest_warning": "Tea mosquito bug."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "First Flush (Spring)",
+                        "activities": "Pluck two leaves and a bud; most aromatic premium tea.",
+                        "pest_warning": "Red spider mite."
+                },
+                {
+                        "day_range": "Monsoon",
+                        "stage_name": "Second Flush & Rain Pluckings",
+                        "activities": "Heavy leaf growth; pluck every 7-10 days.",
+                        "pest_warning": "Blister blight."
+                },
+                {
+                        "day_range": "Winter",
+                        "stage_name": "Dormancy & Skiffing",
+                        "activities": "Annual maintenance pruning and trench organic manuring.",
+                        "pest_warning": "Scale insects."
+                }
+        ]
+},
+    "coffee_arabica": {
+        "msp_per_quintal": 32000.0,
+        "seed_rate_kg_acre": 800.0,
+        "seed_cost_per_kg": 35.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 6.0,
+        "yield_quintal_max": 10.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-3",
+                        "stage_name": "Topping & Desuckering",
+                        "activities": "Top bushes at 1.0m to promote secondary bearing branches.",
+                        "pest_warning": "White stem borer."
+                },
+                {
+                        "day_range": "March-April",
+                        "stage_name": "Blossom & Fruit Set",
+                        "activities": "Blossom showers trigger massive fragrant white blooms.",
+                        "pest_warning": "Coffee leaf rust."
+                },
+                {
+                        "day_range": "May-Oct",
+                        "stage_name": "Berry Expansion & Monsoons",
+                        "activities": "Bordeaux spray against leaf rust; regulate shade trees.",
+                        "pest_warning": "Berry borer."
+                },
+                {
+                        "day_range": "Nov-Jan",
+                        "stage_name": "Selective Fly & Main Picking",
+                        "activities": "Pick bright red ripe berries; pulp into parchment coffee.",
+                        "pest_warning": "Over-ripe berry drop."
+                }
+        ]
+},
+    "rubber": {
+        "msp_per_quintal": 18500.0,
+        "seed_rate_kg_acre": 200.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 30000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-3",
+                        "stage_name": "Juvenile Girthing",
+                        "activities": "Intercrop with banana/pineapple; maintain cover crop.",
+                        "pest_warning": "Shoot rot in heavy rain."
+                },
+                {
+                        "day_range": "Year 4-6",
+                        "stage_name": "Trunk Maturation",
+                        "activities": "Regular weeding and Bordeaux whitewashing on trunks.",
+                        "pest_warning": "Pink disease."
+                },
+                {
+                        "day_range": "Year 7+",
+                        "stage_name": "Tapping Panel Opening",
+                        "activities": "Start tapping when trunk reaches 50cm girth at 125cm height.",
+                        "pest_warning": "Bark rot / panel dryness."
+                },
+                {
+                        "day_range": "Regular",
+                        "stage_name": "Alternate Day Latex Tapping",
+                        "activities": "Shave 1mm bark at dawn; collect and coagulate latex sheets.",
+                        "pest_warning": "Pre-coagulation."
+                }
+        ]
+},
+    "tobacco": {
+        "msp_per_quintal": 18000.0,
+        "seed_rate_kg_acre": 0.2,
+        "seed_cost_per_kg": 4000.0,
+        "cultivation_cost_per_acre": 24000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Transplanting & Establishment",
+                        "activities": "Transplant 45-day seedlings. Hand weeding at 20 days.",
+                        "pest_warning": "Cutworms & damping off."
+                },
+                {
+                        "day_range": "Day 30-65",
+                        "stage_name": "Knee-High Rapid Foliage",
+                        "activities": "Earthing up operation; top-dress Nitrogen.",
+                        "pest_warning": "Spodoptera litura."
+                },
+                {
+                        "day_range": "Day 65-85",
+                        "stage_name": "Topping & Desuckering",
+                        "activities": "Remove flower head and side suckers to expand thick leaves.",
+                        "pest_warning": "Orobanche root weed."
+                },
+                {
+                        "day_range": "Day 85-120+",
+                        "stage_name": "Priming Leaf Harvest & Barn Curing",
+                        "activities": "Pick lower ripe leaves (primings) in 4-5 rounds; flue/air cure.",
+                        "pest_warning": "Leaf barn rot."
+                }
+        ]
+},
+    "coconut": {
+        "msp_per_quintal": 3200.0,
+        "seed_rate_kg_acre": 70.0,
+        "seed_cost_per_kg": 150.0,
+        "cultivation_cost_per_acre": 25000.0,
+        "yield_quintal_min": 35.0,
+        "yield_quintal_max": 55.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-3",
+                        "stage_name": "Young Palm Establishment",
+                        "activities": "Regular summer watering (40L/palm/day); protect crown from beetles.",
+                        "pest_warning": "Rhinoceros beetle."
+                },
+                {
+                        "day_range": "Year 4-5",
+                        "stage_name": "Trunk & Inflorescence Primordium",
+                        "activities": "Apply common salt (1kg/palm) to improve sodium-potassium uptake.",
+                        "pest_warning": "Red palm weevil."
+                },
+                {
+                        "day_range": "Year 6+",
+                        "stage_name": "Spathe Opening & Nut Set",
+                        "activities": "Monthly bunch emergence; intercrop basins.",
+                        "pest_warning": "Eriophyid mite."
+                },
+                {
+                        "day_range": "Monthly",
+                        "stage_name": "Continuous 45-Day Harvesting",
+                        "activities": "Harvest mature 12-month green or brown bunches; de-husk for copra.",
+                        "pest_warning": "Button shedding."
+                }
+        ]
+},
+    "arecanut": {
+        "msp_per_quintal": 42000.0,
+        "seed_rate_kg_acre": 550.0,
+        "seed_cost_per_kg": 45.0,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 8.0,
+        "yield_quintal_max": 14.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-4",
+                        "stage_name": "Vegetative Trunk Formation",
+                        "activities": "Provide southern sun shade (banana/daincha) to prevent sunscald.",
+                        "pest_warning": "Spindle bug."
+                },
+                {
+                        "day_range": "Year 5+",
+                        "stage_name": "Inflorescence Spathe Burst",
+                        "activities": "Inflorescences emerge from leaf sheaths during summer.",
+                        "pest_warning": "Inflorescence die-back."
+                },
+                {
+                        "day_range": "Monsoon",
+                        "stage_name": "Nut Development & Koleroga Defense",
+                        "activities": "Prophylactic 1% Bordeaux spray before monsoon rains.",
+                        "pest_warning": "Koleroga / Mahali fruit rot."
+                },
+                {
+                        "day_range": "Oct-Jan",
+                        "stage_name": "Bunch Harvesting & Sun Drying",
+                        "activities": "Harvest mature orange nuts; de-husk and sun dry into chali.",
+                        "pest_warning": "Storage mold."
+                }
+        ]
+},
+    "betel_vine": {
+        "msp_per_quintal": 25000.0,
+        "seed_rate_kg_acre": 35000.0,
+        "seed_cost_per_kg": 0.8,
+        "cultivation_cost_per_acre": 60000.0,
+        "yield_quintal_min": 30.0,
+        "yield_quintal_max": 50.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-45",
+                        "stage_name": "Setts Rooting in Bareja",
+                        "activities": "Plant 3-node setts beside live Agathi stakes. Mist daily.",
+                        "pest_warning": "Collar rot."
+                },
+                {
+                        "day_range": "Day 45-90",
+                        "stage_name": "Vine Trailing & Tying",
+                        "activities": "Tie fast-growing vines to live stakes using banana fiber.",
+                        "pest_warning": "Mealybugs."
+                },
+                {
+                        "day_range": "Day 90+",
+                        "stage_name": "Continuous Leaf Plucking",
+                        "activities": "Harvest glossy mature leaves every 15-20 days.",
+                        "pest_warning": "Anthracnose leaf spots."
+                },
+                {
+                        "day_range": "Annual",
+                        "stage_name": "Vine Lowering (Rejuvenation)",
+                        "activities": "Coil old bottom vine stem into soil trench to induce new roots.",
+                        "pest_warning": "Nematodes."
+                }
+        ]
+},
+    "ashwagandha": {
+        "msp_per_quintal": 32000.0,
+        "seed_rate_kg_acre": 4.0,
+        "seed_cost_per_kg": 350.0,
+        "cultivation_cost_per_acre": 12000.0,
+        "yield_quintal_min": 3.0,
+        "yield_quintal_max": 5.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Emergence & Thinning",
+                        "activities": "Shallow line sowing. Thin to 10cm spacing at 25 days.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 25-70",
+                        "stage_name": "Vegetative Branching",
+                        "activities": "One hand weeding. Thrives on late monsoon residual moisture.",
+                        "pest_warning": "Mites & shoot borer."
+                },
+                {
+                        "day_range": "Day 70-120",
+                        "stage_name": "Flowering & Red Berry Set",
+                        "activities": "Small green-yellow flowers form orange-red berries.",
+                        "pest_warning": "Leaf spot."
+                },
+                {
+                        "day_range": "Day 120-170+",
+                        "stage_name": "Root Digging & Grading",
+                        "activities": "Dig out roots when leaves wither; cut into 7-10cm pieces.",
+                        "pest_warning": "Root rotting if rain."
+                }
+        ]
+},
+    "isabgol": {
+        "msp_per_quintal": 16000.0,
+        "seed_rate_kg_acre": 3.0,
+        "seed_cost_per_kg": 220.0,
+        "cultivation_cost_per_acre": 8500.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 7.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-20",
+                        "stage_name": "Shallow Germination",
+                        "activities": "Very shallow 1cm sowing. First light irrigation.",
+                        "pest_warning": "Termites."
+                },
+                {
+                        "day_range": "Day 20-55",
+                        "stage_name": "Tillering & Rosette",
+                        "activities": "Hand weeding at 25 days. Second light watering.",
+                        "pest_warning": "Aphids."
+                },
+                {
+                        "day_range": "Day 55-85",
+                        "stage_name": "Spikelet Emergence",
+                        "activities": "Cylindrical flower spikes emerge; avoid over-irrigation.",
+                        "pest_warning": "Downy mildew."
+                },
+                {
+                        "day_range": "Day 85-120+",
+                        "stage_name": "Early Morning Harvest",
+                        "activities": "Harvest early morning when spikes turn brownish yellow.",
+                        "pest_warning": "Rain shattering."
+                }
+        ]
+},
+    "lemongrass": {
+        "msp_per_quintal": 140000.0,
+        "seed_rate_kg_acre": 20000.0,
+        "seed_cost_per_kg": 0.4,
+        "cultivation_cost_per_acre": 15000.0,
+        "yield_quintal_min": 0.6,
+        "yield_quintal_max": 0.9,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-45",
+                        "stage_name": "Slips Rooting & Clump",
+                        "activities": "Plant 2 slips/hill at 60x60cm. Irrigate once to establish.",
+                        "pest_warning": "Weeds in young field."
+                },
+                {
+                        "day_range": "Day 45-90",
+                        "stage_name": "Vigorous Clump Tillering",
+                        "activities": "Forms dense aromatic clumps; smothers all weeds.",
+                        "pest_warning": "Leaf blight."
+                },
+                {
+                        "day_range": "Day 90+",
+                        "stage_name": "First Foliage Harvest",
+                        "activities": "Cut grass 10cm above ground; steam distill fresh foliage.",
+                        "pest_warning": "Over-cutting crown."
+                },
+                {
+                        "day_range": "Every 70d",
+                        "stage_name": "Continuous Multi-Cuts",
+                        "activities": "Repeat cutting every 60-75 days (4 cuts/year).",
+                        "pest_warning": "Rust."
+                }
+        ]
+},
+    "safed_musli": {
+        "msp_per_quintal": 120000.0,
+        "seed_rate_kg_acre": 400.0,
+        "seed_cost_per_kg": 250.0,
+        "cultivation_cost_per_acre": 45000.0,
+        "yield_quintal_min": 4.0,
+        "yield_quintal_max": 6.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-25",
+                        "stage_name": "Tuber Sprouting & Canopy",
+                        "activities": "Raised bed planting with drip line. Treat tubers with Trichoderma.",
+                        "pest_warning": "Crown rot."
+                },
+                {
+                        "day_range": "Day 25-60",
+                        "stage_name": "Flowering & Clump Bulking",
+                        "activities": "Nip off flower stalks to divert all nutrients to tuber fingers.",
+                        "pest_warning": "Leaf caterpillar."
+                },
+                {
+                        "day_range": "Day 60-100",
+                        "stage_name": "Canopy Withering",
+                        "activities": "Leaves turn yellow and dry; tubers continue to bulk in soil.",
+                        "pest_warning": "Waterlogging rot."
+                },
+                {
+                        "day_range": "Day 100-180+",
+                        "stage_name": "Tuber Curing & Digging",
+                        "activities": "Dig out dormant tubers in Nov-Dec; wash, peel, and sun dry.",
+                        "pest_warning": "Skin damage while peeling."
+                }
+        ]
+},
+    "stevia": {
+        "msp_per_quintal": 22000.0,
+        "seed_rate_kg_acre": 25000.0,
+        "seed_cost_per_kg": 2.5,
+        "cultivation_cost_per_acre": 35000.0,
+        "yield_quintal_min": 12.0,
+        "yield_quintal_max": 18.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-30",
+                        "stage_name": "Transplanting & Rooting",
+                        "activities": "Transplant tissue-cultured saplings on raised beds. Frequent light irrigation.",
+                        "pest_warning": "Damping off."
+                },
+                {
+                        "day_range": "Day 30-75",
+                        "stage_name": "Vegetative Branching",
+                        "activities": "Pinch apical buds to induce lateral bushy branching.",
+                        "pest_warning": "Leaf spot."
+                },
+                {
+                        "day_range": "Day 75-80",
+                        "stage_name": "First Leaf Harvest",
+                        "activities": "Cut branches 10cm above ground before flower buds appear.",
+                        "pest_warning": "Flowering reduces sweetness."
+                },
+                {
+                        "day_range": "Every 90d",
+                        "stage_name": "Ratoon Flush Harvesting",
+                        "activities": "Repeat cutting every 80-90 days; shade dry leaves to keep bright green.",
+                        "pest_warning": "Stem rot."
+                }
+        ]
+},
+    "vanilla": {
+        "msp_per_quintal": 220000.0,
+        "seed_rate_kg_acre": 1000.0,
+        "seed_cost_per_kg": 45.0,
+        "cultivation_cost_per_acre": 50000.0,
+        "yield_quintal_min": 1.5,
+        "yield_quintal_max": 3.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Year 1-2",
+                        "stage_name": "Vine Training on Live Stakes",
+                        "activities": "Train climbing aerial roots on Glyricidia trees. Heavy organic mulching.",
+                        "pest_warning": "Fusarium stem rot."
+                },
+                {
+                        "day_range": "Year 3+",
+                        "stage_name": "Shoot Looping & Vegetative Rest",
+                        "activities": "Loop vines downward to induce flower bud formation.",
+                        "pest_warning": "Anthracnose."
+                },
+                {
+                        "day_range": "Dec-Feb",
+                        "stage_name": "Morning Hand Pollination",
+                        "activities": "Pollinate each pale orchid blossom by hand using a bamboo needle before noon.",
+                        "pest_warning": "Flower drop if missed."
+                },
+                {
+                        "day_range": "Month 9",
+                        "stage_name": "Pod Harvesting & Sweating",
+                        "activities": "Pick green pods when tip turns pale yellow; cure through sweating & drying.",
+                        "pest_warning": "Splitting."
+                }
+        ]
+},
+    "mushroom_button": {
+        "msp_per_quintal": 12000.0,
+        "seed_rate_kg_acre": 80.0,
+        "seed_cost_per_kg": 120.0,
+        "cultivation_cost_per_acre": 30000.0,
+        "yield_quintal_min": 60.0,
+        "yield_quintal_max": 90.0,
+        "is_legume": False,
+        "growth_stages": [
+                {
+                        "day_range": "Day 0-14",
+                        "stage_name": "Compost Spawning & Spawn Run",
+                        "activities": "Mix grain spawn in compost at 24°C; white mycelium colonizes.",
+                        "pest_warning": "Green mold (Trichoderma)."
+                },
+                {
+                        "day_range": "Day 14-25",
+                        "stage_name": "Casing & Mycelial Ruffling",
+                        "activities": "Apply 3-4 cm pasteurized peat/coir casing layer; lower temp to 18°C.",
+                        "pest_warning": "Sciarid flies."
+                },
+                {
+                        "day_range": "Day 25-35",
+                        "stage_name": "Pinhead Emergence",
+                        "activities": "Ventilate fresh cool air; pinheads pop out across casing.",
+                        "pest_warning": "Wet bubble."
+                },
+                {
+                        "day_range": "Day 35-65+",
+                        "stage_name": "Flushes Harvesting",
+                        "activities": "Twist and harvest closed white button caps in 3-4 distinct flushes.",
+                        "pest_warning": "Open gills if delayed."
                 }
         ]
 }
