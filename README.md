@@ -29,6 +29,9 @@ backend/
 - `POST /api/fertilizer-prescription` - Stoichiometric Urea/DAP/MOP bags & Lime/Gypsum dosage
 - `GET /api/crops` - Complete crop directory
 - `GET /api/crops/{crop_id}` - Detailed agronomic profile with 4-stage growth timeline
+- `POST /api/post-harvest-aeration` - Grain drying, moisture removal, fan airflow CFM & shelf-life
+- `POST /api/polyhouse-climate` - Greenhouse ventilation, evaporative cooling pad, VPD & MIDH subsidy
+- `POST /api/stubble-biochar` - Parali crop residue pyrolysis yield, C:N composting & emission abatement
 
 ## How to Run
 
