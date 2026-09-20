@@ -814,6 +814,32 @@ class PolyhouseClimateResponse(BaseModel):
     operational_recommendations: List[str]
 
 
+# =======================================================================
+# 9. Stubble Residue Management & Biochar Pyrolysis Models
+# =======================================================================
+class BiocharStubbleRequest(BaseModel):
+    residue_crop: str = "Paddy Straw (Parali)"  # "Paddy Straw (Parali)", "Wheat Straw (Turi)", "Cotton Stalks", "Mustard Stover", "Sugarcane Trash", "Maize Stover"
+    land_size_acres: float = 5.0
+    current_disposal_method: Optional[str] = "In-Field Burning"
+    target_technology: Optional[str] = "Kon-Tiki Pyrolysis Kiln (Biochar)"  # "Kon-Tiki Pyrolysis Kiln (Biochar)", "Rapid Aerobic Composting", "Biochar + Compost Co-composting"
+
+
+class BiocharStubbleResponse(BaseModel):
+    residue_crop: str
+    land_size_acres: float
+    estimated_residue_biomass_quintals: float
+    biochar_yield_quintals: float
+    economic_value_biochar_inr: float
+    soil_water_retention_gain_liters: float
+    carbon_sequestration_co2e_kg: float
+    co2_emissions_averted_kg: float
+    pm25_pollution_averted_kg: float
+    composting_recipe: Dict[str, Any]
+    ngt_fine_penalty_averted_inr: float
+    actionable_farmer_guidelines: List[str]
+
+
+
 
 
 

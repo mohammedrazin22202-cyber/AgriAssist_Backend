@@ -53,7 +53,9 @@ from app.models import (
     PostHarvestAerationRequest,
     PostHarvestAerationResponse,
     PolyhouseClimateRequest,
-    PolyhouseClimateResponse
+    PolyhouseClimateResponse,
+    BiocharStubbleRequest,
+    BiocharStubbleResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -83,7 +85,8 @@ from app.agri_tools import (
     calculate_machinery_rent_vs_buy,
     generate_crop_calendar_events,
     calculate_post_harvest_aeration,
-    calculate_polyhouse_climate_control
+    calculate_polyhouse_climate_control,
+    calculate_biochar_and_stubble_management
 )
 
 
@@ -646,6 +649,24 @@ def get_polyhouse_climate(req: PolyhouseClimateRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Polyhouse climate calculation error: {str(e)}")
+
+
+# ---------------- 9. Stubble Residue & Biochar Pyrolysis ----------------
+@app.post("/api/stubble-biochar", response_model=BiocharStubbleResponse)
+def get_stubble_biochar(req: BiocharStubbleRequest):
+    """Calculates crop residue biomass generation, on-farm biochar production yield,
+    soil water retention boost, averted emissions (CO2 & PM2.5), and rapid composting recipes.
+    """
+    try:
+        return calculate_biochar_and_stubble_management(
+            residue_crop=req.residue_crop,
+            land_size_acres=req.land_size_acres,
+            current_disposal_method=req.current_disposal_method,
+            target_technology=req.target_technology
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Biochar stubble calculation error: {str(e)}")
+
 
 
 

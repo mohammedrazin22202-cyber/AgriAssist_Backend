@@ -2397,6 +2397,111 @@ def calculate_polyhouse_climate_control(
     }
 
 
+# =======================================================================
+# Farm Stubble (Parali) Pyrolysis, Biochar Yield & Rapid Composting Tool
+# =======================================================================
+def calculate_biochar_and_stubble_management(
+    residue_crop: str = "Paddy Straw (Parali)",
+    land_size_acres: float = 5.0,
+    current_disposal_method: Optional[str] = "In-Field Burning",
+    target_technology: Optional[str] = "Kon-Tiki Pyrolysis Kiln (Biochar)"
+) -> Dict[str, Any]:
+    """Calculates crop residue biomass generation, on-farm biochar production yield,
+    soil water retention boost, averted emissions (CO2 & PM2.5), and rapid composting recipes.
+    """
+    acres = max(0.1, float(land_size_acres or 5.0))
+    crop_str = residue_crop.lower()
+
+    # Biomass yield benchmark per acre (quintals)
+    biomass_rates = {
+        "paddy": 28.0,
+        "rice": 28.0,
+        "parali": 28.0,
+        "wheat": 22.0,
+        "turi": 22.0,
+        "cotton": 18.0,
+        "mustard": 14.0,
+        "sugarcane": 35.0,
+        "maize": 24.0
+    }
+    biomass_per_acre = 25.0
+    for k, v in biomass_rates.items():
+        if k in crop_str:
+            biomass_per_acre = v
+            break
+
+    total_biomass_q = round(acres * biomass_per_acre, 1)
+    total_biomass_kg = total_biomass_q * 100.0
+
+    # Biochar Pyrolysis Yield (28% to 32% in flame-curtain / Kon-Tiki kilns)
+    biochar_yield_pct = 0.30
+    biochar_q = round(total_biomass_q * biochar_yield_pct, 1)
+    biochar_kg = biochar_q * 100.0
+
+    # Economic value @ ₹15 per kg granulated biochar (or soil conditioner retail)
+    economic_val = round(biochar_kg * 15.0, 2)
+
+    # Soil water retention improvement: biochar holds ~3.8x its dry weight in water
+    water_retention_liters = round(biochar_kg * 3.8, 0)
+
+    # Carbon sequestration: 1 kg biochar sequestered = ~2.6 kg CO2 equivalent
+    co2_seq_kg = round(biochar_kg * 2.6, 1)
+
+    # Emissions averted compared to open field burning:
+    # 1.5 kg CO2 per kg straw burned; 7.5 kg PM2.5 per ton burned
+    co2_averted_kg = round(total_biomass_kg * 1.48, 1)
+    pm25_averted_kg = round((total_biomass_kg / 1000.0) * 7.5, 1)
+
+    # NGT Burning Fine averted (₹2,500 for < 2 acres, ₹5,000 for 2-5 acres, ₹15,000 for > 5 acres)
+    if acres < 2.0:
+        ngt_fine = 2500.0
+    elif acres <= 5.0:
+        ngt_fine = 5000.0
+    else:
+        ngt_fine = 15000.0
+
+    # C:N Balancing Recipe for Rapid Composting:
+    # Raw straw C:N is ~80:1. Target C:N is 28:1.
+    cow_dung_req_kg = round(total_biomass_kg * 0.20, 0)
+    pusa_decomposer_capsules = max(4, int(acres * 4))
+    jaggery_req_kg = round(acres * 2.0, 1)
+    besan_req_kg = round(acres * 2.0, 1)
+
+    recipe = {
+        "raw_straw_c_n_ratio": "80:1 (Very High, decay takes 120+ days)",
+        "balanced_compost_c_n_ratio": "28:1 (Optimal Humus within 35-45 days)",
+        "cow_dung_slurry_required_kg": cow_dung_req_kg,
+        "pusa_decomposer_capsules": pusa_decomposer_capsules,
+        "fermentation_jaggery_kg": jaggery_req_kg,
+        "chickpea_besan_kg": besan_req_kg,
+        "water_moisture_target_pct": "55 - 60% (Squeeze test: droplet forms without dripping)",
+        "pile_turning_schedule": "Turn on Day 7, Day 14, and Day 21 for aerobic oxygenation"
+    }
+
+    guidelines = [
+        f"Generate {biochar_q} quintals of high-grade biochar using a low-cost pit or sheet-metal Kon-Tiki kiln (commercial value ₹{economic_val:,.0f}).",
+        f"Quench glowing biochar with cow urine or compost tea to 'charge / activate' its pore structure before applying to soil.",
+        f"Avert {pm25_averted_kg} kg of toxic PM2.5 smog and avoid ₹{ngt_fine:,.0f} in National Green Tribunal (NGT) burning penalties.",
+        f"Increases farm soil moisture holding capacity by {water_retention_liters:,.0f} liters, buffering crops against summer heatwaves."
+    ]
+
+    return {
+        "residue_crop": residue_crop,
+        "land_size_acres": acres,
+        "estimated_residue_biomass_quintals": total_biomass_q,
+        "biochar_yield_quintals": biochar_q,
+        "economic_value_biochar_inr": economic_val,
+        "soil_water_retention_gain_liters": water_retention_liters,
+        "carbon_sequestration_co2e_kg": co2_seq_kg,
+        "co2_emissions_averted_kg": co2_averted_kg,
+        "pm25_pollution_averted_kg": pm25_averted_kg,
+        "composting_recipe": recipe,
+        "ngt_fine_penalty_averted_inr": ngt_fine,
+        "actionable_farmer_guidelines": guidelines
+    }
+
+
+
 
 
 
