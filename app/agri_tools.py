@@ -2149,6 +2149,122 @@ def generate_crop_calendar_events(
     }
 
 
+# =======================================================================
+# Post-Harvest Grain Aeration, Drying & Safe Storage Sizer
+# =======================================================================
+def calculate_post_harvest_aeration(
+    grain_type: str = "Paddy (Rice)",
+    quantity_quintals: float = 100.0,
+    initial_moisture_pct: float = 19.5,
+    target_moisture_pct: Optional[float] = None,
+    ambient_temp_c: Optional[float] = 28.0,
+    ambient_rh_pct: Optional[float] = 65.0,
+    storage_type: Optional[str] = "Bagged in Warehouse"
+) -> Dict[str, Any]:
+    """Calculates water removal requirement, fan aeration airflow (CFM), motor HP,
+    and safe storage shelf-life to avoid Aspergillus flavus and mold damage.
+    """
+    qty_q = max(0.1, float(quantity_quintals or 100.0))
+    m_init = max(5.0, min(40.0, float(initial_moisture_pct or 19.5)))
+    temp_c = float(ambient_temp_c if ambient_temp_c is not None else 28.0)
+    rh_pct = max(10.0, min(99.0, float(ambient_rh_pct if ambient_rh_pct is not None else 65.0)))
+    storage = storage_type or "Bagged in Warehouse"
+
+    # Default safe moisture limits by commodity
+    safe_benchmarks = {
+        "paddy": 13.0,
+        "rice": 12.5,
+        "wheat": 12.0,
+        "maize": 13.0,
+        "corn": 13.0,
+        "soybean": 11.0,
+        "mustard": 8.5,
+        "chickpea": 10.5,
+        "lentil": 11.0,
+        "pearl_millet": 12.0,
+        "sorghum": 12.0
+    }
+    key = grain_type.lower()
+    default_target = 12.0
+    for k_crop, lim in safe_benchmarks.items():
+        if k_crop in key:
+            default_target = lim
+            break
+
+    m_target = float(target_moisture_pct) if target_moisture_pct is not None else default_target
+    m_target = min(m_init, max(5.0, m_target))
+
+    # Moisture Removal Calculation
+    initial_total_kg = qty_q * 100.0
+    dry_matter_kg = initial_total_kg * (1.0 - m_init / 100.0)
+    final_total_kg = dry_matter_kg / (1.0 - m_target / 100.0)
+    water_to_remove_kg = max(0.0, round(initial_total_kg - final_total_kg, 1))
+    final_q = round(final_total_kg / 100.0, 2)
+
+    # Equilibrium Moisture Content (EMC) via modified Henderson formula approximation
+    # Higher RH and lower temperature raise EMC
+    emc = round(1.1 * math.log(1.0 / (1.0 - min(0.95, rh_pct / 100.0))) ** 0.5 * (300.0 / (temp_c + 273.15)) * 9.5, 1)
+    emc = max(7.0, min(22.0, emc))
+
+    # Aeration Airflow:
+    # 2.0 CFM/quintal for active moisture drying; 0.5 CFM/quintal for temperature cooling maintenance
+    if m_init > m_target + 1.0:
+        cfm_rate = 2.5
+    else:
+        cfm_rate = 0.8
+    total_cfm = round(qty_q * cfm_rate, 1)
+
+    # Static pressure estimate (inches WG): ~1.8 in typical grain depth (2-3 meters)
+    static_pressure_wg = 1.8
+    fan_hp = round((total_cfm * static_pressure_wg) / (6356.0 * 0.55), 2)
+    fan_hp = max(0.25, fan_hp)
+
+    # Drying duration estimates
+    # Sun drying: 1 acre poly-tarpaulin can dry ~50 quintals per day (6-8 hours sunny day)
+    sun_hours = round((water_to_remove_kg / (qty_q * 1.8)) * 4.0, 1) if water_to_remove_kg > 0 else 0.0
+    forced_air_hours = round(water_to_remove_kg / (max(10.0, total_cfm * 0.025)), 1) if water_to_remove_kg > 0 else 0.0
+
+    # Shelf-life before mold / pest spoilage at initial moisture & temperature
+    if m_init > 18.0:
+        safe_days = max(2, int(15 - (m_init - 18.0) * 3 - max(0, temp_c - 25) * 0.3))
+        risk_level = "Critical Hazard"
+        aflatoxin_warning = "CRITICAL: Moisture exceeds 18%. Risk of Aspergillus flavus fungal growth, heating, and aflatoxin contamination within 48-72 hours. Immediate drying required."
+    elif m_init > m_target + 1.5:
+        safe_days = max(10, int(45 - (m_init - m_target) * 8 - max(0, temp_c - 25)))
+        risk_level = "Moderate Warning"
+        aflatoxin_warning = "WARNING: Grain is above safe storage limit. Insect reproduction (weevils/borers) and localized moisture migration possible within 2-4 weeks."
+    else:
+        safe_days = max(180, int(365 - max(0, temp_c - 28) * 10))
+        risk_level = "Safe"
+        aflatoxin_warning = "OPTIMAL: Moisture content is within safe international and FCI storage specifications. Grain is safe for prolonged storage if silo is sealed against moisture ingress."
+
+    protocols = [
+        f"Spread grain in thin layers (3 - 5 cm) on clean tarpaulin or drying floor. Rake every 2 hours to avoid uneven drying.",
+        f"Ensure forced-air fans run only when ambient RH is below {round(emc * 5.2, 0)}% to prevent blowing moisture INTO the grain bed.",
+        f"Target moisture for long-term storage is {m_target}% (Equilibrium moisture content with current air is ~{emc}%).",
+        f"Apply food-grade Malathion 5% DP dusting on outer bag surfaces (25 g/m²) or place Pusa Bin hermetic liners to stop weevil attacks."
+    ]
+
+    return {
+        "grain_type": grain_type,
+        "quantity_quintals": qty_q,
+        "initial_moisture_pct": m_init,
+        "target_moisture_pct": m_target,
+        "moisture_to_remove_kg": water_to_remove_kg,
+        "final_quantity_quintals": final_q,
+        "equilibrium_moisture_content_pct": emc,
+        "aeration_fan_airflow_cfm": total_cfm,
+        "fan_power_hp_estimate": fan_hp,
+        "estimated_drying_hours_sun": sun_hours,
+        "estimated_drying_hours_forced_air": forced_air_hours,
+        "safe_storage_duration_days": safe_days,
+        "storage_risk_level": risk_level,
+        "aflatoxin_mold_warning": aflatoxin_warning,
+        "recommended_protocols": protocols
+    }
+
+
+
 
 
 

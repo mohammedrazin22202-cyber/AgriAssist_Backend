@@ -49,7 +49,9 @@ from app.models import (
     MachineryRentVsBuyRequest,
     MachineryRentVsBuyResponse,
     CropCalendarRequest,
-    CropCalendarResponse
+    CropCalendarResponse,
+    PostHarvestAerationRequest,
+    PostHarvestAerationResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -77,7 +79,8 @@ from app.agri_tools import (
     calculate_micronutrient_prescription,
     calculate_farm_pond_sizing,
     calculate_machinery_rent_vs_buy,
-    generate_crop_calendar_events
+    generate_crop_calendar_events,
+    calculate_post_harvest_aeration
 )
 
 
@@ -601,6 +604,27 @@ def get_crop_calendar(req: CropCalendarRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Crop calendar error: {str(e)}")
+
+
+# ---------------- 7. Post-Harvest Grain Aeration & Storage Sizer ----------------
+@app.post("/api/post-harvest-aeration", response_model=PostHarvestAerationResponse)
+def get_post_harvest_aeration(req: PostHarvestAerationRequest):
+    """Calculates water removal requirement, silo aeration airflow (CFM), motor HP,
+    and mold-free storage shelf-life.
+    """
+    try:
+        return calculate_post_harvest_aeration(
+            grain_type=req.grain_type,
+            quantity_quintals=req.quantity_quintals,
+            initial_moisture_pct=req.initial_moisture_pct,
+            target_moisture_pct=req.target_moisture_pct,
+            ambient_temp_c=req.ambient_temp_c,
+            ambient_rh_pct=req.ambient_rh_pct,
+            storage_type=req.storage_type
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Post-harvest aeration calculation error: {str(e)}")
+
 
 
 

@@ -750,6 +750,38 @@ class CropCalendarResponse(BaseModel):
     ics_calendar_text: str
 
 
+# =======================================================================
+# 7. Post-Harvest Grain Aeration & Moisture Drying Models
+# =======================================================================
+class PostHarvestAerationRequest(BaseModel):
+    grain_type: str = "Paddy (Rice)"
+    quantity_quintals: float = 100.0
+    initial_moisture_pct: float = 19.5
+    target_moisture_pct: Optional[float] = 12.0
+    ambient_temp_c: Optional[float] = 28.0
+    ambient_rh_pct: Optional[float] = 65.0
+    storage_type: Optional[str] = "Bagged in Warehouse"
+
+
+class PostHarvestAerationResponse(BaseModel):
+    grain_type: str
+    quantity_quintals: float
+    initial_moisture_pct: float
+    target_moisture_pct: float
+    moisture_to_remove_kg: float
+    final_quantity_quintals: float
+    equilibrium_moisture_content_pct: float
+    aeration_fan_airflow_cfm: float
+    fan_power_hp_estimate: float
+    estimated_drying_hours_sun: float
+    estimated_drying_hours_forced_air: float
+    safe_storage_duration_days: int
+    storage_risk_level: str
+    aflatoxin_mold_warning: str
+    recommended_protocols: List[str]
+
+
+
 
 
 
