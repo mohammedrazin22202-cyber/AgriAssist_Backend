@@ -781,6 +781,40 @@ class PostHarvestAerationResponse(BaseModel):
     recommended_protocols: List[str]
 
 
+# =======================================================================
+# 8. Polyhouse & Greenhouse Climate Sizer Models
+# =======================================================================
+class PolyhouseClimateRequest(BaseModel):
+    structure_type: str = "Naturally Ventilated Polyhouse (NVPH)"
+    covered_area_sqm: float = 1008.0
+    crop_type: str = "Bell Pepper (Colored Capsicum)"
+    ambient_max_temp_c: Optional[float] = 40.0
+    ambient_min_rh_pct: Optional[float] = 30.0
+    roof_height_meters: Optional[float] = 4.5
+
+
+class PolyhouseClimateResponse(BaseModel):
+    structure_type: str
+    covered_area_sqm: float
+    crop_type: str
+    polyhouse_volume_m3: float
+    ridge_vent_area_sqm: float
+    side_vent_area_sqm: float
+    exhaust_fan_airflow_cfm: float
+    number_of_exhaust_fans_50inch: int
+    cooling_pad_area_sqm: float
+    cooling_water_flow_rate_lph: float
+    shade_net_recommended_pct: int
+    expected_inside_temp_c: float
+    vapor_pressure_deficit_kpa: float
+    vpd_status: str
+    estimated_midh_subsidy_inr: float
+    total_project_cost_inr: float
+    farmer_net_share_inr: float
+    operational_recommendations: List[str]
+
+
+
 
 
 

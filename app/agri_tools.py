@@ -2264,6 +2264,140 @@ def calculate_post_harvest_aeration(
     }
 
 
+# =======================================================================
+# Polyhouse, Greenhouse & Protected Horticulture Climate Control Sizer
+# =======================================================================
+def calculate_polyhouse_climate_control(
+    structure_type: str = "Naturally Ventilated Polyhouse (NVPH)",
+    covered_area_sqm: float = 1008.0,
+    crop_type: str = "Bell Pepper (Colored Capsicum)",
+    ambient_max_temp_c: Optional[float] = 40.0,
+    ambient_min_rh_pct: Optional[float] = 30.0,
+    roof_height_meters: Optional[float] = 4.5
+) -> Dict[str, Any]:
+    """Calculates ventilation fan capacity, evaporative cooling pad dimensions,
+    Vapor Pressure Deficit (VPD in kPa), thermal drop, and MIDH government subsidy.
+    """
+    area = max(50.0, float(covered_area_sqm or 1008.0))
+    height = max(3.0, min(8.0, float(roof_height_meters or 4.5)))
+    temp_amb = float(ambient_max_temp_c if ambient_max_temp_c is not None else 40.0)
+    rh_amb = max(10.0, min(95.0, float(ambient_min_rh_pct if ambient_min_rh_pct is not None else 30.0)))
+    stype = structure_type or "Naturally Ventilated Polyhouse (NVPH)"
+    crop = crop_type or "Bell Pepper (Colored Capsicum)"
+
+    volume_m3 = round(area * (height * 0.85), 1)
+
+    # Ridge and side vents (for natural ventilation)
+    ridge_vent_sqm = round(area * 0.18, 1)
+    side_vent_sqm = round(area * 0.28, 1)
+
+    # Evaporative pad-and-fan airflow
+    # 1.15 air exchanges per minute for tropical/subtropical climate
+    airflow_m3_min = volume_m3 * 1.15
+    airflow_cfm = round(airflow_m3_min * 35.315, 0)
+
+    # 50-inch industrial cone exhaust fan delivers ~22,000 CFM (37,400 m³/hr)
+    if "fan" in stype.lower() or "pad" in stype.lower() or "greenhouse" in stype.lower():
+        num_fans = max(1, math.ceil(airflow_cfm / 22000.0))
+        # Cellulose pad area based on 1.25 m/s face velocity
+        pad_area_sqm = round((airflow_m3_min / 60.0) / 1.25, 1)
+        cooling_water_lph = round(pad_area_sqm * 360.0, 0)
+    else:
+        num_fans = 0
+        pad_area_sqm = 0.0
+        cooling_water_lph = 0.0
+
+    # Wet-bulb temperature estimation via Stull formula
+    tw = (
+        temp_amb * math.atan(0.151977 * (rh_amb + 8.313659) ** 0.5)
+        + math.atan(temp_amb + rh_amb)
+        - math.atan(rh_amb - 1.676331)
+        + 0.00391838 * (rh_amb ** 1.5) * math.atan(0.023101 * rh_amb)
+        - 4.686035
+    )
+
+    # Expected temperature inside
+    if "fan" in stype.lower() or "pad" in stype.lower():
+        # 75% pad saturation efficiency
+        pad_eff = 0.75
+        temp_inside = round(temp_amb - ((temp_amb - tw) * pad_eff), 1)
+        inside_rh = min(85.0, round(rh_amb + (100.0 - rh_amb) * 0.65, 1))
+    elif "shade" in stype.lower():
+        temp_inside = round(temp_amb - 3.5, 1)
+        inside_rh = min(90.0, round(rh_amb + 10.0, 1))
+    else:
+        # NVPH with top ridge vents and foggers
+        temp_inside = round(temp_amb - 4.5, 1)
+        inside_rh = min(80.0, round(rh_amb + 15.0, 1))
+
+    # Shade net recommendation based on ambient temperature
+    if temp_amb >= 42.0:
+        shade_pct = 75
+    elif temp_amb >= 37.0:
+        shade_pct = 50
+    else:
+        shade_pct = 35
+
+    # Vapor Pressure Deficit (VPD) in kPa:
+    # SVP = 0.61078 * exp(17.27 * T / (T + 237.3))
+    svp = 0.61078 * math.exp((17.27 * temp_inside) / (temp_inside + 237.3))
+    avp = svp * (inside_rh / 100.0)
+    vpd = round(svp - avp, 2)
+
+    if vpd < 0.4:
+        vpd_status = "Low Transpiration (Humid)"
+        vpd_note = "High risk of fungal sporulation, powdery mildew, and calcium blossom-end deficiency due to poor transpiration flow."
+    elif 0.8 <= vpd <= 1.25:
+        vpd_status = "Optimal"
+        vpd_note = "Perfect photosynthetic range: stomata remain open with maximum CO2 assimilation and calcium uptake."
+    else:
+        vpd_status = "High Transpiration Stress"
+        vpd_note = "Extreme water pull causing partial stomatal closure, flower abortion, and leaf wilting. Activate foggers or thermal shade net."
+
+    # Project Cost and MIDH Subsidy calculation
+    # Rates under Mission for Integrated Development of Horticulture (MIDH)
+    if "fan" in stype.lower() or "pad" in stype.lower():
+        rate_per_sqm = 1465.0
+    elif "shade" in stype.lower():
+        rate_per_sqm = 710.0
+    else:
+        rate_per_sqm = 844.0
+
+    total_cost = round(area * rate_per_sqm, 2)
+    # Standard 50% MIDH subsidy for general areas
+    subsidy_inr = round(total_cost * 0.50, 2)
+    farmer_share = round(total_cost - subsidy_inr, 2)
+
+    recommendations = [
+        f"Maintain ridge and side ventilation insect-proof netting (40 mesh / 0.28mm aperture) to block whiteflies and thrips vectoring leaf curl virus.",
+        f"Operate evaporative cooling / fogging when ambient VPD rises above 1.30 kPa (current inside estimated VPD is {vpd} kPa).",
+        f"Apply thermal reflective aluminized shade net (movable curtain, {shade_pct}%) between 11:30 AM and 3:30 PM on hot summer days.",
+        f"MIDH scheme provides 50% capital subsidy (₹{subsidy_inr:,.0f}) disbursed via State Horticulture Department upon field inspection."
+    ]
+
+    return {
+        "structure_type": stype,
+        "covered_area_sqm": area,
+        "crop_type": crop,
+        "polyhouse_volume_m3": volume_m3,
+        "ridge_vent_area_sqm": ridge_vent_sqm,
+        "side_vent_area_sqm": side_vent_sqm,
+        "exhaust_fan_airflow_cfm": airflow_cfm,
+        "number_of_exhaust_fans_50inch": num_fans,
+        "cooling_pad_area_sqm": pad_area_sqm,
+        "cooling_water_flow_rate_lph": cooling_water_lph,
+        "shade_net_recommended_pct": shade_pct,
+        "expected_inside_temp_c": temp_inside,
+        "vapor_pressure_deficit_kpa": vpd,
+        "vpd_status": vpd_status,
+        "estimated_midh_subsidy_inr": subsidy_inr,
+        "total_project_cost_inr": total_cost,
+        "farmer_net_share_inr": farmer_share,
+        "operational_recommendations": recommendations
+    }
+
+
+
 
 
 

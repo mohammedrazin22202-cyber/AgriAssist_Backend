@@ -51,7 +51,9 @@ from app.models import (
     CropCalendarRequest,
     CropCalendarResponse,
     PostHarvestAerationRequest,
-    PostHarvestAerationResponse
+    PostHarvestAerationResponse,
+    PolyhouseClimateRequest,
+    PolyhouseClimateResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -80,7 +82,8 @@ from app.agri_tools import (
     calculate_farm_pond_sizing,
     calculate_machinery_rent_vs_buy,
     generate_crop_calendar_events,
-    calculate_post_harvest_aeration
+    calculate_post_harvest_aeration,
+    calculate_polyhouse_climate_control
 )
 
 
@@ -624,6 +627,26 @@ def get_post_harvest_aeration(req: PostHarvestAerationRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Post-harvest aeration calculation error: {str(e)}")
+
+
+# ---------------- 8. Polyhouse & Greenhouse Climate Sizer ----------------
+@app.post("/api/polyhouse-climate", response_model=PolyhouseClimateResponse)
+def get_polyhouse_climate(req: PolyhouseClimateRequest):
+    """Calculates ventilation fan capacity, evaporative cooling pad dimensions,
+    Vapor Pressure Deficit (VPD in kPa), thermal drop, and MIDH government subsidy.
+    """
+    try:
+        return calculate_polyhouse_climate_control(
+            structure_type=req.structure_type,
+            covered_area_sqm=req.covered_area_sqm,
+            crop_type=req.crop_type,
+            ambient_max_temp_c=req.ambient_max_temp_c,
+            ambient_min_rh_pct=req.ambient_min_rh_pct,
+            roof_height_meters=req.roof_height_meters
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Polyhouse climate calculation error: {str(e)}")
+
 
 
 
