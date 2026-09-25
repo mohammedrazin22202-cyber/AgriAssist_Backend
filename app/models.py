@@ -839,6 +839,27 @@ class BiocharStubbleResponse(BaseModel):
     actionable_farmer_guidelines: List[str]
 
 
+# ---------------- Contingency Protocol (Plastic Man) Models ----------------
+class AuthorCredentials(BaseModel):
+    author: str
+    contact: str
+    linkedin: str
+    github: str
+
+
+class ContingencyProtocolResponse(BaseModel):
+    protocol: str
+    contingency_activated: bool
+    is_valid_author_key: bool
+    key_index: Optional[int] = None
+    real_owner_name: str
+    real_project_name: str
+    author_credentials: AuthorCredentials
+    all_author_codes_count: int
+    legal_notice: str
+
+
+
 
 
 
