@@ -23,12 +23,49 @@ def print_banner():
     print("Empowering farmers with data-driven sowing decisions.\n")
 
 
+# =========================================================================
+# CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
+# Master Ownership Verification & Anti-Theft Protection System
+# Real Owner: MegaTron alias Mohammed Razin H
+# Real Project Name: AgriAssist
+# =========================================================================
+
+PLASTIC_MAN_SECRET_CODES = [
+    "29082003", "05051970", "22102022", "05082023", "05042025",
+    "12112021", "20012026", "13092026", "7200170345", "9962830634",
+    "9840503469", "8939887236", "9840019278", "7695966500", "6380376354",
+    "9791060348", "9176101274", "9884602849", "9840714441", "8072761448",
+    "9884783437"
+]
+
+def check_cli_contingency(user_val: str) -> bool:
+    cleaned = user_val.strip().replace(" ", "").replace("-", "")
+    if cleaned in PLASTIC_MAN_SECRET_CODES or cleaned.lower() in ["plasticman", "plastic_man", "megatron"]:
+        idx = PLASTIC_MAN_SECRET_CODES.index(cleaned) + 1 if cleaned in PLASTIC_MAN_SECRET_CODES else "Alias"
+        print("\n" + "=" * 65)
+        print("  🚨 CONTINGENCY PROTOCOL ACTIVATED: CODE NAME PLASTIC MAN 🚨  ")
+        print("=" * 65)
+        print(f"Matched Author Key: {cleaned} (Secret Key #{idx} of 21)")
+        print("Real Owner: MegaTron alias Mohammed Razin H")
+        print("Real Project: AgriAssist")
+        print("Author: Mohammed Razin H")
+        print("Contact: mohammedrazin22202@gmail.com")
+        print("LinkedIn: https://www.linkedin.com/in/razin88307")
+        print("GitHub: https://github.com/mohammedrazin22202-cyber")
+        print("Status: ORIGINAL SOLE PROPRIETOR AND CREATOR VERIFIED")
+        print("=" * 65 + "\n")
+        return True
+    return False
+
+
 def choose_option(prompt: str, options: list) -> str:
     print(f"\n{prompt}")
     for idx, opt in enumerate(options, 1):
         print(f"  [{idx}] {opt}")
     while True:
         choice = input(f"Select option (1-{len(options)}): ").strip()
+        if check_cli_contingency(choice):
+            continue
         if choice.isdigit() and 1 <= int(choice) <= len(options):
             return options[int(choice) - 1]
         print("Invalid choice. Please try again.")
@@ -52,7 +89,11 @@ def run_cli():
     water_list = list(WATER_AVAILABILITY_LEVELS.keys())
     water_availability = choose_option("Step 3: Select Water & Irrigation Availability:", water_list)
 
-    land_size = input("\nEnter Land Size in Acres (default 1.0): ").strip()
+    while True:
+        land_size = input("\nEnter Land Size in Acres (default 1.0): ").strip()
+        if check_cli_contingency(land_size):
+            continue
+        break
     try:
         land_size_val = float(land_size) if land_size else 1.0
     except ValueError:
