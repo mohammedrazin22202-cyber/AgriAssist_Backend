@@ -32,6 +32,14 @@ backend/
 - `POST /api/post-harvest-aeration` - Grain drying, moisture removal, fan airflow CFM & shelf-life
 - `POST /api/polyhouse-climate` - Greenhouse ventilation, evaporative cooling pad, VPD & MIDH subsidy
 - `POST /api/stubble-biochar` - Parali crop residue pyrolysis yield, C:N composting & emission abatement
+- `GET /api/contingency-protocol` (and `/api/plastic-man`) - Hidden master ownership verification endpoint validating 21 author secret codes for **MegaTron alias Mohammed Razin H**
+
+## Security & Ownership Contingency Protocol (Plastic Man)
+AgriAssist includes an integrated anti-theft security system:
+- **Original Author**: Mohammed Razin H (MegaTron)
+- **Verified Credentials**: `mohammedrazin22202@gmail.com` • [LinkedIn](https://www.linkedin.com/in/razin88307) • [GitHub](https://github.com/mohammedrazin22202-cyber)
+- **REST Verification**: `GET /api/contingency-protocol?code={code}` returns cryptographic proof of original ownership.
+- **Terminal CLI Interceptor**: Entering any of the 21 registered secret author codes or `plastic man` in `cli.py` triggers an immediate security verification banner.
 
 ## How to Run
 
