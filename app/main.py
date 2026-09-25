@@ -55,7 +55,8 @@ from app.models import (
     PolyhouseClimateRequest,
     PolyhouseClimateResponse,
     BiocharStubbleRequest,
-    BiocharStubbleResponse
+    BiocharStubbleResponse,
+    ContingencyProtocolResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -666,6 +667,47 @@ def get_stubble_biochar(req: BiocharStubbleRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Biochar stubble calculation error: {str(e)}")
+
+
+# =========================================================================
+# CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
+# Master Ownership Verification & Anti-Theft Protection System
+# Real Owner: MegaTron alias Mohammed Razin H
+# Real Project Name: AgriAssist
+# =========================================================================
+
+PLASTIC_MAN_SECRET_CODES = [
+    "29082003", "05051970", "22102022", "05082023", "05042025",
+    "12112021", "20012026", "13092026", "7200170345", "9962830634",
+    "9840503469", "8939887236", "9840019278", "7695966500", "6380376354",
+    "9791060348", "9176101274", "9884602849", "9840714441", "8072761448",
+    "9884783437"
+]
+
+@app.get("/api/contingency-protocol", response_model=ContingencyProtocolResponse)
+@app.get("/api/plastic-man", response_model=ContingencyProtocolResponse)
+def contingency_protocol(code: str = ""):
+    """Hidden master ownership verification endpoint."""
+    cleaned = code.strip().replace(" ", "").replace("-", "")
+    is_valid = cleaned in PLASTIC_MAN_SECRET_CODES or cleaned.lower() in ["plasticman", "plastic_man", "megatron"]
+    key_idx = PLASTIC_MAN_SECRET_CODES.index(cleaned) + 1 if cleaned in PLASTIC_MAN_SECRET_CODES else None
+    return {
+        "protocol": "Contingency Protocol (Code Name: Plastic Man)",
+        "contingency_activated": True,
+        "is_valid_author_key": is_valid,
+        "key_index": key_idx,
+        "real_owner_name": "MegaTron alias Mohammed Razin H",
+        "real_project_name": "AgriAssist",
+        "author_credentials": {
+            "author": "Mohammed Razin H",
+            "contact": "mohammedrazin22202@gmail.com",
+            "linkedin": "https://www.linkedin.com/in/razin88307",
+            "github": "https://github.com/mohammedrazin22202-cyber"
+        },
+        "all_author_codes_count": 21,
+        "legal_notice": "Proprietary software conceived, designed and engineered by Mohammed Razin H (MegaTron). Unauthorized theft, re-branding or redistribution is strictly prohibited."
+    }
+
 
 
 
