@@ -56,7 +56,15 @@ from app.models import (
     PolyhouseClimateResponse,
     BiocharStubbleRequest,
     BiocharStubbleResponse,
-    ContingencyProtocolResponse
+    ContingencyProtocolResponse,
+    FertigationScheduleRequest,
+    FertigationScheduleResponse,
+    CarbonCreditRequest,
+    CarbonCreditResponse,
+    IFSPlannerRequest,
+    IFSPlannerResponse,
+    KisanChatRequest,
+    KisanChatResponse
 )
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
@@ -87,7 +95,11 @@ from app.agri_tools import (
     generate_crop_calendar_events,
     calculate_post_harvest_aeration,
     calculate_polyhouse_climate_control,
-    calculate_biochar_and_stubble_management
+    calculate_biochar_and_stubble_management,
+    calculate_drip_fertigation_schedule,
+    calculate_carbon_credits,
+    calculate_integrated_farming_system,
+    get_kisan_assistant_reply
 )
 
 
@@ -667,6 +679,79 @@ def get_stubble_biochar(req: BiocharStubbleRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Biochar stubble calculation error: {str(e)}")
+
+
+# ---------------- 10. Precision Drip Fertigation & Venturi Injector ----------------
+@app.post("/api/fertigation-schedule", response_model=FertigationScheduleResponse)
+def get_fertigation_schedule(req: FertigationScheduleRequest):
+    """Calculates weekly water-soluble fertilizer doses, Venturi injection run times,
+    and acid-washing emitter cleaning protocols.
+    """
+    try:
+        return calculate_drip_fertigation_schedule(
+            crop_id=req.crop_id,
+            land_size_acres=req.land_size_acres,
+            growth_stage=req.growth_stage,
+            drip_lateral_spacing_m=req.drip_lateral_spacing_m,
+            dripper_spacing_m=req.dripper_spacing_m,
+            dripper_discharge_lph=req.dripper_discharge_lph,
+            venturi_suction_rate_lph=req.venturi_suction_rate_lph
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fertigation schedule error: {str(e)}")
+
+
+# ---------------- 11. Carbon Credits & Regenerative Agriculture ----------------
+@app.post("/api/carbon-credits", response_model=CarbonCreditResponse)
+def get_carbon_credits(req: CarbonCreditRequest):
+    """Calculates tCO2e carbon sequestration, gross and net financial payouts (INR),
+    and accredited international verification pathways.
+    """
+    try:
+        return calculate_carbon_credits(
+            land_size_acres=req.land_size_acres,
+            practices_adopted=req.practices_adopted,
+            voluntary_carbon_price_usd_per_ton=req.voluntary_carbon_price_usd_per_ton,
+            inr_per_usd=req.inr_per_usd
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Carbon credits calculation error: {str(e)}")
+
+
+# ---------------- 12. Integrated Farming System (IFS) Planner ----------------
+@app.post("/api/integrated-farming/plan", response_model=IFSPlannerResponse)
+def get_integrated_farming_plan(req: IFSPlannerRequest):
+    """Calculates multi-enterprise synergy economics, internal waste recycling loops,
+    and dry-period silage pit dimensions.
+    """
+    try:
+        return calculate_integrated_farming_system(
+            total_land_acres=req.total_land_acres,
+            enterprises=req.enterprises,
+            cattle_count=req.cattle_count,
+            poultry_birds=req.poultry_birds,
+            pond_area_sqm=req.pond_area_sqm
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"IFS planning error: {str(e)}")
+
+
+# ---------------- 13. Kisan Conversational AI Assistant ----------------
+@app.post("/api/assistant/chat", response_model=KisanChatResponse)
+def chat_with_kisan_assistant(req: KisanChatRequest):
+    """Provides conversational agronomic intelligence, intent mapping, and direct tab linking."""
+    try:
+        return get_kisan_assistant_reply(
+            message=req.message,
+            language=req.language or "en",
+            state=req.state or "All-India",
+            soil_type=req.soil_type,
+            season=req.season
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Kisan assistant error: {str(e)}")
+
+
 
 
 # =========================================================================
