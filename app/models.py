@@ -859,6 +859,137 @@ class ContingencyProtocolResponse(BaseModel):
     legal_notice: str
 
 
+# =======================================================================
+# 10. Precision Drip Fertigation & Venturi Models
+# =======================================================================
+class FertigationScheduleRequest(BaseModel):
+    crop_id: str = "tomato"
+    land_size_acres: float = 1.0
+    growth_stage: str = "Flowering / Fruit Set (31-60 DAP)"  # "Vegetative (0-30 DAP)", "Flowering / Fruit Set (31-60 DAP)", "Fruit Development / Maturity (61+ DAP)"
+    drip_lateral_spacing_m: Optional[float] = 1.2
+    dripper_spacing_m: Optional[float] = 0.4
+    dripper_discharge_lph: Optional[float] = 2.0
+    venturi_suction_rate_lph: Optional[float] = 60.0
+
+
+class FertigationNutrient(BaseModel):
+    fertilizer_name: str
+    grade: str  # e.g. "19-19-19", "0-52-34", "13-0-45"
+    weekly_dosage_kg_per_acre: float
+    total_weekly_dosage_kg: float
+    application_frequency_days: str
+    target_benefit: str
+
+
+class FertigationScheduleResponse(BaseModel):
+    crop_id: str
+    growth_stage: str
+    land_size_acres: float
+    total_emitters_count: int
+    system_flow_rate_lph: float
+    weekly_water_requirement_m3: float
+    irrigation_hours_per_week: float
+    water_soluble_fertilizers: List[FertigationNutrient]
+    venturi_injection_minutes_per_cycle: float
+    stock_tank_capacity_liters: float
+    target_ec_ms_cm: str
+    target_ph_range: str
+    acid_wash_cleaning_protocol: str
+    farmer_operational_tips: List[str]
+
+
+# =======================================================================
+# 11. Carbon Credits & Regenerative Agriculture Models
+# =======================================================================
+class CarbonCreditRequest(BaseModel):
+    land_size_acres: float = 5.0
+    practices_adopted: List[str] = ["Zero Tillage / No-Till", "Biochar Soil Application", "Cover Cropping / Green Manure"]
+    voluntary_carbon_price_usd_per_ton: Optional[float] = 20.0
+    inr_per_usd: Optional[float] = 85.0
+
+
+class CarbonPracticeBreakdown(BaseModel):
+    practice_name: str
+    annual_sequestration_rate_tco2e_per_acre: float
+    total_annual_tco2e: float
+    gross_credits_generated: float
+    gross_value_inr: float
+
+
+class CarbonCreditResponse(BaseModel):
+    land_size_acres: float
+    practices_count: int
+    annual_total_tco2e_sequestered: float
+    gross_carbon_credits_generated: float
+    gross_revenue_usd: float
+    gross_revenue_inr: float
+    aggregator_and_verification_fee_inr: float
+    net_farmer_carbon_payout_inr: float
+    net_payout_per_acre_inr: float
+    practice_breakdowns: List[CarbonPracticeBreakdown]
+    soil_and_climate_co_benefits: List[str]
+    accredited_registries_and_next_steps: List[str]
+
+
+# =======================================================================
+# 12. Integrated Farming System (IFS) Models
+# =======================================================================
+class IFSPlannerRequest(BaseModel):
+    total_land_acres: float = 3.0
+    enterprises: List[str] = ["Field Crops & Vegetables", "Dairy Cattle", "Poultry (Backyard/Desi)", "Farm Pond Aquaculture", "Vermicomposting & Biogas"]
+    cattle_count: Optional[int] = 2
+    poultry_birds: Optional[int] = 50
+    pond_area_sqm: Optional[float] = 500.0
+
+
+class IFSResourceLoop(BaseModel):
+    source_enterprise: str
+    byproduct: str
+    target_enterprise: str
+    recycled_use: str
+    annual_cost_savings_inr: float
+
+
+class IFSPlannerResponse(BaseModel):
+    total_land_acres: float
+    enterprises_selected: List[str]
+    annual_gross_income_inr: float
+    annual_operational_cost_inr: float
+    annual_net_profit_inr: float
+    internal_resource_recycling_loops: List[IFSResourceLoop]
+    total_internal_savings_inr: float
+    silage_dry_period_buffer_tons: float
+    silage_pit_length_m: float
+    silage_pit_width_m: float
+    silage_pit_depth_m: float
+    molasses_and_salt_preservation_kg: str
+    annual_on_farm_employment_days: int
+    sustainability_index_score: int
+    synergistic_recommendations: List[str]
+
+
+# =======================================================================
+# 13. Kisan Conversational AI Assistant Models
+# =======================================================================
+class KisanChatRequest(BaseModel):
+    message: str
+    language: Optional[str] = "en"  # "en", "hi", "pa", "mr", "te", "ta", "gu", "bn", "kn"
+    state: Optional[str] = "All-India"
+    soil_type: Optional[str] = None
+    season: Optional[str] = None
+
+
+class KisanChatResponse(BaseModel):
+    user_query: str
+    language: str
+    detected_intent: str
+    reply_text: str
+    suggested_tab: Optional[str] = None
+    suggested_action: Optional[str] = None
+    quick_replies: List[str]
+
+
+
 
 
 

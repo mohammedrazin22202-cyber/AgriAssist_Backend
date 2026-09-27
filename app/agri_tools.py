@@ -2501,6 +2501,516 @@ def calculate_biochar_and_stubble_management(
     }
 
 
+# =========================================================================
+# 10. Precision Drip Fertigation & Venturi Injector Schedule
+# =========================================================================
+def calculate_drip_fertigation_schedule(
+    crop_id: str = "tomato",
+    land_size_acres: float = 1.0,
+    growth_stage: str = "Flowering / Fruit Set (31-60 DAP)",
+    drip_lateral_spacing_m: Optional[float] = 1.2,
+    dripper_spacing_m: Optional[float] = 0.4,
+    dripper_discharge_lph: Optional[float] = 2.0,
+    venturi_suction_rate_lph: Optional[float] = 60.0
+) -> Dict[str, Any]:
+    """Calculates weekly water-soluble fertilizer (WSF) doses, Venturi injection run times,
+    system flow rates, and acid washing protocol for drip fertigation.
+    """
+    acres = max(0.1, float(land_size_acres or 1.0))
+    lat_spacing = max(0.4, float(drip_lateral_spacing_m or 1.2))
+    drip_spacing = max(0.2, float(dripper_spacing_m or 0.4))
+    discharge_lph = max(0.5, float(dripper_discharge_lph or 2.0))
+    suction_lph = max(10.0, float(venturi_suction_rate_lph or 60.0))
+
+    area_sqm = acres * 4046.86
+    total_emitters = int(area_sqm / (lat_spacing * drip_spacing))
+    system_flow_rate_lph = round(total_emitters * discharge_lph, 1)
+
+    stage_lower = (growth_stage or "").lower()
+
+    if "veg" in stage_lower:
+        water_m3_per_acre = 18.0
+        wsf_list = [
+            {
+                "fertilizer_name": "Urea (46% N)",
+                "grade": "46-0-0",
+                "weekly_dosage_kg_per_acre": 4.5,
+                "total_weekly_dosage_kg": round(4.5 * acres, 1),
+                "application_frequency_days": "Twice a week (Mon, Thu)",
+                "target_benefit": "Promotes vigorous root and vegetative biomass architecture."
+            },
+            {
+                "fertilizer_name": "19:19:19 (Polyfeed All-Rounder)",
+                "grade": "19-19-19",
+                "weekly_dosage_kg_per_acre": 5.0,
+                "total_weekly_dosage_kg": round(5.0 * acres, 1),
+                "application_frequency_days": "Split into 2 applications",
+                "target_benefit": "Balanced NPK for uniform node branching and canopy development."
+            },
+            {
+                "fertilizer_name": "Monoammonium Phosphate (MAP)",
+                "grade": "12-61-0",
+                "weekly_dosage_kg_per_acre": 3.0,
+                "total_weekly_dosage_kg": round(3.0 * acres, 1),
+                "application_frequency_days": "Once a week (Saturday)",
+                "target_benefit": "High orthophosphate kickstarts white active root proliferation."
+            }
+        ]
+        target_ec = "1.2 - 1.5 mS/cm"
+    elif "matur" in stage_lower or "fruit dev" in stage_lower:
+        water_m3_per_acre = 32.0
+        wsf_list = [
+            {
+                "fertilizer_name": "Potassium Nitrate (Multi-K)",
+                "grade": "13-0-45",
+                "weekly_dosage_kg_per_acre": 7.0,
+                "total_weekly_dosage_kg": round(7.0 * acres, 1),
+                "application_frequency_days": "Twice a week (Mon, Fri)",
+                "target_benefit": "Accelerates fruit bulking, sugar (Brix) accumulation, and peel shine."
+            },
+            {
+                "fertilizer_name": "Calcium Nitrate",
+                "grade": "15.5-0-0 + 18.8% Ca",
+                "weekly_dosage_kg_per_acre": 4.0,
+                "total_weekly_dosage_kg": round(4.0 * acres, 1),
+                "application_frequency_days": "Inject alone (Wednesday)",
+                "target_benefit": "Strengthens cell walls; prevents blossom-end rot, fruit cracking and tip burn."
+            },
+            {
+                "fertilizer_name": "Sulfate of Potash (SOP)",
+                "grade": "0-0-50 + 17% S",
+                "weekly_dosage_kg_per_acre": 3.0,
+                "total_weekly_dosage_kg": round(3.0 * acres, 1),
+                "application_frequency_days": "Once a week (Saturday)",
+                "target_benefit": "Improves fruit firmness, post-harvest transport shelf life, and aroma."
+            }
+        ]
+        target_ec = "1.8 - 2.2 mS/cm"
+    else:  # Flowering / Fruit Set (Default)
+        water_m3_per_acre = 26.0
+        wsf_list = [
+            {
+                "fertilizer_name": "Monopotassium Phosphate (MKP)",
+                "grade": "0-52-34",
+                "weekly_dosage_kg_per_acre": 5.0,
+                "total_weekly_dosage_kg": round(5.0 * acres, 1),
+                "application_frequency_days": "Twice a week (Mon, Thu)",
+                "target_benefit": "Stimulates profuse flowering, prevents flower drop, and sets fruit."
+            },
+            {
+                "fertilizer_name": "12:61:0 (Monoammonium Phosphate)",
+                "grade": "12-61-0",
+                "weekly_dosage_kg_per_acre": 4.0,
+                "total_weekly_dosage_kg": round(4.0 * acres, 1),
+                "application_frequency_days": "Once a week (Tuesday)",
+                "target_benefit": "Energy storage via ATP synthesis for pollination vitality."
+            },
+            {
+                "fertilizer_name": "Chelated Micronutrient Combo (Fe, Zn, B, Mn)",
+                "grade": "EDTA Complex",
+                "weekly_dosage_kg_per_acre": 0.5,
+                "total_weekly_dosage_kg": round(0.5 * acres, 2),
+                "application_frequency_days": "Once a week (Friday)",
+                "target_benefit": "Boron aids pollen germination; Zinc prevents rosette and small-leaf deformity."
+            }
+        ]
+        target_ec = "1.5 - 1.8 mS/cm"
+
+    weekly_water_m3 = round(water_m3_per_acre * acres, 1)
+    total_water_liters = weekly_water_m3 * 1000.0
+    irrigation_hours_week = round(total_water_liters / max(1.0, system_flow_rate_lph), 1)
+
+    total_wsf_kg = sum(item["total_weekly_dosage_kg"] for item in wsf_list)
+    stock_tank_liters = max(50.0, round(total_wsf_kg / 0.15, 0))
+    single_batch_liters = stock_tank_liters / 3.0
+    injection_mins = round((single_batch_liters / suction_lph) * 60.0, 1)
+
+    tips = [
+        "Follow the 'One-Fourth Rule': Run pure water for 25% of irrigation time to build pressure, inject fertilizer over 50% time, and flush with pure water for the final 25% to rinse drip laterals.",
+        "Never mix Calcium Nitrate with Phosphorus or Sulfate fertilizers in the same stock tank to avoid insoluble gypsum/phosphate precipitate.",
+        "Check emitter discharge uniformity weekly; clean disc/screen filters before and after every fertigation cycle."
+    ]
+
+    acid_protocol = (
+        f"Inject Phosphoric Acid (85% commercial grade) or Nitric Acid at 1.5 Liters/acre every 30-45 days. "
+        f"Allow acid water (pH ~3.5-4.0) to dwell inside closed laterals for 12 hours overnight, then open sub-main flush valves "
+        f"to expel dissolved carbonate crust."
+    )
+
+    return {
+        "crop_id": crop_id,
+        "growth_stage": growth_stage,
+        "land_size_acres": acres,
+        "total_emitters_count": total_emitters,
+        "system_flow_rate_lph": system_flow_rate_lph,
+        "weekly_water_requirement_m3": weekly_water_m3,
+        "irrigation_hours_per_week": irrigation_hours_week,
+        "water_soluble_fertilizers": wsf_list,
+        "venturi_injection_minutes_per_cycle": injection_mins,
+        "stock_tank_capacity_liters": stock_tank_liters,
+        "target_ec_ms_cm": target_ec,
+        "target_ph_range": "5.8 - 6.5",
+        "acid_wash_cleaning_protocol": acid_protocol,
+        "farmer_operational_tips": tips
+    }
+
+
+# =========================================================================
+# 11. Carbon Credits & Regenerative Agriculture Monetization
+# =========================================================================
+PRACTICE_SEQUESTRATION_RATES = {
+    "Zero Tillage / No-Till": {
+        "rate": 0.85,
+        "benefit": "Prevents soil oxidation, protects microbial mycorrhizae, and cuts tractor diesel fuel consumption."
+    },
+    "Biochar Soil Application": {
+        "rate": 2.20,
+        "benefit": "Locks recalcitrant black carbon in soil for over 100+ years and increases CEC."
+    },
+    "Cover Cropping / Green Manure": {
+        "rate": 0.90,
+        "benefit": "Fixes atmospheric Nitrogen and pumps deep liquid carbon root exudates into subsoil."
+    },
+    "Drip Irrigation (Energy + Water Saving)": {
+        "rate": 0.55,
+        "benefit": "Cuts agricultural pumping power consumption by 45%, averting thermal grid emissions."
+    },
+    "Solar Agricultural Pump (PM-KUSUM)": {
+        "rate": 1.75,
+        "benefit": "Direct zero-emission displacement of diesel engines or coal-powered rural electricity feeders."
+    },
+    "Agroforestry / Trees on Bunds": {
+        "rate": 1.50,
+        "benefit": "High above-ground woody biomass carbon accumulation alongside shelterbelt windbreak protection."
+    }
+}
+
+
+def calculate_carbon_credits(
+    land_size_acres: float = 5.0,
+    practices_adopted: Optional[List[str]] = None,
+    voluntary_carbon_price_usd_per_ton: Optional[float] = 20.0,
+    inr_per_usd: Optional[float] = 85.0
+) -> Dict[str, Any]:
+    """Calculates verifiable carbon sequestration (tCO2e), gross and net market revenue (INR),
+    and accredited registry pathways.
+    """
+    acres = max(0.1, float(land_size_acres or 1.0))
+    usd_price = max(5.0, float(voluntary_carbon_price_usd_per_ton or 20.0))
+    exchange_rate = max(50.0, float(inr_per_usd or 85.0))
+
+    if not practices_adopted:
+        practices_adopted = ["Zero Tillage / No-Till", "Biochar Soil Application", "Cover Cropping / Green Manure"]
+
+    breakdowns = []
+    total_tco2e = 0.0
+
+    for practice in practices_adopted:
+        matched_info = None
+        for key, val in PRACTICE_SEQUESTRATION_RATES.items():
+            if key.lower() in practice.lower() or practice.lower() in key.lower():
+                matched_info = (key, val)
+                break
+        if not matched_info:
+            matched_info = (practice, {"rate": 0.70, "benefit": "Enhances regenerative soil organic matter balance."})
+
+        name, meta = matched_info
+        practice_rate = meta["rate"]
+        practice_tco2e = round(practice_rate * acres, 2)
+        total_tco2e += practice_tco2e
+        practice_gross_inr = round(practice_tco2e * usd_price * exchange_rate, 0)
+
+        breakdowns.append({
+            "practice_name": name,
+            "annual_sequestration_rate_tco2e_per_acre": practice_rate,
+            "total_annual_tco2e": practice_tco2e,
+            "gross_credits_generated": practice_tco2e,
+            "gross_value_inr": practice_gross_inr
+        })
+
+    total_credits = round(total_tco2e, 2)
+    gross_usd = round(total_credits * usd_price, 2)
+    gross_inr = round(gross_usd * exchange_rate, 0)
+    aggregator_fee = round(gross_inr * 0.18, 0)
+    net_payout_inr = round(gross_inr - aggregator_fee, 0)
+    per_acre_inr = round(net_payout_inr / acres, 0)
+
+    co_benefits = [
+        f"Increases Soil Organic Carbon (SOC) by approximately 0.25 - 0.40% over a 3-year baseline.",
+        f"Improves field rainwater infiltration by 25-40%, mitigating drought vulnerability.",
+        f"Reduces annual chemical input costs by up to ₹3,500/acre through biological soil nutrient activation."
+    ]
+
+    registries = [
+        "Verra VCS (Verified Carbon Standard) VM0042 / VM0044 Methodology for Improved Agricultural Land Management.",
+        "Gold Standard for the Global Goals (GS4GG) Soil Carbon Quantification.",
+        "Indian National Voluntary Carbon Market & Aggregator Platforms (e.g., Boomitra, nurture.farm, Varaha ClimateAg).",
+        "Step 1: Geo-fence farm plot -> Step 2: Extract 0-30 cm baseline soil cores -> Step 3: Annual satellite remote sensing (NDVI/SOC) verification -> Step 4: Direct DBT payout."
+    ]
+
+    return {
+        "land_size_acres": acres,
+        "practices_count": len(practices_adopted),
+        "annual_total_tco2e_sequestered": total_credits,
+        "gross_carbon_credits_generated": total_credits,
+        "gross_revenue_usd": gross_usd,
+        "gross_revenue_inr": gross_inr,
+        "aggregator_and_verification_fee_inr": aggregator_fee,
+        "net_farmer_carbon_payout_inr": net_payout_inr,
+        "net_payout_per_acre_inr": per_acre_inr,
+        "practice_breakdowns": breakdowns,
+        "soil_and_climate_co_benefits": co_benefits,
+        "accredited_registries_and_next_steps": registries
+    }
+
+
+# =========================================================================
+# 12. Integrated Farming System (IFS) Multi-Enterprise Flow & Silage Sizer
+# =========================================================================
+def calculate_integrated_farming_system(
+    total_land_acres: float = 3.0,
+    enterprises: Optional[List[str]] = None,
+    cattle_count: Optional[int] = 2,
+    poultry_birds: Optional[int] = 50,
+    pond_area_sqm: Optional[float] = 500.0
+) -> Dict[str, Any]:
+    """Calculates multi-enterprise synergy economics, waste-to-resource recycling loops,
+    and silage pit dimensions for year-round green fodder security.
+    """
+    acres = max(0.5, float(total_land_acres or 3.0))
+    cattle = max(0, int(cattle_count if cattle_count is not None else 2))
+    poultry = max(0, int(poultry_birds if poultry_birds is not None else 50))
+    pond_sqm = max(0.0, float(pond_area_sqm if pond_area_sqm is not None else 500.0))
+
+    if not enterprises:
+        enterprises = ["Field Crops & Vegetables", "Dairy Cattle", "Poultry (Backyard/Desi)", "Farm Pond Aquaculture", "Vermicomposting & Biogas"]
+
+    crop_gross = acres * 48000.0
+    crop_cost = acres * 22000.0
+
+    dairy_gross = cattle * 65000.0
+    dairy_cost = cattle * 32000.0
+
+    poultry_gross = (poultry / 50.0) * 35000.0 if poultry > 0 else 0.0
+    poultry_cost = (poultry / 50.0) * 16000.0 if poultry > 0 else 0.0
+
+    pond_gross = (pond_sqm / 500.0) * 85000.0 if pond_sqm > 0 else 0.0
+    pond_cost = (pond_sqm / 500.0) * 30000.0 if pond_sqm > 0 else 0.0
+
+    gross_total = round(crop_gross + dairy_gross + poultry_gross + pond_gross, 0)
+    cost_total = round(crop_cost + dairy_cost + poultry_cost + pond_cost, 0)
+
+    loops = []
+    total_savings = 0.0
+
+    if cattle > 0:
+        biogas_saving = cattle * 11000.0
+        loops.append({
+            "source_enterprise": "Dairy Cattle",
+            "byproduct": f"{cattle * 7.3:.1f} tons fresh cow dung & urine annually",
+            "target_enterprise": "Domestic Biogas Unit",
+            "recycled_use": "Generates 290 m3 clean methane gas, replacing commercial LPG cylinders.",
+            "annual_cost_savings_inr": biogas_saving
+        })
+        total_savings += biogas_saving
+
+        vermi_saving = cattle * 9000.0
+        loops.append({
+            "source_enterprise": "Biogas Slurry",
+            "byproduct": "Digested enriched nitrogen slurry",
+            "target_enterprise": "Vermicompost & Crop Fields",
+            "recycled_use": "Converted into 3.5 tons premium organic vermicompost, replacing synthetic DAP/Urea.",
+            "annual_cost_savings_inr": vermi_saving
+        })
+        total_savings += vermi_saving
+
+    if cattle > 0 and pond_sqm > 0:
+        pond_saving = 7500.0
+        loops.append({
+            "source_enterprise": "Dairy & Biogas Slurry",
+            "byproduct": "Treated fermented bio-slurry",
+            "target_enterprise": "Farm Fish Pond",
+            "recycled_use": "Fertilizes aquatic phytoplankton and zooplankton, cutting commercial floating fish feed by 35%.",
+            "annual_cost_savings_inr": pond_saving
+        })
+        total_savings += pond_saving
+
+    if poultry > 0:
+        poultry_manure_saving = 4500.0
+        loops.append({
+            "source_enterprise": "Backyard Poultry",
+            "byproduct": "High-Phosphorus poultry litter",
+            "target_enterprise": "Vegetable Beds & Horti Plots",
+            "recycled_use": "Direct fast-release organic N & P top dressing for high-value vegetables.",
+            "annual_cost_savings_inr": poultry_manure_saving
+        })
+        total_savings += poultry_manure_saving
+
+    crop_straw_saving = acres * 3500.0
+    loops.append({
+        "source_enterprise": "Field Crops (Paddy / Maize / Pulses)",
+        "byproduct": "Crop residues, straw, and husk",
+        "target_enterprise": "Dairy Cattle Feeding",
+        "recycled_use": "Chaffed and fed as dry maintenance roughage (bhusa/kadbi), avoiding straw burning.",
+        "annual_cost_savings_inr": crop_straw_saving
+    })
+    total_savings += crop_straw_saving
+
+    net_profit = round((gross_total - cost_total) + total_savings, 0)
+
+    silage_tons = round((cattle * 90 * 15.0) / 1000.0, 1)
+    silage_volume_m3 = round((silage_tons * 1000.0) / 650.0, 1)
+    pit_depth = 1.5
+    pit_width = 2.0
+    pit_length = max(2.5, round(silage_volume_m3 / (pit_depth * pit_width), 1))
+    molasses_kg = round(silage_tons * 1000.0 * 0.02, 1)
+
+    employment_days = int(180 + (cattle * 45) + (acres * 30))
+    sustainability_score = min(98, 70 + (len(enterprises) * 5))
+
+    recs = [
+        f"Recycling farm byproducts saves ₹{total_savings:,.0f} annually in external fertilizer, feed, and fuel costs.",
+        f"Build a {pit_length}m x {pit_width}m x {pit_depth}m brick-lined silage trench to pack {silage_tons} tons of green maize/sorghum fodder with {molasses_kg} kg jaggery/molasses.",
+        "Divert overflow water from dairy washing shed through a gravel sand filter straight into the fish pond to foster natural algae blooms.",
+        f"This integrated diversified enterprise guarantees {employment_days} man-days of year-round steady cashflow, eliminating seasonal rural debt."
+    ]
+
+    return {
+        "total_land_acres": acres,
+        "enterprises_selected": enterprises,
+        "annual_gross_income_inr": gross_total,
+        "annual_operational_cost_inr": cost_total,
+        "annual_net_profit_inr": net_profit,
+        "internal_resource_recycling_loops": loops,
+        "total_internal_savings_inr": round(total_savings, 0),
+        "silage_dry_period_buffer_tons": silage_tons,
+        "silage_pit_length_m": pit_length,
+        "silage_pit_width_m": pit_width,
+        "silage_pit_depth_m": pit_depth,
+        "molasses_and_salt_preservation_kg": f"{molasses_kg:.1f} kg Jaggery/Molasses + {round(silage_tons * 5, 1)} kg Common Salt",
+        "annual_on_farm_employment_days": employment_days,
+        "sustainability_index_score": sustainability_score,
+        "synergistic_recommendations": recs
+    }
+
+
+# =========================================================================
+# 13. Kisan Conversational AI Assistant
+# =========================================================================
+def get_kisan_assistant_reply(
+    message: str,
+    language: Optional[str] = "en",
+    state: Optional[str] = "All-India",
+    soil_type: Optional[str] = None,
+    season: Optional[str] = None
+) -> Dict[str, Any]:
+    """Provides natural language agronomic intelligence, intent mapping, and direct tab linking."""
+    text = (message or "").lower().strip()
+    lang = (language or "en").lower()
+    is_hi = lang == "hi"
+
+    if any(k in text for k in ["sow", "crop", "plant", "season", "suggest", "kya bou", "kya lagau", "fasal", "फसल", "बोएं"]):
+        intent = "crop_recommendation"
+        tab = "advisor"
+        action = "open_advisor"
+        if is_hi:
+            reply = "आपकी मिट्टी और मौसम के आधार पर सबसे उपयुक्त फसल चुनने के लिए 'Crop Sowing Advisor' का उपयोग करें। यदि आपकी मिट्टी काली (Black Soil) है, तो सोयाबीन या कपास, और यदि दोमट (Loam) है तो गेहूं या सरसों सबसे अधिक मुनाफा देती हैं।"
+        else:
+            reply = "Based on your soil and season, navigate to the 'Crop Sowing Advisor' tab. For Black Soil, Cotton and Soybean deliver top ROI; for Alluvial/Loam soils, Wheat, Mustard, and Maize perform exceptionally well."
+        quick = ["Top crops for Kharif", "Top crops for Rabi", "Low water crops", "Highest profit crop"]
+
+    elif any(k in text for k in ["fertilizer", "urea", "dap", "mop", "khad", "खाद", "यूरिया", "npk"]):
+        intent = "fertilizer_prescription"
+        tab = "fertilizer"
+        action = "open_fertilizer"
+        if is_hi:
+            reply = "सटीक खाद गणना के लिए 'Fertilizer Doctor' देखें। सामान्यतः प्रति एकड़ 1.5 - 2 बोरी DAP, 2 - 2.5 बोरी यूरिया (3 किस्तों में), और 1 बोरी MOP की आवश्यकता होती है। यदि मिट्टी अम्लीय (pH < 6.5) है, तो चूना (Lime) डालें।"
+        else:
+            reply = "For stoichiometric fertilizer bags, check the 'Fertilizer Doctor' tab. A standard cereal crop requires ~1.5-2 bags DAP, 2-2.5 bags Urea (split top-dressing), and 1 bag MOP per acre. If soil pH is acidic (< 6.0), apply Agricultural Lime."
+        quick = ["How many Urea bags per acre?", "Micronutrient dosage", "Drip Fertigation schedule", "Organic Jeevamrutha recipe"]
+
+    elif any(k in text for k in ["disease", "pest", "yellow", "insect", "keeda", "bimari", "fungus", "कीड़ा", "बीमारी", "पत्ते"]):
+        intent = "plant_protection"
+        tab = "doctor"
+        action = "open_doctor"
+        if is_hi:
+            reply = "कीट और रोग नियंत्रण के लिए 'Plant Doctor' खोलें। पत्तों के पीलेपन के लिए 0.5% जिंक सल्फेट या 19:19:19 का स्प्रे करें। इल्ली (Caterpillar) के लिए नीम तेल (10,000 PPM) या एमामेक्टिन बेंजोएट 5% SG (80 ग्राम/एकड़) का उपयोग करें।"
+        else:
+            reply = "For IPM prescriptions, switch to the 'Plant Doctor' tab. Leaf yellowing is often Zinc deficiency or Nitrogen shortfall. For bollworms or caterpillars, spray Neem Oil 10,000 PPM (3 ml/L) or Emamectin Benzoate 5% SG (80 gm/acre)."
+        quick = ["Yellow leaves remedy", "Stem borer control", "Leaf curl virus", "Neemastra recipe"]
+
+    elif any(k in text for k in ["mandi", "price", "rate", "bhav", "msp", "भाव", "मंडी", "दाम"]):
+        intent = "mandi_market"
+        tab = "mandi"
+        action = "open_mandi"
+        if is_hi:
+            reply = "ताजा मंडी भाव और 30-दिवसीय मूल्य रुझानों के लिए 'Mandi Prices & Trends' देखें। दूर की मंडी में बेहतर भाव मिलने पर हमारा 'Mandi Distance & Profit Arbitrage' कैलकुलेटर आपको डीजल खर्च काटकर शुद्ध मुनाफा बताता है।"
+        else:
+            reply = "Check the 'Mandi Prices & Trends' tab for live APMC rates vs. MSP. Use our 'Mandi Arbitrage Calculator' to evaluate whether transporting produce to a terminal market covers diesel and delivers net surplus."
+        quick = ["Wheat MSP price", "Paddy mandi rate", "Mandi arbitrage profit", "Storage before selling"]
+
+    elif any(k in text for k in ["water", "irrigation", "drip", "pani", "fertigation", "सिंचाई", "ड्रिप", "पानी"]):
+        intent = "irrigation_fertigation"
+        tab = "fertigation"
+        action = "open_fertigation"
+        if is_hi:
+            reply = "ड्रिप सिंचाई और घुलनशील खादों (WSF) के लिए 'Precision Drip Fertigation' और 'Smart Irrigation' टैब देखें। ड्रिप से 45% पानी की बचत होती है और वेंचुरी इंजेक्टर द्वारा 19:19:19, 0:52:34 और पोटेशियम नाइट्रेट सीधे जड़ों तक पहुंचते हैं।"
+        else:
+            reply = "For stage-wise water budgeting and Venturi injector schedules, visit 'Smart Irrigation' and the new 'Precision Drip Fertigation' tool. It sizes water-soluble fertilizers (19:19:19, MKP, Calcium Nitrate) according to crop growth phases."
+        quick = ["Venturi injection time", "Drip lateral spacing", "Solar pump subsidy", "Farm pond sizing"]
+
+    elif any(k in text for k in ["yojana", "scheme", "pm-kisan", "pmkisan", "kcc", "subsidy", "योजना", "सब्सिडी"]):
+        intent = "government_schemes"
+        tab = "yojana"
+        action = "open_yojana"
+        if is_hi:
+            reply = "कृषि योजनाओं की जानकारी के लिए 'Kisan Yojana Hub' देखें: PM-KISAN (₹6,000/वर्ष), PMFBY (फसल बीमा: खरीफ 2%, रबी 1.5%), KCC (4% ब्याज दर पर ₹3 लाख तक ऋण), और PM-KUSUM (60% सोलर पंप सब्सिडी)।"
+        else:
+            reply = "Visit 'Kisan Yojana Hub' for scheme calculators: PM-KISAN (₹6,000/yr), PMFBY crop insurance (2% Kharif, 1.5% Rabi), KCC subsidized credit (up to ₹3 Lakh at 4% net interest), and PM-KUSUM 60% solar pump subsidy."
+        quick = ["KCC loan limit", "PMFBY premium calculator", "Solar pump KUSUM", "Drip subsidy PMKSY"]
+
+    elif any(k in text for k in ["carbon", "credit", "climate", "co2", "stubble", "parali", "biochar"]):
+        intent = "carbon_and_biochar"
+        tab = "carbon"
+        action = "open_carbon"
+        if is_hi:
+            reply = "पर्यावरण-अनुकूल खेती से अतिरिक्त कमाई के लिए 'Carbon Credits' और 'Stubble & Biochar' कैलकुलेटर का उपयोग करें। शून्य जुताई और बायोचार डालने से प्रति एकड़ 2-3 कार्बन क्रेडिट (₹3,000 - ₹5,000 अतिरिक्त आय) मिलते हैं।"
+        else:
+            reply = "Explore our 'Carbon Credits' and 'Stubble & Biochar' tools. Adopting zero tillage, biochar soil application, and green cover crops can generate 2-3 voluntary carbon credits per acre, unlocking ₹3,000 to ₹6,000 in net annual payouts."
+        quick = ["Carbon credit revenue", "Biochar pyrolysis yield", "No-till farming benefit", "Cover crops"]
+
+    elif any(k in text for k in ["cow", "dairy", "milk", "buffalo", "ration", "गाय", "भैंस", "दूध", "पशुपालन"]):
+        intent = "livestock_dairy"
+        tab = "livestock"
+        action = "open_livestock"
+        if is_hi:
+            reply = "पशु आहार संतुलन और देसी जड़ी-बूटी उपचार (EVM) के लिए 'Dairy & Livestock' टैब खोलें। दुधारू गाय को प्रति लीटर दूध पर 400 ग्राम संतुलित पशुआहार (Concentrate Feed) और 15-20 किग्रा हरा चारा प्रतिदिन अवश्य दें।"
+        else:
+            reply = "Navigate to the 'Dairy & Livestock' tab for scientific feed ration balancing (Dry matter, green fodder, bhusa, concentrate) and gestation milestones, plus verified herbal ethno-veterinary remedies for mastitis and bloat."
+        quick = ["Cattle ration calculator", "Gestation calendar", "Mastitis herbal remedy", "Silage pit size"]
+
+    else:
+        intent = "general_assistance"
+        tab = "advisor"
+        action = "open_advisor"
+        if is_hi:
+            reply = "नमस्ते किसान भाई! मैं AgriAssist AI सहायक हूँ। मैं आपको फसल चयन, खाद की मात्रा, ड्रिप फर्टीगेशन, मंडी भाव, कीट-रोग पहचान, और सरकारी योजनाओं पर सटीक वैज्ञानिक सलाह दे सकता हूँ। आप क्या जानना चाहते हैं?"
+        else:
+            reply = "Hello farmer! I am your AgriAssist Agronomic Assistant. I can assist you with Crop Sowing Recommendations, Stoichiometric Fertilizers, Drip Fertigation, APMC Mandi Arbitrage, Plant Health IPM, Carbon Credits, and Government Subsidies. How can I help you today?"
+        quick = ["What crop to sow now?", "Fertilizer prescription", "Check mandi prices", "Kisan loan & schemes"]
+
+    return {
+        "user_query": message,
+        "language": lang,
+        "detected_intent": intent,
+        "reply_text": reply,
+        "suggested_tab": tab,
+        "suggested_action": action,
+        "quick_replies": quick
+    }
+
+
+
 
 
 
