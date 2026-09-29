@@ -3401,3 +3401,158 @@ def get_weed_management_recommendations(
         "options": filtered,
         "cultural_and_organic_controls": cultural_controls
     }
+
+
+# =======================================================================
+# 16. Zero Energy Cool Chamber (ZECC) & Post-Harvest Shelf Life Planner
+# =======================================================================
+ZECC_PRODUCE_CATALOG = [
+    {
+        "produce": "Tomato (टमाटर)",
+        "ambient_shelf_life_days": "4 - 6 days",
+        "zecc_shelf_life_days": "18 - 21 days",
+        "shelf_life_multiplier": "3.5x to 4x Longer",
+        "ideal_temp_c": "12 - 15 °C",
+        "ideal_rh_pct": "90 - 95%",
+        "spoilage_reduction_pct": 82.0,
+        "market_arbitrage_holding_tip": "Allows holding ripe and semi-ripe tomatoes during mandi glut when rates drop to ₹3/kg, selling later at ₹18-25/kg."
+    },
+    {
+        "produce": "Green Chilli (हरी मिर्च)",
+        "ambient_shelf_life_days": "3 - 4 days",
+        "zecc_shelf_life_days": "12 - 15 days",
+        "shelf_life_multiplier": "3.5x Longer",
+        "ideal_temp_c": "10 - 13 °C",
+        "ideal_rh_pct": "92 - 95%",
+        "spoilage_reduction_pct": 78.0,
+        "market_arbitrage_holding_tip": "Preserves green calyx color and prevents skin wrinkling/shrivelling due to high relative humidity."
+    },
+    {
+        "produce": "Coriander & Spinach (धनिया एवं पालक)",
+        "ambient_shelf_life_days": "1 - 2 days",
+        "zecc_shelf_life_days": "6 - 8 days",
+        "shelf_life_multiplier": "4x Longer",
+        "ideal_temp_c": "8 - 12 °C",
+        "ideal_rh_pct": "95%",
+        "spoilage_reduction_pct": 88.0,
+        "market_arbitrage_holding_tip": "Leafy greens suffer rapid post-harvest wilting; ZECC saturated vapor pressure keeps leaves crisp without weight loss."
+    },
+    {
+        "produce": "Capsicum / Bell Pepper (शिमला मिर्च)",
+        "ambient_shelf_life_days": "4 - 5 days",
+        "zecc_shelf_life_days": "16 - 20 days",
+        "shelf_life_multiplier": "4x Longer",
+        "ideal_temp_c": "10 - 12 °C",
+        "ideal_rh_pct": "90 - 95%",
+        "spoilage_reduction_pct": 80.0,
+        "market_arbitrage_holding_tip": "Maintains wall turgidity and prevents fungal anthracnose rot."
+    },
+    {
+        "produce": "Brinjal / Eggplant (बैंगन)",
+        "ambient_shelf_life_days": "3 - 5 days",
+        "zecc_shelf_life_days": "12 - 14 days",
+        "shelf_life_multiplier": "3x Longer",
+        "ideal_temp_c": "12 - 14 °C",
+        "ideal_rh_pct": "90 - 92%",
+        "spoilage_reduction_pct": 75.0,
+        "market_arbitrage_holding_tip": "Prevents fruit calyx yellowing and skin dullness."
+    },
+    {
+        "produce": "Potato (आलू)",
+        "ambient_shelf_life_days": "30 - 40 days",
+        "zecc_shelf_life_days": "65 - 75 days",
+        "shelf_life_multiplier": "2x Longer",
+        "ideal_temp_c": "15 - 18 °C",
+        "ideal_rh_pct": "85 - 90%",
+        "spoilage_reduction_pct": 65.0,
+        "market_arbitrage_holding_tip": "Suppresses sprouting and prevents green solanine development when kept shaded under thatch."
+    },
+    {
+        "produce": "Onion (प्याज)",
+        "ambient_shelf_life_days": "25 - 35 days",
+        "zecc_shelf_life_days": "50 - 60 days",
+        "shelf_life_multiplier": "1.8x Longer",
+        "ideal_temp_c": "18 - 22 °C",
+        "ideal_rh_pct": "70 - 75%",
+        "spoilage_reduction_pct": 60.0,
+        "market_arbitrage_holding_tip": "For onions, ensure ventilation vents are kept open to prevent neck rot."
+    },
+    {
+        "produce": "Guava & Mango (अमरूद एवं आम)",
+        "ambient_shelf_life_days": "3 - 5 days",
+        "zecc_shelf_life_days": "12 - 16 days",
+        "shelf_life_multiplier": "3x Longer",
+        "ideal_temp_c": "12 - 15 °C",
+        "ideal_rh_pct": "90%",
+        "spoilage_reduction_pct": 70.0,
+        "market_arbitrage_holding_tip": "Slows ethylene climacteric respiratory surge, extending marketable yellow-green eating stage."
+    }
+]
+
+
+def calculate_zecc_storage_and_shelf_life(
+    storage_capacity_crates: int = 20,
+    primary_produce: str = "Tomato (टमाटर)"
+) -> Dict[str, Any]:
+    """Calculates IARI Pusa Zero Energy Cool Chamber (ZECC) dimensions, brick/sand bill of materials, and shelf-life extension."""
+    crates = max(4, min(100, storage_capacity_crates))
+    total_kg = crates * 20.0  # Standard plastic crate holds ~20 kg produce
+
+    # Engineering dimensions for double-wall evaporative chamber (IARI specs)
+    # Cavity gap between inner and outer wall is 7.5 cm (3 inches) filled with coarse river sand
+    floor_length_cm = round(100.0 + (crates * 3.8), 0)
+    floor_width_cm = round(min(120.0, 75.0 + (crates * 0.8)), 0)
+    height_cm = 68.0  # Ergonomic working depth for reaching crates
+
+    # Perimeter and brick count calculation
+    # Standard Indian red clay brick: 22.5 x 10 x 7.5 cm
+    brick_course_height = 7.5
+    courses = math.ceil(height_cm / brick_course_height)  # ~9 courses
+    inner_perim_cm = 2 * (floor_length_cm + floor_width_cm)
+    outer_perim_cm = 2 * ((floor_length_cm + 35.0) + (floor_width_cm + 35.0))
+    bricks_per_course = math.ceil((inner_perim_cm + outer_perim_cm) / 22.5)
+    total_bricks = math.ceil(bricks_per_course * courses * 1.05)  # 5% buffer
+
+    # Coarse sand volume in cavity (7.5 cm thickness)
+    cavity_volume_m3 = ((outer_perim_cm / 100.0) * (height_cm / 100.0) * 0.075)
+    sand_kg = cavity_volume_m3 * 1600.0  # sand density 1600 kg/m3
+    sand_bags_50kg = max(4, math.ceil(sand_kg / 50.0))
+
+    # Top bamboo thatch frame and gunny bag cover
+    thatch_area_sqm = round(((floor_length_cm + 40.0) / 100.0) * ((floor_width_cm + 40.0) / 100.0), 2)
+    daily_water_litres = round(max(20.0, crates * 1.8), 0)
+
+    # Approximate DIY Cost in INR (100% locally built with village materials)
+    brick_cost = total_bricks * 7.50
+    sand_cost = sand_bags_50kg * 80.0
+    bamboo_thatch_cost = 650.0
+    plumbing_drip_tube_cost = 450.0
+    diy_cost_inr = round(brick_cost + sand_cost + bamboo_thatch_cost + plumbing_drip_tube_cost, 0)
+
+    guide = [
+        "Site Selection: Select an elevated shaded spot close to an assured water source (well, tube-well, or farm pond). Ensure good natural breeze ventilation.",
+        "Foundation Floor: Level the ground and lay a single layer of red clay bricks (100 x 70 cm or scaled) flat on the ground without cement mortar.",
+        "Double Wall Construction: Build double brick walls leaving a 7.5 cm (3-inch) cavity space between the inner and outer wall up to 68 cm height without cement (dry brick laying or weak mud mortar).",
+        "Cavity Sand Filling: Fill the 7.5 cm cavity completely with clean, coarse river sand free of clay or organic debris.",
+        "Overhead Drip Wetting: Install a perforated PVC pipe or simple micro-drip pipe over the sand cavity connected to an overhead water bucket to keep sand continuously soaked.",
+        "Top Cover: Fabricate a lightweight bamboo frame thatched with sirki / khaskhas grass or clean gunny bags to cover the top.",
+        "Daily Operation: Water the chamber twice a day in summer (morning and afternoon) to keep the sand saturated. Evaporative cooling drops temperature by 10-15°C and elevates relative humidity to 90-95%."
+    ]
+
+    return {
+        "storage_capacity_crates": crates,
+        "total_produce_kg": total_kg,
+        "external_length_cm": floor_length_cm + 35.0,
+        "external_width_cm": floor_width_cm + 35.0,
+        "external_height_cm": height_cm,
+        "cavity_gap_cm": 7.5,
+        "red_clay_bricks_required": total_bricks,
+        "coarse_river_sand_bags_50kg": sand_bags_50kg,
+        "bamboo_and_straw_thatch_sqm": thatch_area_sqm,
+        "water_wetting_litres_per_day": daily_water_litres,
+        "cooling_effect_celsius_drop": "10 - 15 °C below ambient peak heat",
+        "relative_humidity_achieved": "90 - 95% (Evaporative Saturated Vapor)",
+        "estimated_diy_cost_inr": diy_cost_inr,
+        "step_by_step_construction_guide": guide,
+        "perishable_produce_database": ZECC_PRODUCE_CATALOG
+    }

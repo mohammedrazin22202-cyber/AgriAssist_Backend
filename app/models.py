@@ -1063,3 +1063,40 @@ class WeedManagementResponse(BaseModel):
     land_size_acres: float
     options: List[HerbicideRecommendation]
     cultural_and_organic_controls: List[str]
+
+
+# =======================================================================
+# 16. Zero Energy Cool Chamber (ZECC) & Post-Harvest Shelf Life Models
+# =======================================================================
+class ZECCPlannerRequest(BaseModel):
+    storage_capacity_crates: int = 20  # standard 20 kg plastic crates (400 kg produce)
+    primary_produce: str = "Tomato (टमाटर)"
+
+
+class ProduceShelfLifeInfo(BaseModel):
+    produce: str
+    ambient_shelf_life_days: str
+    zecc_shelf_life_days: str
+    shelf_life_multiplier: str
+    ideal_temp_c: str
+    ideal_rh_pct: str
+    spoilage_reduction_pct: float
+    market_arbitrage_holding_tip: str
+
+
+class ZECCPlannerResponse(BaseModel):
+    storage_capacity_crates: int
+    total_produce_kg: float
+    external_length_cm: float
+    external_width_cm: float
+    external_height_cm: float
+    cavity_gap_cm: float
+    red_clay_bricks_required: int
+    coarse_river_sand_bags_50kg: int
+    bamboo_and_straw_thatch_sqm: float
+    water_wetting_litres_per_day: float
+    cooling_effect_celsius_drop: str
+    relative_humidity_achieved: str
+    estimated_diy_cost_inr: float
+    step_by_step_construction_guide: List[str]
+    perishable_produce_database: List[ProduceShelfLifeInfo]

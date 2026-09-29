@@ -70,6 +70,8 @@ from app.models import (
     MandiFairPayoutResponse,
     WeedManagementRequest,
     WeedManagementResponse,
+    ZECCPlannerRequest,
+    ZECCPlannerResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -106,6 +108,7 @@ from app.agri_tools import (
     get_kisan_assistant_reply
     calculate_mandi_fair_payout,
     get_weed_management_recommendations,
+    calculate_zecc_storage_and_shelf_life,
 )
 
 
@@ -792,6 +795,19 @@ def get_weed_management(req: WeedManagementRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Weed management error: {str(e)}")
+
+
+# ---------------- 16. Zero Energy Cool Chamber (ZECC) Storage ----------------
+@app.post("/api/zecc-storage", response_model=ZECCPlannerResponse)
+def get_zecc_storage_plan(req: ZECCPlannerRequest):
+    """Calculates IARI Pusa Zero Energy Cool Chamber dimensions, materials bill, and shelf-life extension."""
+    try:
+        return calculate_zecc_storage_and_shelf_life(
+            storage_capacity_crates=req.storage_capacity_crates,
+            primary_produce=req.primary_produce
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"ZECC storage planning error: {str(e)}")
 
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
