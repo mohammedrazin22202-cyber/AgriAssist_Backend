@@ -989,16 +989,6 @@ class KisanChatResponse(BaseModel):
     quick_replies: List[str]
 
 
-
-
-
-
-
-
-
-
-
-
 # =======================================================================
 # 14. Mandi Fair Payout & Moisture Deduction Auditor Models
 # =======================================================================

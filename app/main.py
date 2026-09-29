@@ -64,8 +64,7 @@ from app.models import (
     IFSPlannerRequest,
     IFSPlannerResponse,
     KisanChatRequest,
-    KisanChatResponse
-)
+    KisanChatResponse,
     MandiFairPayoutRequest,
     MandiFairPayoutResponse,
     WeedManagementRequest,
@@ -77,7 +76,8 @@ from app.models import (
     FodderSilageRequest,
     FodderSilageResponse,
     NasaGddRequest,
-    NasaGddResponse,
+    NasaGddResponse
+)
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -111,13 +111,13 @@ from app.agri_tools import (
     calculate_drip_fertigation_schedule,
     calculate_carbon_credits,
     calculate_integrated_farming_system,
-    get_kisan_assistant_reply
+    get_kisan_assistant_reply,
     calculate_mandi_fair_payout,
     get_weed_management_recommendations,
     calculate_zecc_storage_and_shelf_life,
     calculate_natural_farming_formulation,
     calculate_fodder_and_silage_planner,
-    calculate_nasa_agroclimatology_gdd,
+    calculate_nasa_agroclimatology_gdd
 )
 
 
@@ -770,9 +770,6 @@ def chat_with_kisan_assistant(req: KisanChatRequest):
         raise HTTPException(status_code=500, detail=f"Kisan assistant error: {str(e)}")
 
 
-
-
-# =========================================================================
 # ---------------- 14. Mandi Fair Payout & Moisture Auditor ----------------
 @app.post("/api/mandi-fair-payout", response_model=MandiFairPayoutResponse)
 def get_mandi_fair_payout(req: MandiFairPayoutRequest):
@@ -862,7 +859,6 @@ def get_nasa_agroclimatology_gdd(req: NasaGddRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"NASA GDD tracker error: {str(e)}")
-
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
 # Master Ownership Verification & Anti-Theft Protection System
