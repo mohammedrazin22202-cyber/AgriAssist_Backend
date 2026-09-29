@@ -997,3 +997,37 @@ class KisanChatResponse(BaseModel):
 
 
 
+
+
+# =======================================================================
+# 14. Mandi Fair Payout & Moisture Deduction Auditor Models
+# =======================================================================
+class MandiFairPayoutRequest(BaseModel):
+    crop_name: str = "Wheat (गेहूं)"
+    gross_weight_quintals: float = 50.0
+    mandi_bid_rate_per_quintal: float = 2275.0
+    measured_moisture_pct: float = 14.5
+    foreign_matter_pct: Optional[float] = 1.0
+    trader_proposed_deduction_kg: Optional[float] = 150.0  # Trader claims deduction in kg
+    state_or_mandi: Optional[str] = "General APMC"
+
+
+class MandiFairPayoutResponse(BaseModel):
+    crop_name: str
+    gross_weight_quintals: float
+    mandi_bid_rate_per_quintal: float
+    standard_moisture_limit_pct: float
+    measured_moisture_pct: float
+    excess_moisture_pct: float
+    legitimate_moisture_cut_kg: float
+    foreign_matter_cut_kg: float
+    total_legitimate_cut_kg: float
+    net_payable_weight_quintals: float
+    gross_sale_value_inr: float
+    legal_apmc_user_charges_inr: float
+    fair_net_payable_amount_inr: float
+    trader_proposed_deduction_kg: float
+    trader_deduction_difference_kg: float
+    unjustified_trader_deduction_loss_inr: float
+    audit_verdict: str
+    farmer_rights_advice: List[str]

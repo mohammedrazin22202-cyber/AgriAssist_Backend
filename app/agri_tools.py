@@ -3018,3 +3018,86 @@ def get_kisan_assistant_reply(
 
 
 
+
+
+# =======================================================================
+# 14. Mandi Fair Payout & Moisture Deduction Auditor
+# =======================================================================
+def calculate_mandi_fair_payout(
+    gross_weight_quintals: float,
+    mandi_bid_rate_per_quintal: float,
+    measured_moisture_pct: float,
+    foreign_matter_pct: float = 1.0,
+    trader_proposed_deduction_kg: float = 0.0,
+    crop_name: str = "Wheat (गेहूं)",
+    state_or_mandi: str = "General APMC"
+) -> Dict[str, Any]:
+    """Audits mandi moisture dockage cuts and APMC charges against legal limits."""
+    crop_lower = crop_name.lower()
+    gross_kg = gross_weight_quintals * 100.0
+
+    # Official FCI / APMC standard moisture threshold before deduction
+    if any(k in crop_lower for k in ["paddy", "rice", "dhan", "धान"]):
+        std_moisture = 14.0
+    elif any(k in crop_lower for k in ["mustard", "sarson", "soybean", "groundnut", "मूंगफली", "सरसों"]):
+        std_moisture = 9.0
+    else:
+        std_moisture = 12.0
+
+    # Legitimate moisture cut calculation
+    excess_moisture = max(0.0, measured_moisture_pct - std_moisture)
+    legit_moisture_cut_kg = round(gross_kg * (excess_moisture / 100.0), 2)
+
+    # Foreign matter / dockage cut (Standard allows up to 1.0% without cut)
+    excess_fm = max(0.0, foreign_matter_pct - 1.0)
+    foreign_matter_cut_kg = round(gross_kg * (excess_fm / 100.0), 2)
+
+    total_legitimate_cut_kg = round(legit_moisture_cut_kg + foreign_matter_cut_kg, 2)
+    net_payable_weight_kg = max(0.0, gross_kg - total_legitimate_cut_kg)
+    net_payable_weight_quintals = round(net_payable_weight_kg / 100.0, 3)
+
+    gross_sale_val = round(net_payable_weight_quintals * mandi_bid_rate_per_quintal, 2)
+
+    # Legal APMC user fee: Weighment & unloading is legally capped at ~1.5% or ₹15/quintal
+    legal_apmc_user_charges = round(net_payable_weight_quintals * 14.50, 2)
+    fair_net_payable = round(gross_sale_val - legal_apmc_user_charges, 2)
+
+    # Trader deduction audit
+    trader_diff_kg = round(max(0.0, trader_proposed_deduction_kg - total_legitimate_cut_kg), 2)
+    unjustified_loss = round((trader_diff_kg / 100.0) * mandi_bid_rate_per_quintal, 2)
+
+    if trader_proposed_deduction_kg > 0:
+        if trader_diff_kg > 5.0:
+            verdict = "⚠️ Illegal / Excessive Deduction Detected! The trader is deducting more than permissible APMC/FCI standards."
+        else:
+            verdict = "✅ Fair APMC Settlement. The proposed deduction aligns with legitimate moisture and dust standards."
+    else:
+        verdict = "✅ Fair APMC Settlement: Legitimate Parameters Calculated."
+
+    advice = [
+        "Under the APMC Model Act and National Mandi Bylaws, weighing charges and commission (Arhatiya fee) MUST be paid by the buyer/trader, NEVER deducted from the farmer.",
+        f"Standard permissible moisture for {crop_name} is {std_moisture}%. Sun-drying grain on a tarpaulin for 4 hours can eliminate excess moisture and save ₹{unjustified_loss if unjustified_loss > 0 else 500:.0f}+.",
+        "Always demand a printed APMC electronic weighbridge slip (धर्माकांटा / e-NAM slip) before offloading produce.",
+        "If the trader insists on arbitrary weight cuts ('Katta' or 'Dhalta'), register a complaint with the Mandi Secretary or call the Kisan Call Center (1800-180-1551)."
+    ]
+
+    return {
+        "crop_name": crop_name,
+        "gross_weight_quintals": gross_weight_quintals,
+        "mandi_bid_rate_per_quintal": mandi_bid_rate_per_quintal,
+        "standard_moisture_limit_pct": std_moisture,
+        "measured_moisture_pct": measured_moisture_pct,
+        "excess_moisture_pct": round(excess_moisture, 2),
+        "legitimate_moisture_cut_kg": legit_moisture_cut_kg,
+        "foreign_matter_cut_kg": foreign_matter_cut_kg,
+        "total_legitimate_cut_kg": total_legitimate_cut_kg,
+        "net_payable_weight_quintals": net_payable_weight_quintals,
+        "gross_sale_value_inr": gross_sale_val,
+        "legal_apmc_user_charges_inr": legal_apmc_user_charges,
+        "fair_net_payable_amount_inr": fair_net_payable,
+        "trader_proposed_deduction_kg": trader_proposed_deduction_kg,
+        "trader_deduction_difference_kg": trader_diff_kg,
+        "unjustified_trader_deduction_loss_inr": unjustified_loss,
+        "audit_verdict": verdict,
+        "farmer_rights_advice": advice
+    }

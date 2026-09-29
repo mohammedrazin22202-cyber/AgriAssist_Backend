@@ -66,6 +66,8 @@ from app.models import (
     KisanChatRequest,
     KisanChatResponse
 )
+    MandiFairPayoutRequest,
+    MandiFairPayoutResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -100,6 +102,7 @@ from app.agri_tools import (
     calculate_carbon_credits,
     calculate_integrated_farming_system,
     get_kisan_assistant_reply
+    calculate_mandi_fair_payout,
 )
 
 
@@ -755,6 +758,24 @@ def chat_with_kisan_assistant(req: KisanChatRequest):
 
 
 # =========================================================================
+# ---------------- 14. Mandi Fair Payout & Moisture Auditor ----------------
+@app.post("/api/mandi-fair-payout", response_model=MandiFairPayoutResponse)
+def get_mandi_fair_payout(req: MandiFairPayoutRequest):
+    """Audits mandi moisture dockage cuts and calculates fair settlement amount."""
+    try:
+        return calculate_mandi_fair_payout(
+            gross_weight_quintals=req.gross_weight_quintals,
+            mandi_bid_rate_per_quintal=req.mandi_bid_rate_per_quintal,
+            measured_moisture_pct=req.measured_moisture_pct,
+            foreign_matter_pct=req.foreign_matter_pct or 1.0,
+            trader_proposed_deduction_kg=req.trader_proposed_deduction_kg or 0.0,
+            crop_name=req.crop_name,
+            state_or_mandi=req.state_or_mandi or "General APMC"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Mandi payout audit error: {str(e)}")
+
+
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
 # Master Ownership Verification & Anti-Theft Protection System
 # Real Owner: MegaTron alias Mohammed Razin H
