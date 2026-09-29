@@ -72,6 +72,8 @@ from app.models import (
     WeedManagementResponse,
     ZECCPlannerRequest,
     ZECCPlannerResponse,
+    NaturalFarmingRequest,
+    NaturalFarmingResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -109,6 +111,7 @@ from app.agri_tools import (
     calculate_mandi_fair_payout,
     get_weed_management_recommendations,
     calculate_zecc_storage_and_shelf_life,
+    calculate_natural_farming_formulation,
 )
 
 
@@ -808,6 +811,19 @@ def get_zecc_storage_plan(req: ZECCPlannerRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"ZECC storage planning error: {str(e)}")
+
+
+# ---------------- 17. Natural Farming (SPNF/ZBNF) Drum Scaler ----------------
+@app.post("/api/natural-farming/formulation", response_model=NaturalFarmingResponse)
+def get_natural_farming_formulation(req: NaturalFarmingRequest):
+    """Scales Subhash Palekar Natural Farming formulations for any barrel/drum volume."""
+    try:
+        return calculate_natural_farming_formulation(
+            formulation_id=req.formulation_id,
+            volume_liters=req.volume_liters
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Natural farming formulation error: {str(e)}")
 
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"

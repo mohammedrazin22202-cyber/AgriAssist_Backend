@@ -3556,3 +3556,212 @@ def calculate_zecc_storage_and_shelf_life(
         "step_by_step_construction_guide": guide,
         "perishable_produce_database": ZECC_PRODUCE_CATALOG
     }
+
+
+# =======================================================================
+# 17. Natural Farming (SPNF/ZBNF) Drum Scaler
+# =======================================================================
+SPNF_BASE_FORMULATIONS = {
+    "jeevamrut": {
+        "title": "Jeevamrut (जीवामृत - तरल जैव खाद)",
+        "hindi_title": "जीवामृत तरल खाद",
+        "target_use": "Soil microbial inoculation, root aeration, earthworm stimulation",
+        "target_crops_or_pests": "All field crops, orchards, vegetables (apply once every 15-21 days)",
+        "base_volume_l": 200.0,
+        "ingredients": [
+            {"name": "Fresh Indigenous (Desi) Cow Dung", "hindi_name": "देसी गाय का ताजा गोबर", "amount": 10.0, "unit": "kg", "notes": "Must be from Bos indicus desi humped cow (Gir, Sahiwal, Tharparkar, Red Sindhi)."},
+            {"name": "Desi Cow Urine (Gomutra)", "hindi_name": "देसी गोमूत्र", "amount": 10.0, "unit": "liters", "notes": "The older the gomutra, the higher the microbial nitrogen concentration."},
+            {"name": "Organic Jaggery (Gud) / Sugarcane Juice", "hindi_name": "काला या जैविक गुड़", "amount": 2.0, "unit": "kg", "notes": "Acts as energy carbon food source for rapid bacterial multiplication."},
+            {"name": "Pulse Flour / Besan (Gram/Pigeonpea)", "hindi_name": "बेसन (चना/उड़द का आटा)", "amount": 2.0, "unit": "kg", "notes": "Provides protein and nitrogen for aerobic microbes."},
+            {"name": "Virgin Bund/Forest Soil", "hindi_name": "खेत की मेड़ या बरगद के पेड़ के नीचे की मिट्टी", "amount": 0.25, "unit": "kg", "notes": "Contains trillions of native beneficial soil mycorrhiza & fungi."},
+            {"name": "Clean Chlorine-Free Water", "hindi_name": "सादा पानी", "amount": 180.0, "unit": "liters", "notes": "Fill barrel leaving 10-15 cm headspace."}
+        ],
+        "fermentation_duration_days": "48 to 72 hours (2 to 3 days in summer; 4-5 days in winter)",
+        "stirring_protocol": "Stir clockwise for 2 minutes twice a day with a wooden stick under shade.",
+        "shelf_life_days": 12,
+        "dilution_ratio": "100% undiluted through flood irrigation or 10-20% diluted in foliar spray.",
+        "application_instructions": [
+            "Flood Irrigation: Mix 200 Litres per acre with incoming irrigation canal/tube-well water.",
+            "Drip Fertigation: Filter through 3 layers of fine khadi or muslin cloth to prevent nozzle clogging.",
+            "Foliar Spray: Mix 10 Litres Jeevamrut in 90 Litres water (10% concentration) and spray at 30, 60, and 90 DAS."
+        ]
+    },
+    "ghanjeevamrut": {
+        "title": "Ghanjeevamrut (घनजीवामृत - ठोस सूखा खाद)",
+        "hindi_title": "घनजीवामृत ठोस खाद",
+        "target_use": "Basal soil application during field preparation (substitute for chemical DAP/NPK)",
+        "target_crops_or_pests": "All cereals, pulses, cotton, oilseeds at sowing time",
+        "base_volume_l": 200.0,  # Scaled to produce ~200 kg solid pellets
+        "ingredients": [
+            {"name": "Dry Desi Cow Dung (Powdered)", "hindi_name": "सूखा देसी गोबर पाउडर", "amount": 100.0, "unit": "kg", "notes": "Shade dried and pulverized cow dung."},
+            {"name": "Desi Cow Urine (Gomutra)", "hindi_name": "देसी गोमूत्र", "amount": 5.0, "unit": "liters", "notes": "To moisten the mixture into workable crumbs."},
+            {"name": "Organic Jaggery (Gud)", "hindi_name": "जैविक गुड़", "amount": 2.0, "unit": "kg", "notes": "Dissolve in gomutra before mixing."},
+            {"name": "Besan (Gram Flour)", "hindi_name": "चना बेसन", "amount": 2.0, "unit": "kg", "notes": "Mix dry with cow dung powder."},
+            {"name": "Banyan Tree Root Soil", "hindi_name": "बरगद/पीपल के नीचे की मिट्टी", "amount": 0.5, "unit": "kg", "notes": "Rich in mycorrhizal starter spores."}
+        ],
+        "fermentation_duration_days": "Cover with gunny bag for 48 hours, then shade dry for 3 days.",
+        "stirring_protocol": "Mix thoroughly once, heap under tree shade covered with wet jute sacks.",
+        "shelf_life_days": 180,
+        "dilution_ratio": "Solid granule broadcast; 100-200 kg per acre at sowing time.",
+        "application_instructions": [
+            "Broadcast 100 to 200 kg per acre in seed furrow along with sowing.",
+            "Can be stored safely for up to 6 months in dry gunny bags."
+        ]
+    },
+    "beejamrut": {
+        "title": "Beejamrut (बीजामृत - बीज शोधन लेप)",
+        "hindi_title": "बीजामृत बीज संस्कार",
+        "target_use": "Seed treatment against seed-borne and soil-borne fungal pathogens (wilt, root rot)",
+        "target_crops_or_pests": "Seeds of wheat, paddy, pulses, vegetables, sugarcane setts, potato tubers",
+        "base_volume_l": 20.0,
+        "ingredients": [
+            {"name": "Clean Water", "hindi_name": "सादा पानी", "amount": 20.0, "unit": "liters", "notes": "Base volume in plastic bucket."},
+            {"name": "Desi Cow Dung", "hindi_name": "देसी गाय का गोबर", "amount": 5.0, "unit": "kg", "notes": "Tie in cloth and hang in water overnight, then squeeze."},
+            {"name": "Desi Cow Urine", "hindi_name": "देसी गोमूत्र", "amount": 5.0, "unit": "liters", "notes": "Natural fungicide and hormone stimulator."},
+            {"name": "Slaked Lime (Chuna)", "hindi_name": "बुझा हुआ चूना", "amount": 50.0, "unit": "grams", "notes": "Stabilizes pH and provides active calcium."},
+            {"name": "Virgin Bund Soil", "hindi_name": "खेत की उपजाऊ मिट्टी", "amount": 0.1, "unit": "kg", "notes": "Beneficial microbial inoculum."}
+        ],
+        "fermentation_duration_days": "12 to 24 hours overnight",
+        "stirring_protocol": "Stir well with wooden stick in morning; ready to use immediately.",
+        "shelf_life_days": 2,
+        "dilution_ratio": "Use undiluted as direct seed coating.",
+        "application_instructions": [
+            "Spread 100 kg seeds on a tarpaulin, pour Beejamrut gently over seeds and mix with both hands to coat evenly.",
+            "Shade dry coated seeds for 1-2 hours before sowing.",
+            "For sugarcane setts or vegetable seedlings: Dip setts or seedling roots for 5 minutes prior to planting."
+        ]
+    },
+    "agniastra": {
+        "title": "Agniastra (अग्निअस्त्र - उग्र कीट नियंत्रक)",
+        "hindi_title": "अग्निअस्त्र कीटनाशक",
+        "target_use": "Control of hard leaf-eating caterpillars, pod borers, shoot borers, and bollworms",
+        "target_crops_or_pests": "American bollworm, Spodoptera, stem borer, fruit borer in pulses & cotton",
+        "base_volume_l": 20.0,
+        "ingredients": [
+            {"name": "Desi Cow Urine (Gomutra)", "hindi_name": "देसी गोमूत्र", "amount": 20.0, "unit": "liters", "notes": "Base liquid for extraction."},
+            {"name": "Neem Leaf Paste", "hindi_name": "नीम की पत्तियों की चटनी", "amount": 2.0, "unit": "kg", "notes": "High azadirachtin bitter compound."},
+            {"name": "Tobacco Dust / Dry Leaves", "hindi_name": "तम्बाकू पाउडर / पत्तियां", "amount": 0.5, "unit": "kg", "notes": "Potent nicotine neurotoxin for caterpillars."},
+            {"name": "Hot Green Chilli Paste", "hindi_name": "तीखी हरी मिर्च का पेस्ट", "amount": 0.5, "unit": "kg", "notes": "Capsaicin repellent compound."},
+            {"name": "Crushed Garlic Paste", "hindi_name": "देसी लहसुन का पेस्ट", "amount": 0.25, "unit": "kg", "notes": "Allicin sulfur pungent aroma."}
+        ],
+        "fermentation_duration_days": "Boil 4 times on low flame, then ferment for 48 hours.",
+        "stirring_protocol": "Boil in an earthen or iron pot on low flame until 4 boils occur. Allow to cool and ferment for 2 days under shade.",
+        "shelf_life_days": 90,
+        "dilution_ratio": "Mix 2 to 3 Litres per 100 Litres of water (2-3% foliar spray).",
+        "application_instructions": [
+            "Filter concentrate through thin cloth.",
+            "Mix 300 to 450 ml Agniastra per 15-litre knapsack tank.",
+            "Spray in early morning or evening when caterpillars are actively feeding on foliage."
+        ]
+    },
+    "brahmastra": {
+        "title": "Brahmastra (ब्रह्मास्त्र - 5 पत्ती रस कीट नियंत्रक)",
+        "hindi_title": "ब्रह्मास्त्र जैविक कीटनाशक",
+        "target_use": "Control of sucking pests (aphids, jassids, whitefly, thrips) and young larvae",
+        "target_crops_or_pests": "All vegetables, fruit trees, cotton, pulses, cereals",
+        "base_volume_l": 20.0,
+        "ingredients": [
+            {"name": "Desi Cow Urine (Gomutra)", "hindi_name": "देसी गोमूत्र", "amount": 20.0, "unit": "liters", "notes": "Base extraction medium."},
+            {"name": "Neem Leaves (Azadirachta indica)", "hindi_name": "नीम की पत्तियां", "amount": 2.0, "unit": "kg", "notes": "Antifeedant and insect growth regulator."},
+            {"name": "Custard Apple Leaves (Sitaphal)", "hindi_name": "सीताफल / शरीफा की पत्तियां", "amount": 2.0, "unit": "kg", "notes": "Anonaine alkaloid causes insect paralysis."},
+            {"name": "Papaya Leaves (Carica papaya)", "hindi_name": "पपीते की पत्तियां", "amount": 2.0, "unit": "kg", "notes": "Papain enzyme dissolves insect cuticle."},
+            {"name": "Guava or Karanj Leaves", "hindi_name": "अमरूद या करंज की पत्तियां", "amount": 2.0, "unit": "kg", "notes": "High tannin repellent compound."},
+            {"name": "Castor / Datura / Lantana Leaves", "hindi_name": "अरंडी / धतूरा / बेल पत्तियां", "amount": 2.0, "unit": "kg", "notes": "Alkaloids repel sucking flies."}
+        ],
+        "fermentation_duration_days": "Boil on low heat until reduced by 15%, then rest 48 hours.",
+        "stirring_protocol": "Simmer on low heat in earthen or metal vessel, let cool and rest for 48 hours under cloth.",
+        "shelf_life_days": 180,
+        "dilution_ratio": "2 to 2.5 Litres per 100 Litres water (2-2.5%).",
+        "application_instructions": [
+            "Dilute 350 ml per 15L spray tank.",
+            "Safe on beneficial predators like ladybird beetles while destroying sucking pests."
+        ]
+    },
+    "neemastra": {
+        "title": "Neemastra (नीमास्त्र - रस चूसक कीट नाशक)",
+        "hindi_title": "नीमास्त्र सरल स्प्रे",
+        "target_use": "Safe preventative control for aphids, jassids, mites, and early leafhoppers",
+        "target_crops_or_pests": "All field crops, nursery beds, kitchen gardens",
+        "base_volume_l": 200.0,
+        "ingredients": [
+            {"name": "Clean Water", "hindi_name": "सादा पानी", "amount": 200.0, "unit": "liters", "notes": "Base barrel water."},
+            {"name": "Desi Cow Dung", "hindi_name": "देसी गाय का गोबर", "amount": 5.0, "unit": "kg", "notes": "Microbial surfactant and sticker."},
+            {"name": "Desi Cow Urine", "hindi_name": "देसी गोमूत्र", "amount": 10.0, "unit": "liters", "notes": "Antibacterial and pest repellent."},
+            {"name": "Crushed Neem Leaves or Neem Fruit (Nimboli)", "hindi_name": "कुचली हुई नीम पत्ती / निंबोली", "amount": 10.0, "unit": "kg", "notes": "Crush thoroughly before dropping into drum."}
+        ],
+        "fermentation_duration_days": "48 hours in shade",
+        "stirring_protocol": "Stir twice daily with stick; ready after 2 days without any boiling.",
+        "shelf_life_days": 21,
+        "dilution_ratio": "No dilution needed! Spray 100% directly on crop.",
+        "application_instructions": [
+            "Filter through fine mesh and pour directly into sprayer tank.",
+            "Spray evenly on upper and lower leaf surfaces."
+        ]
+    },
+    "khatta_chhach": {
+        "title": "Khatta Chhach / Sour Buttermilk Spray (खट्टी छाछ - जैविक फफूंदनाशक)",
+        "hindi_title": "खट्टी छाछ फफूंदनाशक",
+        "target_use": "Broad-spectrum organic fungicide against powdery mildew, downy mildew, leaf blast, and rust",
+        "target_crops_or_pests": "Wheat yellow rust, paddy blast, cucurbits powdery mildew, mango floral malformation",
+        "base_volume_l": 100.0,
+        "ingredients": [
+            {"name": "Sour Desi Cow Curd / Buttermilk (Chhach)", "hindi_name": "देसी गाय की खट्टी छाछ / मट्ठा", "amount": 5.0, "unit": "liters", "notes": "Lactic acid bacteria and peptides destroy fungal hyphae."},
+            {"name": "Copper Plate or Old Copper Vessel / Wire", "hindi_name": "तांबे का बर्तन या तांबे का तार", "amount": 0.25, "unit": "kg", "notes": "Immerse in buttermilk for 7-10 days until a greenish-blue copper lactate layer forms."},
+            {"name": "Clean Water", "hindi_name": "सादा पानी", "amount": 95.0, "unit": "liters", "notes": "Dilution liquid."}
+        ],
+        "fermentation_duration_days": "7 to 10 days in copper container",
+        "stirring_protocol": "Keep undisturbed in earthen pot or plastic jug with copper metal inside until greenish-blue tinge appears.",
+        "shelf_life_days": 30,
+        "dilution_ratio": "5 Litres copper buttermilk in 100 Litres water (5% spray).",
+        "application_instructions": [
+            "Remove copper piece and filter through cloth.",
+            "Mix 750 ml per 15L knapsack tank.",
+            "Copper ions combined with lactic acid provide fungicide efficacy rivaling copper oxychloride without chemical residues."
+        ]
+    }
+}
+
+
+def calculate_natural_farming_formulation(
+    formulation_id: str = "jeevamrut",
+    volume_liters: float = 200.0
+) -> Dict[str, Any]:
+    """Dynamically scales authentic Subhash Palekar Natural Farming recipes for any barrel/drum capacity."""
+    fid = formulation_id.lower().strip()
+    if fid not in SPNF_BASE_FORMULATIONS:
+        fid = "jeevamrut"
+
+    recipe = SPNF_BASE_FORMULATIONS[fid]
+    base_vol = recipe["base_volume_l"]
+    scale_factor = max(0.05, volume_liters / base_vol)
+
+    scaled_ingredients = []
+    for ing in recipe["ingredients"]:
+        raw_amt = ing["amount"] * scale_factor
+        if ing["unit"] in ["kg", "liters"]:
+            amt = round(raw_amt, 2 if raw_amt < 10 else 1)
+        else:
+            amt = round(raw_amt, 1)
+
+        scaled_ingredients.append({
+            "name": ing["name"],
+            "hindi_name": ing["hindi_name"],
+            "amount": amt,
+            "unit": ing["unit"],
+            "notes": ing["notes"]
+        })
+
+    return {
+        "formulation_id": fid,
+        "title": recipe["title"],
+        "hindi_title": recipe["hindi_title"],
+        "target_use": recipe["target_use"],
+        "target_crops_or_pests": recipe["target_crops_or_pests"],
+        "volume_liters": volume_liters,
+        "ingredients": scaled_ingredients,
+        "fermentation_duration_days": recipe["fermentation_duration_days"],
+        "stirring_protocol": recipe["stirring_protocol"],
+        "shelf_life_days": recipe["shelf_life_days"],
+        "dilution_ratio": recipe["dilution_ratio"],
+        "application_instructions": recipe["application_instructions"]
+    }

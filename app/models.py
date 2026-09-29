@@ -1100,3 +1100,34 @@ class ZECCPlannerResponse(BaseModel):
     estimated_diy_cost_inr: float
     step_by_step_construction_guide: List[str]
     perishable_produce_database: List[ProduceShelfLifeInfo]
+
+
+# =======================================================================
+# 17. Natural Farming (SPNF/ZBNF) Drum Scaler Models
+# =======================================================================
+class NaturalFarmingRequest(BaseModel):
+    formulation_id: str = "jeevamrut"
+    volume_liters: float = 200.0
+
+
+class IngredientItem(BaseModel):
+    name: str
+    hindi_name: str
+    amount: float
+    unit: str
+    notes: str
+
+
+class NaturalFarmingResponse(BaseModel):
+    formulation_id: str
+    title: str
+    hindi_title: str
+    target_use: str
+    target_crops_or_pests: str
+    volume_liters: float
+    ingredients: List[IngredientItem]
+    fermentation_duration_days: str
+    stirring_protocol: str
+    shelf_life_days: int
+    dilution_ratio: str
+    application_instructions: List[str]
