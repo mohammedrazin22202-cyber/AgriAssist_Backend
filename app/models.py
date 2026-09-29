@@ -1164,3 +1164,30 @@ class FodderSilageResponse(BaseModel):
     silage_additives: Dict[str, str]
     year_round_fodder_cropping_calendar: List[FodderCroppingPlan]
     land_sufficiency_analysis: str
+
+
+# =======================================================================
+# 19. NASA POWER Agroclimatology & GDD Tracker Models
+# =======================================================================
+class NasaGddRequest(BaseModel):
+    latitude: float = 18.5204
+    longitude: float = 73.8567
+    sowing_date: str = "2026-06-15"
+    crop_name: str = "Wheat"
+    base_temperature_c: Optional[float] = 5.0
+    target_maturity_gdd: Optional[float] = 1700.0
+
+
+class NasaGddResponse(BaseModel):
+    crop_name: str
+    base_temp_c: float
+    days_since_sowing: int
+    accumulated_gdd: float
+    target_maturity_gdd: float
+    progress_percentage: float
+    estimated_days_to_maturity: int
+    estimated_maturity_date: str
+    avg_daily_solar_insolation_mj_m2: float
+    cumulative_et0_mm: float
+    thermal_stress_alerts: List[str]
+    agronomic_advisory: str

@@ -76,6 +76,8 @@ from app.models import (
     NaturalFarmingResponse,
     FodderSilageRequest,
     FodderSilageResponse,
+    NasaGddRequest,
+    NasaGddResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -115,6 +117,7 @@ from app.agri_tools import (
     calculate_zecc_storage_and_shelf_life,
     calculate_natural_farming_formulation,
     calculate_fodder_and_silage_planner,
+    calculate_nasa_agroclimatology_gdd,
 )
 
 
@@ -842,6 +845,23 @@ def get_fodder_and_silage_plan(req: FodderSilageRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fodder silage planner error: {str(e)}")
+
+
+# ---------------- 19. NASA POWER Agroclimatology & GDD Tracker ----------------
+@app.post("/api/nasa-power/gdd", response_model=NasaGddResponse)
+def get_nasa_agroclimatology_gdd(req: NasaGddRequest):
+    """Calculates cumulative Growing Degree Days (GDD), solar insolation, and ET0."""
+    try:
+        return calculate_nasa_agroclimatology_gdd(
+            latitude=req.latitude,
+            longitude=req.longitude,
+            sowing_date=req.sowing_date,
+            crop_name=req.crop_name,
+            base_temperature_c=req.base_temperature_c or 5.0,
+            target_maturity_gdd=req.target_maturity_gdd or 1700.0
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"NASA GDD tracker error: {str(e)}")
 
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
