@@ -3101,3 +3101,303 @@ def calculate_mandi_fair_payout(
         "audit_verdict": verdict,
         "farmer_rights_advice": advice
     }
+
+
+# =======================================================================
+# 15. Weed Management & Herbicide Mixing Calculator
+# =======================================================================
+WEED_DATABASE = {
+    "wheat": [
+        {
+            "herbicide_molecule": "Sulfosulfuron 75% + Metsulfuron Methyl 5% WG",
+            "trade_examples": "Total, Leader, Markpower",
+            "target_weeds": ["Phalaris minor (गुल्री डंडा)", "Chenopodium album (बथुआ)", "Rumex (जंगली पालक)", "Melilotus (सेंजी)"],
+            "application_timing": "Post-Emergence (30-35 DAS after 1st irrigation)",
+            "recommended_dose_per_acre": "16 grams + 500 ml Cationic Surfactant",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle (TeeJet) or FloodJet",
+            "dose_per_15L_tank": "1.6 grams + 50 ml surfactant",
+            "pre_harvest_interval_days": 60,
+            "precautions": ["Do not apply in mixed mustard or chickpea intercropping.", "Ensure optimum soil moisture at application."]
+        },
+        {
+            "herbicide_molecule": "Clodinafop-propargyl 15% WP",
+            "trade_examples": "Topik, Point, Shriram Shaktiman",
+            "target_weeds": ["Phalaris minor (कनकी / गुल्ली डंडा)", "Avena ludoviciana (जंगली जई)"],
+            "application_timing": "Post-Emergence (28-35 DAS when weeds at 2-3 leaf stage)",
+            "recommended_dose_per_acre": "160 grams",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "16 grams",
+            "pre_harvest_interval_days": 55,
+            "precautions": ["Effective strictly against grassy weeds only; will not control broadleaf Bathua."]
+        },
+        {
+            "herbicide_molecule": "2,4-D Ethyl Ester 38% EC / Amine Salt 58% SL",
+            "trade_examples": "Weedmar, Knockweed, Agrodone",
+            "target_weeds": ["Chenopodium (बथुआ)", "Convolvulus (हिरनखुरी)", "Melilotus (सेंजी)", "Asphodelus (पियाजी)"],
+            "application_timing": "Post-Emergence (32-38 DAS)",
+            "recommended_dose_per_acre": "250 ml (Amine) or 400 ml (Ester)",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "FloodJet Nozzle",
+            "dose_per_15L_tank": "25-40 ml",
+            "pre_harvest_interval_days": 45,
+            "precautions": ["Never spray if wind blows towards broadleaf crops like mustard or cotton (severe drift damage)."]
+        }
+    ],
+    "rice_paddy": [
+        {
+            "herbicide_molecule": "Pretilachlor 50% EC",
+            "trade_examples": "Rifit, Eraze, Sandogard",
+            "target_weeds": ["Echinochloa colona (सांवा)", "Cyperus difformis (मोथा)", "Ludwigia (जल लोंग)"],
+            "application_timing": "Pre-Emergence (0 to 3 days after transplanting in 2-3 cm standing water)",
+            "recommended_dose_per_acre": "500 ml",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan or Sand Mix Broadcasting (mix in 25 kg dry sand and broadcast)",
+            "dose_per_15L_tank": "50 ml (if spraying)",
+            "pre_harvest_interval_days": 90,
+            "precautions": ["Maintain 2-3 cm standing water in field for 48 hours after application for herbicide film formation."]
+        },
+        {
+            "herbicide_molecule": "Bispyribac Sodium 10% SC",
+            "trade_examples": "Nominee Gold, Adora, Tarang",
+            "target_weeds": ["Echinochloa crus-galli (सांवा घास)", "Ischaemum", "Eclipta alba (भृंगराज)", "Cyperus iria"],
+            "application_timing": "Post-Emergence (15-25 days after transplanting / DSR at 3-4 leaf stage of weeds)",
+            "recommended_dose_per_acre": "80-100 ml",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "8-10 ml",
+            "pre_harvest_interval_days": 78,
+            "precautions": ["Drain standing water before spray; re-irrigate field after 24 to 48 hours."]
+        },
+        {
+            "herbicide_molecule": "Pyrazosulfuron Ethyl 10% WP",
+            "trade_examples": "Sathi, Saathi, Agita",
+            "target_weeds": ["Cyperus rotundus (मोथा)", "Fimbristylis", "Broadleaf sedges"],
+            "application_timing": "Early Post-Emergence (3-8 DAT)",
+            "recommended_dose_per_acre": "80 grams",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle or broadcast with sand",
+            "dose_per_15L_tank": "8 grams",
+            "pre_harvest_interval_days": 80,
+            "precautions": ["Extremely low toxicity to rice seedlings with safe selectivity."]
+        }
+    ],
+    "soybean": [
+        {
+            "herbicide_molecule": "Imazethapyr 10% SL",
+            "trade_examples": "Pursuit, Lagan, Shriram Prachand",
+            "target_weeds": ["Echinochloa", "Commelina benghalensis (कनकोआ)", "Trianthema (इटसिट)", "Cyperus rotundus (मोथा)"],
+            "application_timing": "Post-Emergence (15-20 DAS at 2-3 leaf stage of weeds)",
+            "recommended_dose_per_acre": "400 ml",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "40 ml",
+            "pre_harvest_interval_days": 75,
+            "precautions": ["Apply when soil is moist. Do not spray during acute drought or wilting."]
+        },
+        {
+            "herbicide_molecule": "Quizalofop Ethyl 5% EC",
+            "trade_examples": "Targa Super, Sakura, Hakama",
+            "target_weeds": ["Narrow-leaf grassy weeds, Cynodon dactylon (दूब घास)", "Sorghum halepense (बरू)"],
+            "application_timing": "Post-Emergence (15-22 DAS)",
+            "recommended_dose_per_acre": "300-400 ml",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "35 ml",
+            "pre_harvest_interval_days": 65,
+            "precautions": ["Controls grasses exclusively; 100% safe on broadleaf soybean foliage."]
+        }
+    ],
+    "maize": [
+        {
+            "herbicide_molecule": "Atrazine 50% WP",
+            "trade_examples": "Atrataf, Dhanazine, Solaro",
+            "target_weeds": ["Trianthema portulacastrum (इटसिट)", "Digitaria (क्रेबग्रास)", "Echinochloa", "Amaranthus (चौलाई)"],
+            "application_timing": "Pre-Emergence (0 to 3 days after sowing)",
+            "recommended_dose_per_acre": "800-1000 grams",
+            "water_volume_litres_per_acre": 200.0,
+            "nozzle_type": "Flat Fan / FloodJet Nozzle",
+            "dose_per_15L_tank": "65-75 grams",
+            "pre_harvest_interval_days": 90,
+            "precautions": ["Do not use if intercropped with pulses like green gram, black gram, or cowpea."]
+        },
+        {
+            "herbicide_molecule": "Tembotrione 34.4% SC",
+            "trade_examples": "Laudis",
+            "target_weeds": ["Echinochloa", "Dactyloctenium", "Trianthema", "Commelina", "Complex grassy and broadleaf weeds"],
+            "application_timing": "Post-Emergence (15-20 DAS when maize is at 3-4 leaf stage)",
+            "recommended_dose_per_acre": "115 ml + 400 ml Surfactant",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "11.5 ml + 40 ml surfactant",
+            "pre_harvest_interval_days": 70,
+            "precautions": ["Bleaches target weeds within 4 days; highly selective and safe for maize."]
+        }
+    ],
+    "cotton": [
+        {
+            "herbicide_molecule": "Pendimethalin 30% EC",
+            "trade_examples": "Stomp, Dhanutop, Tata Panida",
+            "target_weeds": ["Annual grasses, Trianthema (विषकपड़ा)", "Portulaca", "Echinochloa"],
+            "application_timing": "Pre-Emergence (within 48 hours of sowing and first irrigation)",
+            "recommended_dose_per_acre": "1000-1200 ml",
+            "water_volume_litres_per_acre": 200.0,
+            "nozzle_type": "FloodJet Nozzle",
+            "dose_per_15L_tank": "80-90 ml",
+            "pre_harvest_interval_days": 100,
+            "precautions": ["Uniform soil cover is critical. Do not disturb the soil layer after application."]
+        },
+        {
+            "herbicide_molecule": "Pyrithiobac Sodium 10% EC",
+            "trade_examples": "Hitweed, Guvva",
+            "target_weeds": ["Broadleaf weeds in cotton, Trianthema portulacastrum, Digera arvensis"],
+            "application_timing": "Post-Emergence (20-30 DAS at 2-4 leaf stage of weeds)",
+            "recommended_dose_per_acre": "250-300 ml",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle (direct spray between rows)",
+            "dose_per_15L_tank": "25-30 ml",
+            "pre_harvest_interval_days": 85,
+            "precautions": ["Direct the spray at weed foliage between rows; avoid drenching cotton terminal buds."]
+        }
+    ],
+    "mustard": [
+        {
+            "herbicide_molecule": "Pendimethalin 30% EC",
+            "trade_examples": "Stomp, Tata Panida",
+            "target_weeds": ["Chenopodium album (बथुआ)", "Melilotus", "Phalaris minor", "Poa annua"],
+            "application_timing": "Pre-Emergence (within 24-48 hours of sowing)",
+            "recommended_dose_per_acre": "1000 ml",
+            "water_volume_litres_per_acre": 200.0,
+            "nozzle_type": "Flat Fan or FloodJet",
+            "dose_per_15L_tank": "75 ml",
+            "pre_harvest_interval_days": 85,
+            "precautions": ["Ensure proper clod-free seedbed; no post-emergence broadleaf herbicide is safe in mustard."]
+        }
+    ],
+    "chickpea": [
+        {
+            "herbicide_molecule": "Pendimethalin 38.7% CS (Capsule Suspension)",
+            "trade_examples": "Stomp Xtra",
+            "target_weeds": ["Chenopodium (बथुआ)", "Fumaria parviflora (गजरा)", "Asphodelus (पियाजी)", "Annual grasses"],
+            "application_timing": "Pre-Emergence (0 to 3 days after sowing)",
+            "recommended_dose_per_acre": "650-700 ml",
+            "water_volume_litres_per_acre": 180.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "55 ml",
+            "pre_harvest_interval_days": 80,
+            "precautions": ["Microencapsulated formulation releases slowly and gives extended 45-day weed suppression."]
+        }
+    ],
+    "sugarcane": [
+        {
+            "herbicide_molecule": "Atrazine 50% WP + 2,4-D Amine Salt 58% SL",
+            "trade_examples": "Atrataf + Weedmar",
+            "target_weeds": ["Annual grasses, Parthenium, broadleaf weeds, vines (Convolvulus)"],
+            "application_timing": "Pre-Emergence (3-7 days after cane planting)",
+            "recommended_dose_per_acre": "800g Atrazine + 400ml 2,4-D Amine",
+            "water_volume_litres_per_acre": 250.0,
+            "nozzle_type": "FloodJet Nozzle",
+            "dose_per_15L_tank": "50g Atrazine + 25ml 2,4-D",
+            "pre_harvest_interval_days": 180,
+            "precautions": ["Ensure wet soil bed. Prevents weed germination during the slow 45-day cane emergence."]
+        },
+        {
+            "herbicide_molecule": "Halosulfuron Methyl 75% WG",
+            "trade_examples": "Sempra",
+            "target_weeds": ["Cyperus rotundus (मोथा / Purple Nutsedge) with deep subterranean tubers"],
+            "application_timing": "Post-Emergence (when Cyperus is at 3-4 leaf stage, ~25-30 days)",
+            "recommended_dose_per_acre": "36 grams + 500 ml Surfactant",
+            "water_volume_litres_per_acre": 150.0,
+            "nozzle_type": "Flat Fan Nozzle",
+            "dose_per_15L_tank": "3.6 grams + 50 ml surfactant",
+            "pre_harvest_interval_days": 90,
+            "precautions": ["Translocates basipetally into underground tubers, terminating the nutsedge root system permanently."]
+        }
+    ]
+}
+
+
+def get_weed_management_recommendations(
+    crop_id: str = "wheat",
+    weed_type: str = "All",
+    crop_stage: str = "Post-Emergence (15-25 Days)",
+    land_size_acres: float = 1.0
+) -> Dict[str, Any]:
+    """Provides calibrated herbicide molecules, nozzle recommendations, and tank dilution."""
+    key = crop_id.lower().replace("-", "_").replace(" ", "_")
+    if key not in WEED_DATABASE:
+        # Fallback to closest match or wheat
+        for k in WEED_DATABASE:
+            if k in key:
+                key = k
+                break
+        else:
+            key = "wheat"
+
+    raw_options = WEED_DATABASE.get(key, WEED_DATABASE["wheat"])
+    crop_names_map = {
+        "wheat": "Wheat (गेहूं)",
+        "rice_paddy": "Paddy / Rice (धान)",
+        "soybean": "Soybean (सोयाबीन)",
+        "maize": "Maize / Corn (मक्का)",
+        "cotton": "Cotton (कपास)",
+        "mustard": "Mustard (सरसों)",
+        "chickpea": "Chickpea / Gram (चना)",
+        "sugarcane": "Sugarcane (गन्ना)"
+    }
+    crop_name = crop_names_map.get(key, key.capitalize())
+
+    # Filter by stage or weed type if specified
+    filtered = []
+    for opt in raw_options:
+        stage_match = True
+        type_match = True
+
+        if "pre" in crop_stage.lower() and "post" in opt["application_timing"].lower() and "pre" not in opt["application_timing"].lower():
+            stage_match = False
+        elif "post" in crop_stage.lower() and "pre-emergence" in opt["application_timing"].lower():
+            stage_match = False
+
+        if weed_type != "All":
+            if "grass" in weed_type.lower() and not any("minor" in w.lower() or "grass" in w.lower() or "सांवा" in w.lower() or "दूब" in w.lower() for w in opt["target_weeds"]):
+                type_match = False
+            elif "broad" in weed_type.lower() and not any("बथुआ" in w.lower() or "chenopodium" in w.lower() or "broad" in w.lower() for w in opt["target_weeds"]):
+                type_match = False
+
+        # Scale knapsack tank counts to farmer's acreage
+        water_l = opt["water_volume_litres_per_acre"] * land_size_acres
+        tanks = max(1, math.ceil(water_l / 15.0))
+
+        item = dict(opt)
+        item["knapsack_tanks_15L_count"] = tanks
+        item["water_volume_litres_per_acre"] = round(water_l, 1)
+
+        # Include if reasonable match or if all filtered out
+        if stage_match and type_match:
+            filtered.append(item)
+
+    if not filtered:
+        # Fallback to returning all options for the crop
+        for opt in raw_options:
+            water_l = opt["water_volume_litres_per_acre"] * land_size_acres
+            tanks = max(1, math.ceil(water_l / 15.0))
+            item = dict(opt)
+            item["knapsack_tanks_15L_count"] = tanks
+            item["water_volume_litres_per_acre"] = round(water_l, 1)
+            filtered.append(item)
+
+    cultural_controls = [
+        "Stale Seedbed Technique (अंकुरण-पूर्व जुताई): Irrigate field 10 days before sowing to germinate weed flush, then destroy with shallow harrowing without disturbing deep soil.",
+        "Optimum Plant Geometry & Density: Sowing at recommended seed rates and row spacing ensures quick crop canopy closure, shading out weed seeds.",
+        "Organic Mulching: Applying 4-5 cm straw mulch (धान की पुआल / बायो-मल्च) suppresses 85% of annual broadleaf weeds and conserves 30% soil moisture.",
+        "Cono-Weeder in SRI Rice: Operating a mechanical cono-weeder at 15 and 25 DAT incorporates weeds as green manure, increasing root aeration."
+    ]
+
+    return {
+        "crop_id": key,
+        "crop_name": crop_name,
+        "land_size_acres": land_size_acres,
+        "options": filtered,
+        "cultural_and_organic_controls": cultural_controls
+    }

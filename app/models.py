@@ -1031,3 +1031,35 @@ class MandiFairPayoutResponse(BaseModel):
     unjustified_trader_deduction_loss_inr: float
     audit_verdict: str
     farmer_rights_advice: List[str]
+
+
+# =======================================================================
+# 15. Weed Management & Herbicide Mixing Models
+# =======================================================================
+class WeedManagementRequest(BaseModel):
+    crop_id: str = "wheat"
+    weed_type: str = "All"
+    crop_stage: str = "Post-Emergence (15-25 Days)"
+    land_size_acres: float = 1.0
+
+
+class HerbicideRecommendation(BaseModel):
+    herbicide_molecule: str
+    trade_examples: str
+    target_weeds: List[str]
+    application_timing: str
+    recommended_dose_per_acre: str
+    water_volume_litres_per_acre: float
+    nozzle_type: str
+    knapsack_tanks_15L_count: int
+    dose_per_15L_tank: str
+    pre_harvest_interval_days: int
+    precautions: List[str]
+
+
+class WeedManagementResponse(BaseModel):
+    crop_id: str
+    crop_name: str
+    land_size_acres: float
+    options: List[HerbicideRecommendation]
+    cultural_and_organic_controls: List[str]

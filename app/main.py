@@ -68,6 +68,8 @@ from app.models import (
 )
     MandiFairPayoutRequest,
     MandiFairPayoutResponse,
+    WeedManagementRequest,
+    WeedManagementResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -103,6 +105,7 @@ from app.agri_tools import (
     calculate_integrated_farming_system,
     get_kisan_assistant_reply
     calculate_mandi_fair_payout,
+    get_weed_management_recommendations,
 )
 
 
@@ -774,6 +777,21 @@ def get_mandi_fair_payout(req: MandiFairPayoutRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Mandi payout audit error: {str(e)}")
+
+
+# ---------------- 15. Weed Management & Herbicide Selector ----------------
+@app.post("/api/weed-management", response_model=WeedManagementResponse)
+def get_weed_management(req: WeedManagementRequest):
+    """Provides weed management guidelines, calibrated herbicide doses, and knapsack dilutions."""
+    try:
+        return get_weed_management_recommendations(
+            crop_id=req.crop_id,
+            weed_type=req.weed_type,
+            crop_stage=req.crop_stage,
+            land_size_acres=req.land_size_acres
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Weed management error: {str(e)}")
 
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
