@@ -1131,3 +1131,36 @@ class NaturalFarmingResponse(BaseModel):
     shelf_life_days: int
     dilution_ratio: str
     application_instructions: List[str]
+
+
+# =======================================================================
+# 18. Dairy Fodder & Silage Pit Planner Models
+# =======================================================================
+class FodderSilageRequest(BaseModel):
+    cows_count: int = 2
+    buffaloes_count: int = 1
+    average_milk_yield_liters_per_day: float = 12.0
+    available_fodder_land_acres: Optional[float] = 0.5
+
+
+class FodderCroppingPlan(BaseModel):
+    season: str
+    recommended_crops: str
+    sowing_window: str
+    estimated_green_yield_tons_per_acre: float
+    nutritional_benefit: str
+
+
+class FodderSilageResponse(BaseModel):
+    total_livestock_units: float
+    daily_green_fodder_kg: float
+    annual_green_fodder_tons: float
+    daily_dry_roughage_kg: float
+    annual_dry_roughage_tons: float
+    daily_concentrate_feed_kg: float
+    recommended_silage_reserve_tons: float
+    silage_pit_trench_dimensions: Dict[str, float]
+    drum_silage_barrels_200L_count: int
+    silage_additives: Dict[str, str]
+    year_round_fodder_cropping_calendar: List[FodderCroppingPlan]
+    land_sufficiency_analysis: str

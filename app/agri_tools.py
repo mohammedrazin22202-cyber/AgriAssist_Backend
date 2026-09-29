@@ -3765,3 +3765,109 @@ def calculate_natural_farming_formulation(
         "dilution_ratio": recipe["dilution_ratio"],
         "application_instructions": recipe["application_instructions"]
     }
+
+
+# =======================================================================
+# 18. Dairy Fodder & Silage Pit Planner
+# =======================================================================
+def calculate_fodder_and_silage_planner(
+    cows_count: int = 2,
+    buffaloes_count: int = 1,
+    average_milk_yield_liters_per_day: float = 12.0,
+    available_fodder_land_acres: float = 0.5
+) -> Dict[str, Any]:
+    """Calculates herd fodder requirements, 90-day lean silage buffer, trench dimensions, and annual fodder cropping."""
+    cows = max(0, cows_count)
+    buffs = max(0, buffaloes_count)
+    total_lu = round((cows * 1.0) + (buffs * 1.25), 2)  # Livestock Units
+    if total_lu <= 0.0:
+        total_lu = 1.0
+
+    # Daily requirement per LU based on ICAR-NDRI Karnal feeding norms
+    # Green fodder: 25 kg base + 1 kg per 2.5L milk
+    daily_green_per_lu = 25.0 + (average_milk_yield_liters_per_day * 0.4)
+    total_daily_green_kg = round(daily_green_per_lu * total_lu, 1)
+    annual_green_tons = round((total_daily_green_kg * 365.0) / 1000.0, 2)
+
+    # Dry roughage (Bhusa / Wheat straw / Paddy straw): ~6 kg per LU
+    total_daily_dry_kg = round(6.5 * total_lu, 1)
+    annual_dry_tons = round((total_daily_dry_kg * 365.0) / 1000.0, 2)
+
+    # Concentrate feed: Maintenance (1.5 kg) + 400g per litre milk
+    daily_concentrate_per_animal = 1.5 + (average_milk_yield_liters_per_day * 0.4)
+    total_daily_concentrate_kg = round(daily_concentrate_per_animal * (cows + buffs), 1)
+
+    # Silage Reserve for 90-day summer lean period (April to June)
+    # 90 days x 65% green fodder substituted with preserved silage
+    silage_reserve_tons = round((total_daily_green_kg * 0.65 * 90.0) / 1000.0, 2)
+
+    # Silage Pit Sizing (Trench Pit)
+    # Compacted silage density in trench = ~550 kg per cubic meter (15.5 kg per cubic foot)
+    silage_volume_cuft = (silage_reserve_tons * 1000.0) / 15.5
+    pit_depth_ft = 5.0  # Safe manageable pit depth
+    pit_width_ft = 6.0  # Top width (wedge shape)
+    pit_length_ft = round(silage_volume_cuft / (pit_depth_ft * (pit_width_ft - 1.0)), 1)
+    pit_length_ft = max(6.0, pit_length_ft)
+
+    # Drum Silage Alternative: 200-Litre airtight barrels (holds ~130 kg compacted fodder)
+    drum_silage_count = math.ceil((silage_reserve_tons * 1000.0) / 130.0)
+
+    # Additives for 1 ton of green silage:
+    # Jaggery/Molasses 2% (20 kg/ton) + Common Salt 0.5% (5 kg/ton) + Urea 0.5% (optional for protein)
+    silage_additives = {
+        "jaggery_or_molasses_kg": f"{round(silage_reserve_tons * 20.0, 1)} kg Jaggery / Molasses (2% by fresh weight to accelerate lactic acid fermentation)",
+        "common_salt_kg": f"{round(silage_reserve_tons * 5.0, 1)} kg Common Salt (0.5% by weight for preservation and palatability)",
+        "moisture_testing_rule": "Chop green maize/sorghum at 65-70% moisture (milky dough stage). Squeeze ball in hand: if no water drips but ball retains shape, moisture is perfect."
+    }
+
+    # 365-Day Green Fodder Cropping Calendar
+    calendar = [
+        {
+            "season": "Kharif (June - October)",
+            "recommended_crops": "Fodder Maize (African Tall) + Cowpea (लोबिया)",
+            "sowing_window": "June 15 - July 15",
+            "estimated_green_yield_tons_per_acre": 22.0,
+            "nutritional_benefit": "Maize provides high soluble carbohydrates; Cowpea legume fixes nitrogen and adds 14-16% crude protein."
+        },
+        {
+            "season": "Rabi (November - March)",
+            "recommended_crops": "Berseem (बरसीम - King of Fodder) + Fodder Oat (जई)",
+            "sowing_window": "October 15 - November 15",
+            "estimated_green_yield_tons_per_acre": 35.0,
+            "nutritional_benefit": "Multi-cut berseem yields 5-6 cuttings with 20% crude protein, boosting winter milk fat percentage by 0.5-0.8%."
+        },
+        {
+            "season": "Zaid & Perennial (April - June)",
+            "recommended_crops": "Super Napier (BNH-10 / CO-5) + Fodder Sorghum (ज्वार - MP Chari)",
+            "sowing_window": "February - March planting for Napier root slips",
+            "estimated_green_yield_tons_per_acre": 50.0,
+            "nutritional_benefit": "Perennial Hybrid Napier yields 8-9 cuts per year for up to 5 years, providing guaranteed green cut-and-carry fodder in peak heat."
+        }
+    ]
+
+    # Land Sufficiency Analysis
+    # Average multi-cut annual green yield is ~60 tons/acre across seasons
+    required_land_acres = round(annual_green_tons / 55.0, 2)
+    if available_fodder_land_acres >= required_land_acres:
+        land_analysis = f"✅ Self-Sufficient! Your {available_fodder_land_acres} acre(s) can produce ~{round(available_fodder_land_acres * 55.0, 1)} tons of green fodder, which fully covers your herd's annual requirement of {annual_green_tons} tons."
+    else:
+        land_analysis = f"⚠️ Deficit Alert: Your {available_fodder_land_acres} acre(s) produces ~{round(available_fodder_land_acres * 55.0, 1)} tons. You need {required_land_acres} acre(s) for complete self-sufficiency. Recommended: Prepare {silage_reserve_tons} tons of silage during peak Kharif harvest to bridge the lean gap."
+
+    return {
+        "total_livestock_units": total_lu,
+        "daily_green_fodder_kg": total_daily_green_kg,
+        "annual_green_fodder_tons": annual_green_tons,
+        "daily_dry_roughage_kg": total_daily_dry_kg,
+        "annual_dry_roughage_tons": annual_dry_tons,
+        "daily_concentrate_feed_kg": total_daily_concentrate_kg,
+        "recommended_silage_reserve_tons": silage_reserve_tons,
+        "silage_pit_trench_dimensions": {
+            "length_ft": pit_length_ft,
+            "width_top_ft": pit_width_ft,
+            "depth_ft": pit_depth_ft
+        },
+        "drum_silage_barrels_200L_count": drum_silage_count,
+        "silage_additives": silage_additives,
+        "year_round_fodder_cropping_calendar": calendar,
+        "land_sufficiency_analysis": land_analysis
+    }

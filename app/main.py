@@ -74,6 +74,8 @@ from app.models import (
     ZECCPlannerResponse,
     NaturalFarmingRequest,
     NaturalFarmingResponse,
+    FodderSilageRequest,
+    FodderSilageResponse,
 from app.engine import recommend_crops
 from app.database import get_all_crops, get_crop_by_id, get_all_pests_diseases, get_government_schemes_data
 from app.soil_presets import SOIL_PRESETS, SEASON_METADATA, WATER_AVAILABILITY_LEVELS
@@ -112,6 +114,7 @@ from app.agri_tools import (
     get_weed_management_recommendations,
     calculate_zecc_storage_and_shelf_life,
     calculate_natural_farming_formulation,
+    calculate_fodder_and_silage_planner,
 )
 
 
@@ -824,6 +827,21 @@ def get_natural_farming_formulation(req: NaturalFarmingRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Natural farming formulation error: {str(e)}")
+
+
+# ---------------- 18. Dairy Fodder & Silage Pit Planner ----------------
+@app.post("/api/fodder-silage/plan", response_model=FodderSilageResponse)
+def get_fodder_and_silage_plan(req: FodderSilageRequest):
+    """Calculates herd fodder requirements, 90-day lean silage buffer, and trench dimensions."""
+    try:
+        return calculate_fodder_and_silage_planner(
+            cows_count=req.cows_count,
+            buffaloes_count=req.buffaloes_count,
+            average_milk_yield_liters_per_day=req.average_milk_yield_liters_per_day,
+            available_fodder_land_acres=req.available_fodder_land_acres or 0.5
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fodder silage planner error: {str(e)}")
 
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
