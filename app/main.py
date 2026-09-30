@@ -148,6 +148,13 @@ def health_check():
     }
 
 
+@app.get("/api/benchmarks")
+def get_benchmarks():
+    """Runs on-demand performance benchmarking across all 100 crops and zero-cost calculation tools."""
+    from app.benchmarks import run_full_diagnostic_benchmark
+    return run_full_diagnostic_benchmark()
+
+
 @app.get("/api/metadata")
 def get_metadata():
     """Returns dropdown options, soil presets, and seasonal data for the farmer UI."""
