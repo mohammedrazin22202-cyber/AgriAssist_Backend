@@ -2,7 +2,7 @@
 Provides REST endpoints for crop recommendations, agronomic metadata, and crop profiles.
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
 
@@ -866,6 +866,42 @@ def get_nasa_agroclimatology_gdd(req: NasaGddRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"NASA GDD tracker error: {str(e)}")
+
+
+# ---------------- 20. Agronomic Data Export Utilities ----------------
+@app.post("/api/export/khata-csv")
+def export_khata_csv(records: List[Dict[str, Any]]):
+    """Exports farmer's Kisan Khata ledger records as UTF-8 BOM CSV for Excel."""
+    from app.export_tools import generate_khata_csv
+    csv_data = generate_khata_csv(records)
+    return Response(
+        content=csv_data.encode("utf-8"),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=kisan_khata_export.csv"}
+    )
+
+
+@app.post("/api/export/crop-calendar-ics")
+def export_crop_calendar_ics(payload: Dict[str, Any]):
+    """Exports crop phenology schedule as standard RFC 5545 iCalendar (.ics) format."""
+    from app.export_tools import generate_crop_calendar_ics
+    crop_name = payload.get("crop_name", "Crop")
+    sowing_date = payload.get("sowing_date", "2026-06-15")
+    duration_days = int(payload.get("duration_days", 120))
+    field_name = payload.get("field_name", "Main Field")
+
+    ics_content = generate_crop_calendar_ics(
+        crop_name=crop_name,
+        sowing_date_str=sowing_date,
+        duration_days=duration_days,
+        field_name=field_name
+    )
+    return Response(
+        content=ics_content,
+        media_type="text/calendar",
+        headers={"Content-Disposition": f"attachment; filename={crop_name.lower().replace(' ', '_')}_calendar.ics"}
+    )
+
 
 # CONTINGENCY PROTOCOL: CODE NAME "PLASTIC MAN"
 # Master Ownership Verification & Anti-Theft Protection System
